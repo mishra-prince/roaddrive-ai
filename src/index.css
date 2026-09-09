@@ -1,0 +1,177 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-surface text-ink font-sans antialiased;
+  margin: 0;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- shared components ---------- */
+@layer components {
+  .card {
+    @apply bg-white border border-gray-200 rounded-xl shadow-card;
+  }
+  .card-pad {
+    @apply p-4 sm:p-5;
+  }
+  .label-xs {
+    @apply text-[11px] font-semibold uppercase tracking-wider text-gray-500;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold
+      transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500
+      focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-primary {
+    @apply btn bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800;
+  }
+  .btn-secondary {
+    @apply btn bg-white text-ink border border-gray-300 hover:bg-gray-50;
+  }
+  .btn-ghost {
+    @apply btn text-gray-600 hover:bg-gray-100;
+  }
+  .btn-danger {
+    @apply btn bg-severity-critical text-white hover:bg-red-700;
+  }
+  .input {
+    @apply w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-ink
+      placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold;
+  }
+  .nav-item {
+    @apply flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-600
+      hover:bg-gray-100 hover:text-ink focus-visible:outline-none focus-visible:ring-2
+      focus-visible:ring-primary-500;
+  }
+  .nav-item-active {
+    @apply bg-primary-50 text-primary-700 hover:bg-primary-50 hover:text-primary-700;
+  }
+  .th {
+    @apply px-3 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wider text-gray-500 whitespace-nowrap;
+  }
+  .td {
+    @apply px-3 py-2.5 text-sm text-gray-700 whitespace-nowrap;
+  }
+}
+
+/* ---------- leaflet fixes ---------- */
+.leaflet-container {
+  font: inherit;
+  background: #dfe6ee;
+  outline: none;
+}
+.leaflet-container:focus-within {
+  outline: 2px solid theme('colors.primary.500');
+}
+.leaflet-pane,
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 1;
+}
+.leaflet-control-container .leaflet-top {
+  /* keep map chrome above tiles but below app overlays */
+  z-index: 2;
+}
+.rd-marker {
+  display: grid;
+  place-items: center;
+  border-radius: 9999px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(16, 24, 40, 0.35);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+.rd-cluster {
+  display: grid;
+  place-items: center;
+  border-radius: 9999px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 10px rgba(16, 24, 40, 0.4);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ---------- cesium fixes ---------- */
+.cesium-widget,
+.cesium-widget canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- camera simulation ---------- */
+@keyframes rd-road-scroll {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+@keyframes rd-scan {
+  0% {
+    top: 4%;
+  }
+  50% {
+    top: 92%;
+  }
+  100% {
+    top: 4%;
+  }
+}
+@keyframes rd-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.rd-anim-road {
+  animation: rd-road-scroll 1.6s linear infinite;
+}
+.rd-anim-scan {
+  animation: rd-scan 2.4s ease-in-out infinite;
+}
+.rd-anim-pulse {
+  animation: rd-pulse 1.2s ease-in-out infinite;
+}
+
+/* ---------- misc ---------- */
+.rd-scroll::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.rd-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+.rd-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rd-anim-road,
+  .rd-anim-scan,
+  .rd-anim-pulse {
+    animation: none;
+  }
+}
