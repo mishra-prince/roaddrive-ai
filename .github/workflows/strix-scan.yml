@@ -1,0 +1,37 @@
+name: strix-penetration-test
+
+# Security scan with Strix AI pentesting agents.
+# Requires repo secrets: STRIX_LLM (model, e.g. openrouter/z-ai/glm-5.3) and
+# LLM_API_KEY (key for that provider). Add via Settings → Secrets → Actions.
+
+on:
+  workflow_dispatch:        # manual run from the Actions tab
+  pull_request:
+    branches: [main]       # quick scan of changed files on PRs
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install Strix
+        run: curl -sSL https://strix.ai/install | bash
+
+      - name: Run Strix quick scan
+        env:
+          STRIX_LLM: ${{ secrets.STRIX_LLM }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+        run: strix -n -t ./ --scan-mode quick
+
+      - name: Upload findings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: strix-findings
+          path: strix_runs/
+          if-no-files-found: ignore
