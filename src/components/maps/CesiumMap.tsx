@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Hazard } from '../../types';
+import { ROADS } from '../../data/roads';
 import { SEVERITY_META } from '../../utils/severity';
 import { Fallback2D } from './Fallback2D';
 
@@ -102,6 +103,34 @@ export function CesiumMap({
     for (const e of entitiesRef.current.values()) viewer.entities.remove(e);
     entitiesRef.current.clear();
 
+    // ── road network overlay (driveability-colored) ──
+    const roadScores = hazards.length ? hazards : [];
+    const roads = ROADS.map((r) => {
+      // derive per-road worst active hazard severity → color; green when clean
+      const on = roadScores.filter((h) => h.segmentId === r.id);
+      const worst = on.some((h) => h.severity === 'critical')
+        ? 'high_risk'
+        : on.some((h) => h.severity === 'high')
+          ? 'poor'
+          : on.some((h) => h.severity === 'moderate')
+            ? 'moderate'
+            : 'good';
+      const colors = { good: '#16A34A', moderate: '#CA8A04', poor: '#EA580C', high_risk: '#DC2626' };
+      return { polyline: r.polyline, color: colors[worst as keyof typeof colors], sev: worst };
+    });
+    for (const road of roads) {
+      viewer.entities.add({
+        polyline: {
+          positions: road.polyline.map((p: [number, number]) => Cesium.Cartesian3.fromDegrees(p[1], p[0], 6)),
+          width: road.sev === 'high_risk' ? 5 : 3,
+          material: new Cesium.PolylineGlowMaterialProperty({
+            glowPower: 0.25,
+            color: Cesium.Color.fromCssColorString(road.color).withAlpha(0.85),
+          }),
+        },
+      });
+    }
+
     for (const h of hazards) {
       const color = Cesium.Color.fromCssColorString(SEVERITY_META[h.severity].hex);
       const ent = viewer.entities.add({
@@ -113,6 +142,16 @@ export function CesiumMap({
           outlineColor: Cesium.Color.WHITE,
           outlineWidth: 2,
         },
+        ...(h.severity === 'critical'
+          ? {
+              cylinder: {
+                length: 240,
+                topRadius: 0,
+                bottomRadius: 26,
+                material: color.withAlpha(0.35),
+              },
+            }
+          : {}),
         label:
           h.severity === 'critical' || h.severity === 'high'
             ? {

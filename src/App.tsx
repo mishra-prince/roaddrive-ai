@@ -1,6 +1,9 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { RouterProvider } from 'react-router-dom';
 import { StoreProvider } from './api/store';
+import { AdminAuthProvider } from './auth/AdminAuth';
+import RequireAdmin from './pages/admin/RequireAdmin';
+import AdminLogin from './pages/admin/AdminLogin';
 import UserLayout from './layouts/UserLayout';
 import AdminLayout from './layouts/AdminLayout';
 import Landing from './pages/Landing';
@@ -43,7 +46,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/admin',
-    element: <AdminLayout />,
+    element: (
+      <RequireAdmin>
+        <AdminLayout />
+      </RequireAdmin>
+    ),
     children: [
       { index: true, element: <AdminDashboard /> },
       { path: 'map', element: <AdminLiveMap /> },
@@ -57,12 +64,15 @@ const router = createBrowserRouter([
       { path: '*', element: <Navigate to="/admin" replace /> },
     ],
   },
+  { path: '/admin/login', element: <AdminLogin /> },
 ]);
 
 export default function App() {
   return (
-    <StoreProvider>
-      <RouterProvider router={router} />
-    </StoreProvider>
+    <AdminAuthProvider>
+      <StoreProvider>
+        <RouterProvider router={router} />
+      </StoreProvider>
+    </AdminAuthProvider>
   );
 }

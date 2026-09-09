@@ -22,7 +22,7 @@ export async function searchPlaces(q: string, near?: { lat: number; lng: number 
     const url = new URL(`${NOMINATIM}/search`);
     url.searchParams.set('q', q);
     url.searchParams.set('format', 'jsonv2');
-    url.searchParams.set('limit', 6);
+    url.searchParams.set('limit', '6');
     url.searchParams.set('addressdetails', '1');
     if (near) {
       // bias results to the map area

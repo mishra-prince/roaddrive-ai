@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { CarFront, Building2, Radio, ArrowRight, ShieldCheck, Zap, MapPinned } from 'lucide-react';
+import { CarFront, Radio, ArrowRight, ShieldCheck, Zap, MapPinned } from 'lucide-react';
 
 /**
  * Landing — splits visitors into the two product interfaces.
@@ -32,9 +32,9 @@ export default function Landing() {
           <Link to="/app" className="btn-primary w-full px-6 py-3 text-base sm:w-auto">
             <CarFront className="h-5 w-5" aria-hidden /> Open Driver App
           </Link>
-          <Link to="/admin" className="btn-secondary w-full px-6 py-3 text-base sm:w-auto">
-            <Building2 className="h-5 w-5" aria-hidden /> Open Authority Console
-          </Link>
+          <span className="hidden w-full px-6 py-3 text-center text-sm text-gray-400 sm:block sm:w-auto">
+            Authority console access is invite-only.
+          </span>
         </div>
       </section>
 

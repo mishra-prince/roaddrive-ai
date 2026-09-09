@@ -13,6 +13,8 @@ import {
 import { cn } from '../utils/severity';
 import { DemoBadge } from '../components/common';
 import { useStore } from '../api/store';
+import { useAdminAuth } from '../auth/AdminAuth';
+import { LogOut } from 'lucide-react';
 import { useState } from 'react';
 import DemoPanel from '../components/admin/DemoPanel';
 
@@ -29,6 +31,7 @@ const NAV = [
 
 export default function AdminLayout() {
   const { api, state } = useStore();
+  const { session, signOut } = useAdminAuth();
   const unread = api.getNotifications('admin').filter((n) => !n.read).length;
   const pending = api.getHazards().filter((h) => h.status === 'provisional').length;
   const [collapsed, setCollapsed] = useState(false);
@@ -106,9 +109,12 @@ export default function AdminLayout() {
             </button>
             <div className="hidden items-center gap-2 rounded-lg border border-gray-200 px-2.5 py-1.5 sm:flex">
               <div className="grid h-6 w-6 place-items-center rounded-full bg-primary-100 text-[10px] font-bold text-primary-700" aria-hidden>
-                RM
+                RA
               </div>
-              <span className="text-xs font-semibold text-ink">Road Authority</span>
+              <span className="text-xs font-semibold text-ink" title={session?.department}>{session?.name ?? 'Authority'}</span>
+              <button className="text-gray-400 hover:text-red-600" onClick={signOut} title="Sign out" aria-label="Sign out">
+                <LogOut className="h-4 w-4" />
+              </button>
             </div>
           </div>
         </header>

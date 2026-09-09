@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Camera, Gauge, Satellite, ScanEye, Signal, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { useStore } from '../../api/store';
+import { useCamera } from '../../hooks/useCamera';
+import { Camera as CamIcon, CameraOff } from 'lucide-react';
 import { cn } from '../../utils/severity';
 import { SEVERITY_META } from '../../utils/severity';
 
@@ -41,6 +43,7 @@ export default function StartDrive() {
   const navigate = useNavigate();
   const [phaseIdx, setPhaseIdx] = useState(0);
   const [running, setRunning] = useState(false);
+  const cam = useCamera();
   const [speed, setSpeed] = useState(38);
   const confirmedRef = useRef(false);
   const phase = ORDER[phaseIdx];
@@ -83,6 +86,14 @@ export default function StartDrive() {
           </div>
           <p className="text-xs text-gray-500">{running ? PHASE_TEXT[phase] : 'Detect road hazards while you drive'}</p>
         </div>
+        <button
+          className={cam.state === 'live' ? 'btn-secondary !px-3' : 'btn-secondary !px-3'}
+          onClick={() => (cam.state === 'live' ? cam.stop() : cam.start())}
+          title={cam.state === 'live' ? 'Stop real camera' : 'Use real device camera'}
+          aria-label={cam.state === 'live' ? 'Stop camera' : 'Start camera'}
+        >
+          {cam.state === 'live' ? <CameraOff className="h-4 w-4" aria-hidden /> : <CamIcon className="h-4 w-4 text-primary-600" aria-hidden />}
+        </button>
         <button
           className={running ? 'btn-danger' : 'btn-primary'}
           onClick={() => {
@@ -156,7 +167,7 @@ export default function StartDrive() {
           {/* HUD chips */}
           <div className="absolute left-3 top-3 flex flex-col gap-1.5">
             <span className="flex items-center gap-1.5 rounded bg-black/50 px-2 py-1 text-[10px] font-semibold text-white">
-              <Camera className="h-3 w-3" aria-hidden /> Camera · front
+              <Camera className="h-3 w-3" aria-hidden /> {cam.state === 'live' ? 'Live camera' : 'Simulated feed'}
             </span>
             {running && (
               <span className="flex items-center gap-1.5 rounded bg-black/50 px-2 py-1 text-[10px] font-semibold text-emerald-300">
@@ -237,10 +248,22 @@ export default function StartDrive() {
         </div>
       )}
 
-      {!running && (
+      {cam.state !== 'live' && (
         <p className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2.5 text-[11px] text-gray-500">
-          <ShieldCheck className="h-4 w-4 shrink-0 text-gray-400" aria-hidden />
-          Simulated camera feed for demo. Real devices use dashcam or smartphone video — detection, GPS and matching are mocked deterministically.
+          {cam.state === 'denied' ? <CameraOff className="h-4 w-4 shrink-0 text-gray-400" aria-hidden /> : <ShieldCheck className="h-4 w-4 shrink-0 text-gray-400" aria-hidden />}
+          {cam.state === 'denied'
+            ? 'Camera permission denied — using the simulated feed. Allow camera access in your browser to use the real one.'
+            : cam.state === 'requesting'
+              ? 'Requesting camera access…'
+              : cam.state === 'unavailable'
+                ? 'Camera unavailable on this device/connection — simulated feed active.'
+                : 'Simulated camera feed for demo. Tap the camera button to use your real device camera — detection & matching stay deterministic.'}
+        </p>
+      )}
+      {cam.state === 'live' && (
+        <p className="flex items-center gap-2 rounded-lg bg-green-50 px-3 py-2.5 text-[11px] text-green-800">
+          <ShieldCheck className="h-4 w-4 shrink-0 text-green-600" aria-hidden />
+          Live camera active — frames stay on your device; detection overlay &amp; hazard matching are simulated deterministically.
         </p>
       )}
     </div>
