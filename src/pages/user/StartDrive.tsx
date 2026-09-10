@@ -153,13 +153,22 @@ export default function StartDrive() {
             </>
           )}
 
+          {/* honest indicator over the real camera feed */}
+          {cam.state === 'live' && (
+            <div className="absolute inset-x-0 top-0 z-10 flex justify-center pt-2">
+              <span className="rounded-full bg-black/55 px-3 py-1 text-[10px] font-semibold text-white/90">
+                Live camera · detection simulation off
+              </span>
+            </div>
+          )}
+
           {/* scan line */}
-          {running && phase === 'scanning' && (
+          {running && phase === 'scanning' && cam.state !== 'live' && (
             <div className="rd-anim-scan absolute inset-x-6 z-10 h-0.5 rounded bg-emerald-300 shadow-[0_0_18px_4px_rgba(110,231,183,0.45)]" />
           )}
 
-          {/* detection box */}
-          {(phase !== 'scanning' || !running) && (
+          {/* detection box — simulated feed only; never overlaid on the real camera */}
+          {(phase !== 'scanning' || !running) && cam.state !== 'live' && (
             <div
               className="absolute left-[38%] top-[52%] h-24 w-32 rounded-md border-2 z-10"
               style={{
@@ -191,7 +200,7 @@ export default function StartDrive() {
             )}
           </div>
           <div className="absolute right-3 top-3 rounded bg-black/50 px-2 py-1 text-[10px] font-semibold text-white">
-            {running ? PHASE_TEXT[phase] : 'Standby'}
+            {cam.state === 'live' ? 'Camera · live' : running ? PHASE_TEXT[phase] : 'Standby'}
           </div>
           <div className="absolute bottom-3 right-3 rounded bg-black/50 px-2 py-1 text-[10px] font-semibold text-white">
             Faces &amp; plates blurred
