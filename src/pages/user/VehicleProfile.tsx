@@ -34,7 +34,7 @@ export default function VehicleProfile() {
         </div>
         <div>
           <div className="text-lg font-bold text-ink">{vehicle.name}</div>
-          <div className="text-sm text-gray-400">{VEHICLE_CLASS_META[vehicle.type]}</div>
+          <div className="text-sm text-muted">{VEHICLE_CLASS_META[vehicle.type]}</div>
         </div>
       </section>
 
@@ -43,13 +43,13 @@ export default function VehicleProfile() {
           <div className="label-xs">Ground clearance</div>
           <div className="mt-0.5 flex items-baseline gap-1">
             <span className="text-xl font-bold text-ink">{vehicle.groundClearanceMm}</span>
-            <span className="text-xs text-gray-400">mm</span>
+            <span className="text-xs text-muted">mm</span>
           </div>
         </div>
         <div>
           <div className="label-xs">Sensitivity</div>
           <div className="mt-1 flex items-center gap-1.5 text-sm font-semibold text-ink">
-            <Gauge className="h-4 w-4 text-gray-400" aria-hidden /> Medium
+            <Gauge className="h-4 w-4 text-muted" aria-hidden /> Medium
           </div>
         </div>
       </section>
@@ -58,7 +58,7 @@ export default function VehicleProfile() {
         <h3 className="mb-3 flex items-center gap-2 text-sm font-bold text-ink">
           <CarFront className="h-4 w-4" aria-hidden /> Switch vehicle class
         </h3>
-        <p className="mb-3 text-xs text-gray-400">
+        <p className="mb-3 text-xs text-muted">
           Driveability and route risk adjust for the selected class — e.g. a pothole that is high-risk for a motorcycle is lower-risk for an SUV.
         </p>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
@@ -69,7 +69,7 @@ export default function VehicleProfile() {
                 'rounded-lg border px-3 py-2.5 text-xs font-semibold transition-colors',
                 vehicle.type === c.type
                   ? 'border-primary-600 bg-primary-500/15 text-primary-300'
-                  : 'border-line bg-card text-gray-400 hover:border-line',
+                  : 'border-line bg-card text-muted hover:border-line',
               )}
               onClick={() => setVehicle(c.type)}
               aria-pressed={vehicle.type === c.type}

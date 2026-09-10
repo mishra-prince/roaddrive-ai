@@ -83,7 +83,7 @@ export const HAZARD_STATUS_META: Record<
   HazardStatus,
   { label: string; chip: string }
 > = {
-  provisional: { label: 'Provisional', chip: 'bg-white/10 text-gray-300 border-line' },
+  provisional: { label: 'Provisional', chip: 'bg-soft-strong text-ink-soft border-line' },
   verified: { label: 'Verified', chip: 'bg-blue-500/10 text-blue-300 border-blue-500/30' },
   assigned: { label: 'Assigned', chip: 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30' },
   under_repair: { label: 'Under Repair', chip: 'bg-amber-500/10 text-amber-300 border-amber-500/30' },
@@ -102,7 +102,7 @@ export const REPAIR_STATUS_META: Record<
   RepairStatus,
   { label: string; chip: string }
 > = {
-  unassigned: { label: 'Unassigned', chip: 'bg-white/10 text-gray-300 border-line' },
+  unassigned: { label: 'Unassigned', chip: 'bg-soft-strong text-ink-soft border-line' },
   assigned: { label: 'Assigned', chip: 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30' },
   under_repair: { label: 'Under Repair', chip: 'bg-amber-500/10 text-amber-300 border-amber-500/30' },
   repaired: { label: 'Repaired', chip: 'bg-teal-500/10 text-teal-300 border-teal-500/30' },

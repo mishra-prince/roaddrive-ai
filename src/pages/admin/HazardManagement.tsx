@@ -72,7 +72,7 @@ export default function HazardManagement() {
       <section className="card card-pad space-y-3">
         <div className="flex flex-wrap items-center gap-3">
           <div className="relative min-w-52 flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" aria-hidden />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden />
             <input
               className="input pl-9"
               placeholder="Search ID, road, type…"
@@ -97,7 +97,7 @@ export default function HazardManagement() {
         <section className="card overflow-hidden">
           <div className="rd-scroll overflow-x-auto">
             <table className="w-full">
-              <thead className="border-b border-line bg-white/5">
+              <thead className="border-b border-line bg-soft">
                 <tr>
                   <th className="th w-8">
                     <input
@@ -121,7 +121,7 @@ export default function HazardManagement() {
               </thead>
               <tbody className="divide-y divide-line">
                 {pageRows.map((h) => (
-                  <tr key={h.id} className={cn('hover:bg-white/5', selected.includes(h.id) && 'bg-primary-500/15/50')}>
+                  <tr key={h.id} className={cn('hover:bg-soft', selected.includes(h.id) && 'bg-primary-500/15/50')}>
                     <td className="td">
                       <input type="checkbox" aria-label={`Select ${h.id}`} checked={selected.includes(h.id)} onChange={() => toggle(h.id)} />
                     </td>
@@ -129,7 +129,7 @@ export default function HazardManagement() {
                     <td className="td">{HAZARD_TYPE_META[h.type].label}</td>
                     <td className="td">
                       <span className="flex items-center gap-1.5">
-                        <MapPin className="h-3.5 w-3.5 text-gray-400" aria-hidden />
+                        <MapPin className="h-3.5 w-3.5 text-muted" aria-hidden />
                         {h.roadName}
                       </span>
                     </td>
@@ -151,7 +151,7 @@ export default function HazardManagement() {
           </div>
           {/* pagination */}
           <div className="flex items-center justify-between border-t border-line px-4 py-2.5">
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-muted">
               Page {page + 1} of {pages}
             </span>
             <div className="flex gap-1.5">

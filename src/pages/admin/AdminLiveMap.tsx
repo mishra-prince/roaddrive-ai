@@ -63,7 +63,7 @@ export default function AdminLiveMap() {
           {SEVS.map((s) => (
             <button
               key={s}
-              className={cn('chip', sev === s ? 'border-ink bg-primary-600 text-white' : 'border-line bg-card text-gray-400 hover:border-line')}
+              className={cn('chip', sev === s ? 'border-ink bg-primary-600 text-white' : 'border-line bg-card text-muted hover:border-line')}
               onClick={() => setSev(s)}
               aria-pressed={sev === s}
             >
@@ -75,7 +75,7 @@ export default function AdminLiveMap() {
           {STATUSES.map((s) => (
             <button
               key={s}
-              className={cn('chip', status === s ? 'border-ink bg-primary-600 text-white' : 'border-line bg-card text-gray-400 hover:border-line')}
+              className={cn('chip', status === s ? 'border-ink bg-primary-600 text-white' : 'border-line bg-card text-muted hover:border-line')}
               onClick={() => setStatus(s)}
               aria-pressed={status === s}
             >
@@ -85,7 +85,7 @@ export default function AdminLiveMap() {
         </div>
         <div className="ml-auto flex flex-wrap gap-2 text-xs">
           {(Object.keys(layers) as (keyof typeof layers)[]).map((k) => (
-            <label key={k} className="flex cursor-pointer items-center gap-1.5 font-medium text-gray-400">
+            <label key={k} className="flex cursor-pointer items-center gap-1.5 font-medium text-muted">
               <input type="checkbox" className="h-3.5 w-3.5 accent-primary-600" checked={layers[k]} onChange={(e) => setLayers((l) => ({ ...l, [k]: e.target.checked }))} />
               {k.charAt(0).toUpperCase() + k.slice(1)}
             </label>
@@ -117,12 +117,12 @@ export default function AdminLiveMap() {
                   <h3 className="text-base font-bold text-ink">{selectedHazard.id}</h3>
                   <SeverityChip severity={selectedHazard.severity} />
                 </div>
-                <div className="text-sm text-gray-400">
+                <div className="text-sm text-muted">
                   {HAZARD_TYPE_META[selectedHazard.type].label} · {selectedHazard.roadName}
                 </div>
                 <StatusChip status={selectedHazard.status} />
                 <ConfidenceBar value={selectedHazard.confidence} />
-                <dl className="space-y-1.5 text-xs text-gray-400">
+                <dl className="space-y-1.5 text-xs text-muted">
                   <div className="flex justify-between"><dt>Confirmations</dt><dd className="font-bold text-ink">{selectedHazard.confirmationCount}</dd></div>
                   <div className="flex justify-between"><dt>Risk score</dt><dd className="font-bold text-ink">{selectedHazard.riskScore}/100</dd></div>
                   <div className="flex justify-between"><dt>Last detected</dt><dd>{timeAgo(selectedHazard.lastDetected)}</dd></div>
@@ -138,15 +138,15 @@ export default function AdminLiveMap() {
               </div>
             </div>
           ) : (
-            <div className="card card-pad text-sm text-gray-400">
+            <div className="card card-pad text-sm text-muted">
               Select a hazard marker on the map to inspect it. Click “Fly to hazard” to focus the 3D camera.
             </div>
           )}
 
           <div className="card card-pad">
-            <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-gray-400">Repair overlay</h4>
+            <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-muted">Repair overlay</h4>
             {repairs.length === 0 ? (
-              <p className="text-xs text-gray-400">No repair cases.</p>
+              <p className="text-xs text-muted">No repair cases.</p>
             ) : (
               <ul className="space-y-2">
                 {repairs.slice(0, 5).map((r) => (

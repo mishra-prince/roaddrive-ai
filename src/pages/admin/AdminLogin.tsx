@@ -43,20 +43,20 @@ export default function AdminLogin() {
           </div>
           <div>
             <div className="text-sm font-bold leading-tight">RoadDrive Authority</div>
-            <div className="text-[10px] font-medium uppercase tracking-wider text-gray-400">Command Center</div>
+            <div className="text-[10px] font-medium uppercase tracking-wider text-muted">Command Center</div>
           </div>
         </div>
         <div>
           <h1 className="max-w-md text-2xl font-bold leading-snug">
             Spatial road intelligence for verified authorities only.
           </h1>
-          <ul className="mt-4 space-y-2 text-sm text-gray-400">
+          <ul className="mt-4 space-y-2 text-sm text-muted">
             <li>• Live 3D hazard intelligence map</li>
             <li>• Verification & repair workflows</li>
             <li>• Anonymous crowdsourced evidence</li>
           </ul>
         </div>
-        <p className="flex items-center gap-1.5 text-[11px] text-gray-400">
+        <p className="flex items-center gap-1.5 text-[11px] text-muted">
           <ShieldCheck className="h-3.5 w-3.5" aria-hidden /> Sessions expire after 8 hours. Access is logged.
         </p>
       </div>
@@ -72,7 +72,7 @@ export default function AdminLogin() {
           </div>
 
           <h2 className="text-xl font-bold tracking-tight text-ink">Sign in to the authority console</h2>
-          <p className="mt-1 text-sm text-gray-400">
+          <p className="mt-1 text-sm text-muted">
             Access is restricted. Credentials are issued by the road authority.
           </p>
 
@@ -116,16 +116,16 @@ export default function AdminLogin() {
             </button>
           </form>
 
-          <div className="mt-6 rounded-xl border border-line bg-card p-3.5 text-xs text-gray-400">
+          <div className="mt-6 rounded-xl border border-line bg-card p-3.5 text-xs text-muted">
             <div className="font-semibold text-ink">Demo access (SIH)</div>
-            <div className="mt-1 font-mono text-[11px] leading-relaxed text-gray-400">
+            <div className="mt-1 font-mono text-[11px] leading-relaxed text-muted">
               admin@roaddrive.gov.in / road2026
             </div>
-            <div className="mt-2 flex items-center gap-1.5 text-[10px] text-gray-400">
+            <div className="mt-2 flex items-center gap-1.5 text-[10px] text-muted">
               <DemoBadge /> Frontend prototype — real auth server comes with the backend integration.
             </div>
           </div>
-          <p className="mt-4 text-center text-[11px] text-gray-400">
+          <p className="mt-4 text-center text-[11px] text-muted">
             Need access? Request credentials from the RoadDrive authority administrator.
           </p>
         </div>

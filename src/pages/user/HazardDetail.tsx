@@ -46,7 +46,7 @@ export default function HazardDetail() {
 
       <div className="flex flex-wrap items-center gap-2">
         <SeverityChip severity={h.severity} size="md" />
-        <span className="chip border-line bg-white/5 text-gray-300">{h.status.replace('_', ' ')}</span>
+        <span className="chip border-line bg-soft text-ink-soft">{h.status.replace('_', ' ')}</span>
       </div>
 
       {/* metrics */}
@@ -62,7 +62,7 @@ export default function HazardDetail() {
           </div>
         </div>
         <ConfidenceBar value={h.confidence} />
-        <div className="grid grid-cols-2 gap-3 border-t border-line pt-3 text-xs text-gray-400">
+        <div className="grid grid-cols-2 gap-3 border-t border-line pt-3 text-xs text-muted">
           <span className="flex items-center gap-1.5"><Users className="h-3.5 w-3.5" aria-hidden /> Confirmed by <b className="text-ink">{h.confirmationCount}</b> vehicles</span>
           <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" aria-hidden /> Last detected {timeAgo(h.lastDetected)}</span>
           <span className="flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5" aria-hidden /> {h.latitude.toFixed(4)}, {h.longitude.toFixed(4)}</span>
@@ -82,8 +82,8 @@ export default function HazardDetail() {
             const bar = r >= 75 ? '#EF4444' : r >= 50 ? '#F97316' : '#22C55E';
             return (
               <div key={vt} className="flex items-center gap-3">
-                <span className="w-24 text-xs font-semibold text-gray-300">{VEHICLE_CLASS_META[vt]}</span>
-                <div className="h-2 flex-1 rounded-full bg-gray-200" role="presentation">
+                <span className="w-24 text-xs font-semibold text-ink-soft">{VEHICLE_CLASS_META[vt]}</span>
+                <div className="h-2 flex-1 rounded-full bg-soft-strong" role="presentation">
                   <div className="h-2 rounded-full" style={{ width: `${r}%`, background: bar }} />
                 </div>
                 <span className={`w-12 text-right text-xs font-bold ${tone}`}>{r}</span>
@@ -91,7 +91,7 @@ export default function HazardDetail() {
             );
           })}
         </div>
-        <p className="mt-2 text-[11px] text-gray-400">Higher score = higher risk for that vehicle class (estimated).</p>
+        <p className="mt-2 text-[11px] text-muted">Higher score = higher risk for that vehicle class (estimated).</p>
       </section>
 
       {/* confirmation timeline */}
@@ -101,12 +101,12 @@ export default function HazardDetail() {
           {h.observations.slice(-6).reverse().map((o, i) => (
             <li key={i} className="text-xs">
               <span className="absolute -left-[5px] h-2 w-2 rounded-full bg-primary-500/150" style={{ marginTop: 2 }} />
-              <div className="font-semibold text-gray-300">{o.vehicleId} {o.matched ? 'confirmed' : 'first detection'}</div>
-              <div className="text-gray-400">{fmtTime(o.detectedAt)} · {timeAgo(o.detectedAt)}</div>
+              <div className="font-semibold text-ink-soft">{o.vehicleId} {o.matched ? 'confirmed' : 'first detection'}</div>
+              <div className="text-muted">{fmtTime(o.detectedAt)} · {timeAgo(o.detectedAt)}</div>
             </li>
           ))}
         </ol>
-        <div className="mt-3 rounded-lg bg-white/5 px-3 py-2 text-[11px] text-gray-400">
+        <div className="mt-3 rounded-lg bg-soft px-3 py-2 text-[11px] text-muted">
           Observations are anonymous — vehicle IDs only, no personal information.
         </div>
       </section>

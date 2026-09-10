@@ -27,25 +27,25 @@ export function EmailPreviewModal({ email, onClose }: { email: EmailMessage; onC
             {email.delivered ? (
               <span className="chip border-green-500/30 bg-green-500/10 text-green-300">Delivered</span>
             ) : (
-              <span className="chip border-line bg-white/5 text-gray-400">Resend · mock</span>
+              <span className="chip border-line bg-soft text-muted">Resend · mock</span>
             )}
           </div>
-          <button className="text-gray-500 hover:text-gray-200" aria-label="Close" onClick={onClose}>
+          <button className="text-muted hover:text-gray-200" aria-label="Close" onClick={onClose}>
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* headers */}
         <div className="space-y-1 border-b border-line px-4 py-3 text-xs">
-          <div className="flex gap-2"><span className="w-14 text-gray-500">To</span><span className="text-gray-300">{email.to}</span></div>
-          <div className="flex gap-2"><span className="w-14 text-gray-500">From</span><span className="text-gray-300">RoadDrive AI &lt;notifications@roaddrive.gov.in&gt;</span></div>
-          <div className="flex gap-2"><span className="w-14 text-gray-500">Subject</span><span className="font-semibold text-ink">{email.subject}</span></div>
+          <div className="flex gap-2"><span className="w-14 text-muted">To</span><span className="text-ink-soft">{email.to}</span></div>
+          <div className="flex gap-2"><span className="w-14 text-muted">From</span><span className="text-ink-soft">RoadDrive AI &lt;notifications@roaddrive.gov.in&gt;</span></div>
+          <div className="flex gap-2"><span className="w-14 text-muted">Subject</span><span className="font-semibold text-ink">{email.subject}</span></div>
         </div>
 
         {/* rendered HTML body */}
-        <div className="min-h-0 flex-1 overflow-auto bg-white" dangerouslySetInnerHTML={{ __html: email.html }} />
+        <div className="min-h-0 flex-1 overflow-auto bg-card" dangerouslySetInnerHTML={{ __html: email.html }} />
 
-        <div className="flex items-center justify-between gap-2 border-t border-line px-4 py-2.5 text-[11px] text-gray-500">
+        <div className="flex items-center justify-between gap-2 border-t border-line px-4 py-2.5 text-[11px] text-muted">
           <span className="flex items-center gap-1.5">
             <CheckCircle2 className="h-3.5 w-3.5 text-green-400" aria-hidden /> Sent {timeAgo(email.createdAt)}
           </span>

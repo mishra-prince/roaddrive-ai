@@ -36,7 +36,7 @@ export default function UserHome() {
             <div className={`text-sm font-semibold ${area >= 85 ? 'text-green-300' : area >= 65 ? 'text-yellow-300' : area >= 45 ? 'text-orange-300' : 'text-red-300'}`}>
               {area >= 85 ? 'Good conditions' : area >= 65 ? 'Moderate conditions' : 'High risk conditions'}
             </div>
-            <div className="text-xs text-gray-400">out of 100 · Gurugram</div>
+            <div className="text-xs text-muted">out of 100 · Gurugram</div>
           </div>
         </div>
         <div className="mt-4 grid grid-cols-2 gap-2 border-t border-line pt-4 sm:grid-cols-4">
@@ -75,8 +75,8 @@ export default function UserHome() {
               <div className="text-base font-bold text-ink">
                 {HAZARD_TYPE_META[near.hazard.type].label} · {near.hazard.roadName}
               </div>
-              <div className="mt-0.5 text-sm text-gray-400">{formatDistance(near.distanceM)} ahead</div>
-              <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-400">
+              <div className="mt-0.5 text-sm text-muted">{formatDistance(near.distanceM)} ahead</div>
+              <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">
                 <span>Confidence <b className="text-ink">{near.hazard.confidence}%</b></span>
                 <span>Confirmed by <b className="text-ink">{near.hazard.confirmationCount}</b></span>
                 <span>Detected {timeAgo(near.hazard.lastDetected)}</span>
@@ -118,7 +118,7 @@ export default function UserHome() {
           <b>Privacy protected.</b> Faces and license plates are automatically blurred before evidence is stored.
         </p>
       </section>
-      <p className="pb-2 text-center text-[11px] text-gray-400">
+      <p className="pb-2 text-center text-[11px] text-muted">
         Scores are estimates from simulated data — driveability, not guarantees.
       </p>
     </div>

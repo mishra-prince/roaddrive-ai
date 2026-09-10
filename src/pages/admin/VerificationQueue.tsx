@@ -32,7 +32,7 @@ export default function VerificationQueue() {
         <button
           role="tab"
           aria-selected={tab === 'provisional'}
-          className={`chip px-4 py-2 ${tab === 'provisional' ? 'border-ink bg-primary-600 text-white' : 'border-line bg-card text-gray-400'}`}
+          className={`chip px-4 py-2 ${tab === 'provisional' ? 'border-ink bg-primary-600 text-white' : 'border-line bg-card text-muted'}`}
           onClick={() => setTab('provisional')}
         >
           Hazard verification ({provisional.length})
@@ -40,7 +40,7 @@ export default function VerificationQueue() {
         <button
           role="tab"
           aria-selected={tab === 'repair'}
-          className={`chip px-4 py-2 ${tab === 'repair' ? 'border-ink bg-primary-600 text-white' : 'border-line bg-card text-gray-400'}`}
+          className={`chip px-4 py-2 ${tab === 'repair' ? 'border-ink bg-primary-600 text-white' : 'border-line bg-card text-muted'}`}
           onClick={() => setTab('repair')}
         >
           Repair verification ({repairPending.length + failed.length})
@@ -58,9 +58,9 @@ export default function VerificationQueue() {
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-bold text-ink">{h.id}</span>
                     <SeverityChip severity={h.severity} />
-                    <span className="text-xs text-gray-400">{HAZARD_TYPE_META[h.type].label} · {h.roadName}</span>
+                    <span className="text-xs text-muted">{HAZARD_TYPE_META[h.type].label} · {h.roadName}</span>
                   </div>
-                  <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-400">
+                  <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">
                     <span className="flex items-center gap-1"><Clock className="h-3 w-3" aria-hidden /> detected {timeAgo(h.firstDetected)}</span>
                     <span>confidence {h.confidence}%</span>
                     <span>{h.confirmationCount} independent detection{h.confirmationCount === 1 ? '' : 's'}</span>
@@ -91,7 +91,7 @@ export default function VerificationQueue() {
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-bold text-ink">{r.id}</span>
                         <StatusChip status={r.status} />
-                        <span className="text-xs text-gray-400">{h ? `${h.id} · ${h.roadName}` : r.hazardId}</span>
+                        <span className="text-xs text-muted">{h ? `${h.id} · ${h.roadName}` : r.hazardId}</span>
                       </div>
                       <div className="flex gap-2">
                         <button className="btn-primary !py-1.5 !text-xs" onClick={() => api.simulateVerification(r.id, 'success')}>
@@ -102,7 +102,7 @@ export default function VerificationQueue() {
                         </button>
                       </div>
                     </div>
-                    <p className="mt-2 text-xs text-gray-400">
+                    <p className="mt-2 text-xs text-muted">
                       Authority marked repaired {r.repairedAt ? timeAgo(r.repairedAt) : 'recently'} — awaiting independent vehicle passes.
                     </p>
                   </article>
@@ -123,7 +123,7 @@ export default function VerificationQueue() {
                     </button>
                   </div>
                   {r.verificationPasses && (
-                    <ul className="mt-2 space-y-1 text-xs text-gray-400">
+                    <ul className="mt-2 space-y-1 text-xs text-muted">
                       {r.verificationPasses.map((p, i) => (
                         <li key={i} className="flex items-center gap-2">
                           <span className={`h-2 w-2 rounded-full ${p.defectDetected ? 'bg-red-500' : 'bg-green-500'}`} />

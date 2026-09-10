@@ -51,12 +51,15 @@ export function CesiumMap({
         const Cesium: any = await import('cesium');
         if (disposed || !hostRef.current) return;
         cesiumRef.current = Cesium;
+        const isDark = document.documentElement.classList.contains('dark');
         const viewer = new Cesium.Viewer(hostRef.current, {
           baseLayer: new Cesium.ImageryLayer(
             new Cesium.UrlTemplateImageryProvider({
-              url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              maximumLevel: 19,
-              credit: '© OpenStreetMap contributors',
+              url: isDark
+                ? 'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
+                : 'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+              maximumLevel: 20,
+              credit: '© OpenStreetMap contributors © CARTO',
             }),
           ),
           animation: false,
@@ -93,6 +96,28 @@ export function CesiumMap({
       viewerRef.current = null;
     };
   }, []);
+
+  // swap basemap imagery when the theme flips (light <-> dark Carto)
+  useEffect(() => {
+    const viewer = viewerRef.current;
+    const Cesium = cesiumRef.current;
+    if (!viewer || !Cesium || !ready) return;
+    const observer = new MutationObserver(() => {
+      const isDark = document.documentElement.classList.contains('dark');
+      viewer.imageryLayers.removeAll();
+      viewer.imageryLayers.addImageryProvider(
+        new Cesium.UrlTemplateImageryProvider({
+          url: isDark
+            ? 'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
+            : 'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+          maximumLevel: 20,
+          credit: '© OpenStreetMap contributors © CARTO',
+        }),
+      );
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, [ready]);
 
   // (re)build entities when hazards or readiness change
   useEffect(() => {
@@ -209,7 +234,7 @@ export function CesiumMap({
     <div className="relative overflow-hidden rounded-xl" style={{ height }}>
       <div ref={hostRef} className="h-full w-full" />
       {!ready && (
-        <div className="absolute inset-0 grid place-items-center bg-[#0f1720] text-xs font-semibold text-gray-300">
+        <div className="absolute inset-0 grid place-items-center bg-[#0f1720] text-xs font-semibold text-ink-soft">
           Initializing 3D scene…
         </div>
       )}

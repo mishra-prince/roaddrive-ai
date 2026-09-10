@@ -84,7 +84,7 @@ export default function StartDrive() {
             <span className={cn('h-2 w-2 rounded-full', running ? 'bg-red-500 rd-anim-pulse' : 'bg-gray-300')} />
             <h1 className="text-lg font-bold tracking-tight text-ink">{running ? 'LIVE DRIVE' : 'Start Drive'}</h1>
           </div>
-          <p className="text-xs text-gray-400">{running ? PHASE_TEXT[phase] : 'Detect road hazards while you drive'}</p>
+          <p className="text-xs text-muted">{running ? PHASE_TEXT[phase] : 'Detect road hazards while you drive'}</p>
         </div>
         <button
           className={cam.state === 'live' ? 'btn-secondary !px-3' : 'btn-secondary !px-3'}
@@ -216,7 +216,7 @@ export default function StartDrive() {
             { icon: Signal, label: 'Network', value: 'Good' },
           ].map((m) => (
             <div key={m.label} className="px-2 py-2">
-              <div className="flex items-center justify-center gap-1 text-[9px] font-semibold uppercase tracking-wider text-gray-400">
+              <div className="flex items-center justify-center gap-1 text-[9px] font-semibold uppercase tracking-wider text-muted">
                 <m.icon className="h-3 w-3" aria-hidden /> {m.label}
               </div>
               <div className="text-xs font-bold text-white">{m.value}</div>
@@ -234,13 +234,13 @@ export default function StartDrive() {
                 'grid h-5 w-5 shrink-0 place-items-center rounded-full border text-[9px] font-bold',
                 i < phaseIdx || (running && i === phaseIdx)
                   ? 'border-primary-600 bg-primary-600 text-white'
-                  : 'border-line bg-card text-gray-400',
+                  : 'border-line bg-card text-muted',
               )}
               aria-hidden
             >
               {i < phaseIdx ? '✓' : i + 1}
             </span>
-            <span className={cn('font-medium', i === phaseIdx && running ? 'text-primary-300' : i < phaseIdx ? 'text-gray-300' : 'text-gray-400')}>
+            <span className={cn('font-medium', i === phaseIdx && running ? 'text-primary-300' : i < phaseIdx ? 'text-ink-soft' : 'text-muted')}>
               {PHASE_TEXT[p]}
             </span>
             {p === 'matched' && i <= phaseIdx && (
@@ -260,8 +260,8 @@ export default function StartDrive() {
           </div>
           <div className="card-pad space-y-1 bg-card">
             <p className="text-sm font-bold text-ink">Pothole detected · {SPEC.aheadM} m ahead</p>
-            <p className="text-sm text-gray-400">Estimated risk: {SPEC.risk}/100 · AI confidence {SPEC.confidence}%</p>
-            <p className="text-xs text-gray-400">High risk for motorcycle · Moderate risk for sedan · Lower risk for SUV</p>
+            <p className="text-sm text-muted">Estimated risk: {SPEC.risk}/100 · AI confidence {SPEC.confidence}%</p>
+            <p className="text-xs text-muted">High risk for motorcycle · Moderate risk for sedan · Lower risk for SUV</p>
             <button className="btn-primary mt-2 w-full" onClick={() => setSpeed(24)}>
               <AlertTriangle className="h-4 w-4" aria-hidden /> Slow Down
             </button>
@@ -273,8 +273,8 @@ export default function StartDrive() {
       )}
 
       {cam.state !== 'live' && (
-        <p className="flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2.5 text-[11px] text-gray-400">
-          {cam.state === 'denied' ? <CameraOff className="h-4 w-4 shrink-0 text-gray-400" aria-hidden /> : <ShieldCheck className="h-4 w-4 shrink-0 text-gray-400" aria-hidden />}
+        <p className="flex items-center gap-2 rounded-lg bg-soft px-3 py-2.5 text-[11px] text-muted">
+          {cam.state === 'denied' ? <CameraOff className="h-4 w-4 shrink-0 text-muted" aria-hidden /> : <ShieldCheck className="h-4 w-4 shrink-0 text-muted" aria-hidden />}
           {cam.state === 'denied'
             ? 'Camera permission denied — using the simulated feed. Allow camera access in your browser to use the real one.'
             : cam.state === 'requesting'

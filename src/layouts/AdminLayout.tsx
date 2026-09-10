@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
   Globe2,
@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { cn } from '../utils/severity';
 import { DemoBadge } from '../components/common';
+import { ThemeToggle } from '../components/common/ThemeToggle';
 import { useStore } from '../api/store';
 import { useAdminAuth } from '../auth/AdminAuth';
 import { LogOut } from 'lucide-react';
@@ -36,6 +37,7 @@ export default function AdminLayout() {
   const pending = api.getHazards().filter((h) => h.status === 'provisional').length;
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <div className="flex h-full min-h-screen bg-surface">
@@ -53,7 +55,7 @@ export default function AdminLayout() {
           {!collapsed && (
             <div className="min-w-0">
               <div className="truncate text-sm font-bold text-ink">RoadDrive Authority</div>
-              <div className="text-[10px] font-medium uppercase tracking-wider text-gray-400">Command Center</div>
+              <div className="text-[10px] font-medium uppercase tracking-wider text-muted">Command Center</div>
             </div>
           )}
         </div>
@@ -91,11 +93,12 @@ export default function AdminLayout() {
         <header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-line bg-card/95 px-5 py-3 backdrop-blur">
           <div className="flex items-center gap-3">
             <DemoBadge />
-            <span className="hidden text-sm text-gray-400 md:inline">
+            <span className="hidden text-sm text-muted md:inline">
               {unread > 0 ? `${unread} unread alerts` : 'No unread alerts'}
             </span>
           </div>
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <button className="btn-secondary !py-1.5 text-xs" onClick={() => navigate('/admin/verification')}>
               Verification queue
               {pending > 0 && <span className="rounded-full bg-purple-500/15 px-1.5 text-[10px] font-bold text-purple-300">{pending}</span>}
@@ -112,7 +115,7 @@ export default function AdminLayout() {
                 RA
               </div>
               <span className="text-xs font-semibold text-ink" title={session ? `${session.email} · ${session.department}` : undefined}>{session?.name ?? 'Authority'}</span>
-              <button className="text-gray-400 hover:text-red-400" onClick={signOut} title="Sign out" aria-label="Sign out">
+              <button className="text-muted hover:text-red-400" onClick={signOut} title="Sign out" aria-label="Sign out">
                 <LogOut className="h-4 w-4" />
               </button>
             </div>
@@ -130,7 +133,9 @@ export default function AdminLayout() {
         )}
 
         <main className="min-w-0 flex-1 p-5">
-          <Outlet />
+          <div key={location.pathname} className="animate-rd-fade-up">
+            <Outlet />
+          </div>
         </main>
 
         {/* floating demo controls */}

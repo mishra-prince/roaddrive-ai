@@ -63,11 +63,11 @@ export default function ReportHazard() {
             </div>
             <div>
               <h2 className="text-lg font-bold text-ink">{matched ? 'Matched an existing hazard' : 'New case filed'}</h2>
-              <p className="mt-0.5 text-sm text-gray-400">{outcome.message}</p>
+              <p className="mt-0.5 text-sm text-muted">{outcome.message}</p>
             </div>
           </div>
 
-          <div className="rounded-xl border border-line bg-white/5 p-3.5">
+          <div className="rounded-xl border border-line bg-soft p-3.5">
             <div className="flex items-center justify-between">
               <span className="font-mono text-sm font-bold text-ink">{outcome.hazardId}</span>
               {matched ? (
@@ -78,7 +78,7 @@ export default function ReportHazard() {
                 <SeverityChip severity={severity ?? 'moderate'} />
               )}
             </div>
-            <p className="mt-2 text-xs text-gray-400">
+            <p className="mt-2 text-xs text-muted">
               {matched
                 ? 'Instead of filing a duplicate, your observation was counted as an independent confirmation. One pothole = one case — your report still raises its priority.'
                 : 'Yours was the first report for this defect, so it opened a new tracking case visible to the road authority.'}
@@ -90,7 +90,7 @@ export default function ReportHazard() {
               <Mail className="h-4 w-4 text-primary-400" aria-hidden />
               <span className="text-left">
                 <span className="block text-xs font-semibold text-ink">Acknowledgement email sent</span>
-                <span className="block truncate text-[11px] text-gray-400">{email.subject}</span>
+                <span className="block truncate text-[11px] text-muted">{email.subject}</span>
               </span>
             </button>
           )}
@@ -117,7 +117,7 @@ export default function ReportHazard() {
               key={t}
               className={cn(
                 'rounded-lg border px-3 py-2.5 text-xs font-semibold transition-colors',
-                type === t ? 'border-primary-500 bg-primary-500/15 text-primary-300' : 'border-line bg-white/5 text-gray-400 hover:border-line',
+                type === t ? 'border-primary-500 bg-primary-500/15 text-primary-300' : 'border-line bg-soft text-muted hover:border-line',
               )}
               onClick={() => setType(t)}
               aria-pressed={type === t}
@@ -136,7 +136,7 @@ export default function ReportHazard() {
               key={s}
               className={cn(
                 'rounded-lg border px-2 py-2.5 text-xs font-semibold transition-colors',
-                severity === s ? 'text-white' : 'border-line bg-white/5 text-gray-400 hover:border-line',
+                severity === s ? 'text-white' : 'border-line bg-soft text-muted hover:border-line',
               )}
               style={severity === s ? { background: SEVERITY_META[s].hex, borderColor: SEVERITY_META[s].hex } : undefined}
               onClick={() => setSeverity(s)}
@@ -155,8 +155,8 @@ export default function ReportHazard() {
         >
           <Camera className="h-4 w-4" aria-hidden /> {photo ? 'Photo attached ✓' : 'Attach photo'}
         </button>
-        <div className="flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2.5 text-xs text-gray-400">
-          <MapPin className="h-4 w-4 text-gray-500" aria-hidden />
+        <div className="flex items-center gap-2 rounded-lg bg-soft px-3 py-2.5 text-xs text-muted">
+          <MapPin className="h-4 w-4 text-muted" aria-hidden />
           Current location — 28.4765, 77.0765 (GPS simulated)
         </div>
         <div>
@@ -176,7 +176,7 @@ export default function ReportHazard() {
       <button className="btn-primary w-full" onClick={submit} disabled={busy}>
         <Send className="h-4 w-4" aria-hidden /> {busy ? 'Submitting…' : 'Submit report'}
       </button>
-      <p className="text-center text-[11px] text-gray-500">
+      <p className="text-center text-[11px] text-muted">
         Duplicate reports for the same defect are counted as confirmations, not new cases.
       </p>
     </div>

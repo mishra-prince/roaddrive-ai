@@ -23,7 +23,7 @@ export default function Landing() {
               </div>
               <div>
                 <div className="text-sm font-bold leading-tight text-ink">RoadDrive AI</div>
-                <div className="text-[10px] font-medium uppercase tracking-[0.14em] text-gray-400">Road intelligence</div>
+                <div className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted">Road intelligence</div>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -65,7 +65,7 @@ export default function Landing() {
               </h1>
             </Reveal>
             <Reveal delay={180}>
-              <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-gray-400">
+              <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-muted">
                 Ordinary vehicles detect road hazards. AI validates them across users. Drivers get warnings
                 and better routes — authorities get a live operational picture, from detection to verified repair.
               </p>
@@ -77,7 +77,7 @@ export default function Landing() {
                     <CarFront className="h-5 w-5" aria-hidden /> Open Driver App
                   </Link>
                 </Magnetic>
-                <span className="text-xs text-gray-400">No signup · works on your phone now</span>
+                <span className="text-xs text-muted">No signup · works on your phone now</span>
               </div>
             </Reveal>
 
@@ -93,11 +93,11 @@ export default function Landing() {
                     <div className="text-xl font-bold tabular-nums text-ink sm:text-2xl">
                       <CountUp to={s.value} suffix={s.suffix ?? ''} />
                     </div>
-                    <div className="mt-0.5 text-[10px] font-medium uppercase tracking-wider text-gray-400">{s.label}</div>
+                    <div className="mt-0.5 text-[10px] font-medium uppercase tracking-wider text-muted">{s.label}</div>
                   </div>
                 ))}
               </div>
-              <p className="mt-2 text-[10px] text-gray-400">Demo dataset — simulated deterministically</p>
+              <p className="mt-2 text-[10px] text-muted">Demo dataset — simulated deterministically</p>
             </Reveal>
           </div>
         </section>
@@ -105,7 +105,7 @@ export default function Landing() {
         {/* the loop — three pillars with connecting flow */}
         <section className="mx-auto max-w-6xl px-5 pb-16">
           <Reveal>
-            <h2 className="text-center text-xs font-bold uppercase tracking-[0.2em] text-gray-400">
+            <h2 className="text-center text-xs font-bold uppercase tracking-[0.2em] text-muted">
               One loop, three layers
             </h2>
           </Reveal>
@@ -122,8 +122,8 @@ export default function Landing() {
                   </span>
                   <p.icon className="h-6 w-6 text-primary-600 transition-transform duration-300 group-hover:scale-110" aria-hidden />
                   <h3 className="mt-4 text-sm font-bold tracking-[0.12em] text-ink">{p.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-gray-400">{p.body}</p>
-                  <div className="mt-5 h-0.5 w-8 rounded-full bg-gray-200 transition-all duration-300 group-hover:w-full group-hover:bg-primary-400" aria-hidden />
+                  <p className="mt-2 text-sm leading-relaxed text-muted">{p.body}</p>
+                  <div className="mt-5 h-0.5 w-8 rounded-full bg-soft-strong transition-all duration-300 group-hover:w-full group-hover:bg-primary-400" aria-hidden />
                 </div>
               </Reveal>
             ))}
@@ -134,8 +134,8 @@ export default function Landing() {
         <Reveal>
           <section className="mx-auto max-w-6xl px-5 pb-20">
             <div className="flex flex-col items-center gap-4 rounded-2xl border border-line bg-card px-8 py-6 text-center shadow-card sm:flex-row sm:text-left">
-              <ShieldCheck className="h-6 w-6 shrink-0 text-gray-400" aria-hidden />
-              <p className="flex-1 text-sm text-gray-400">
+              <ShieldCheck className="h-6 w-6 shrink-0 text-muted" aria-hidden />
+              <p className="flex-1 text-sm text-muted">
                 The <b className="text-ink">Authority Console</b> is a separate, access-controlled interface —
                 3D spatial intelligence, verification queues and repair workflows. Access is issued by the road authority.
               </p>
@@ -144,7 +144,7 @@ export default function Landing() {
         </Reveal>
 
         <footer className="border-t border-line px-5 pb-10 pt-8">
-          <p className="mx-auto flex max-w-6xl items-center justify-center gap-1.5 text-center text-[11px] text-gray-400">
+          <p className="mx-auto flex max-w-6xl items-center justify-center gap-1.5 text-center text-[11px] text-muted">
             <ShieldCheck className="h-3.5 w-3.5" aria-hidden />
             Frontend prototype — detection, GPS, routing and verification are simulated. No API keys. Faces &amp; plates blurred.
           </p>

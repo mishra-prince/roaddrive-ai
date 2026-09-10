@@ -27,7 +27,7 @@ export default function AdminUsers() {
       <section className="card overflow-hidden">
         <div className="rd-scroll overflow-x-auto">
           <table className="w-full">
-            <thead className="border-b border-line bg-white/5">
+            <thead className="border-b border-line bg-soft">
               <tr>
                 <th className="th"><span className="flex items-center gap-1.5"><Truck className="h-3.5 w-3.5" aria-hidden /> Vehicle</span></th>
                 <th className="th">Class</th>
@@ -41,20 +41,20 @@ export default function AdminUsers() {
               {CONTRIBUTORS.map((c) => {
                 const confirmations = hazards.filter((h) => h.observations.some((o) => o.vehicleId === c.vehicleId)).length;
                 return (
-                  <tr key={c.vehicleId} className="hover:bg-white/5">
+                  <tr key={c.vehicleId} className="hover:bg-soft">
                     <td className="td font-bold text-ink">{c.vehicleId}</td>
                     <td className="td capitalize">{c.vehicleClass}</td>
                     <td className="td font-semibold">{c.observations.toLocaleString()}</td>
                     <td className="td font-semibold">{confirmations}</td>
                     <td className="td">
                       <span className="flex items-center gap-2">
-                        <span className="h-1.5 w-16 rounded-full bg-gray-200" aria-hidden>
+                        <span className="h-1.5 w-16 rounded-full bg-soft-strong" aria-hidden>
                           <span className="block h-1.5 rounded-full bg-green-500" style={{ width: `${c.reliability}%` }} />
                         </span>
                         {c.reliability}%
                       </span>
                     </td>
-                    <td className="td text-gray-400">{timeAgo(c.lastActive)}</td>
+                    <td className="td text-muted">{timeAgo(c.lastActive)}</td>
                   </tr>
                 );
               })}
@@ -63,7 +63,7 @@ export default function AdminUsers() {
         </div>
       </section>
 
-      <p className="flex items-center gap-1.5 text-[11px] text-gray-400">
+      <p className="flex items-center gap-1.5 text-[11px] text-muted">
         <Users className="h-3 w-3" aria-hidden /> Fleet data is simulated and anonymized for the demo.
       </p>
     </div>

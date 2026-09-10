@@ -17,7 +17,7 @@ export function SeverityChip({ severity, size = 'sm' }: { severity: Severity; si
 export function StatusChip({ status }: { status: HazardStatus | RepairStatus }) {
   const m = (HAZARD_STATUS_META as Record<string, { label: string; chip: string }>)[status]
     ?? (REPAIR_STATUS_META as Record<string, { label: string; chip: string }>)[status];
-  return <span className={cn('chip', m?.chip ?? 'bg-white/10 text-gray-300 border-line')}>{m?.label ?? status}</span>;
+  return <span className={cn('chip', m?.chip ?? 'bg-soft-strong text-ink-soft border-line')}>{m?.label ?? status}</span>;
 }
 
 export function ConfidenceBar({ value, label = 'AI confidence' }: { value: number; label?: string }) {
@@ -27,7 +27,7 @@ export function ConfidenceBar({ value, label = 'AI confidence' }: { value: numbe
         <span className="label-xs">{label}</span>
         <span className="text-sm font-semibold text-ink">{value}%</span>
       </div>
-      <div className="h-1.5 rounded-full bg-gray-200" role="presentation">
+      <div className="h-1.5 rounded-full bg-soft-strong" role="presentation">
         <div className="h-1.5 rounded-full bg-primary-600" style={{ width: `${value}%` }} />
       </div>
     </div>
@@ -56,7 +56,7 @@ export function ScoreDial({ score, label = 'Driveability' }: { score: number; la
         <div className={cn('text-sm font-semibold', tone)}>
           {score >= 85 ? 'Good conditions' : score >= 65 ? 'Moderate conditions' : score >= 45 ? 'Poor conditions' : 'High risk conditions'}
         </div>
-        <div className="text-xs text-gray-400">out of 100</div>
+        <div className="text-xs text-muted">out of 100</div>
       </div>
     </div>
   );
@@ -91,16 +91,16 @@ export function StatCard({
           >
             {value}
           </div>
-          {sub && <div className="mt-0.5 text-xs text-gray-400">{sub}</div>}
+          {sub && <div className="mt-0.5 text-xs text-muted">{sub}</div>}
         </div>
-        {icon && <div className="text-gray-400">{icon}</div>}
+        {icon && <div className="text-muted">{icon}</div>}
       </div>
     </div>
   );
 }
 
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={cn('animate-pulse rounded-lg bg-gray-200', className)} />;
+  return <div className={cn('animate-pulse rounded-lg bg-soft-strong', className)} />;
 }
 
 export function EmptyState({ title, body, action }: { title: string; body: string; action?: ReactNode }) {
@@ -108,7 +108,7 @@ export function EmptyState({ title, body, action }: { title: string; body: strin
     <div className="card card-pad grid place-items-center py-12 text-center">
       <div>
         <h3 className="text-base font-semibold text-ink">{title}</h3>
-        <p className="mx-auto mt-1 max-w-sm text-sm text-gray-400">{body}</p>
+        <p className="mx-auto mt-1 max-w-sm text-sm text-muted">{body}</p>
         {action && <div className="mt-4">{action}</div>}
       </div>
     </div>
@@ -120,7 +120,7 @@ export function ErrorState({ onRetry }: { onRetry: () => void }) {
     <div className="card card-pad grid place-items-center py-12 text-center">
       <div>
         <h3 className="text-base font-semibold text-red-300">Unable to load road data</h3>
-        <p className="mt-1 text-sm text-gray-400">Please try again.</p>
+        <p className="mt-1 text-sm text-muted">Please try again.</p>
         <button className="btn-secondary mt-4" onClick={onRetry}>
           Try again
         </button>
@@ -134,7 +134,7 @@ export function PageHeader({ title, sub, right }: { title: string; sub?: string;
     <div className="mb-4 flex items-start justify-between gap-3">
       <div>
         <h1 className="text-xl font-bold tracking-tight text-ink sm:text-2xl">{title}</h1>
-        {sub && <p className="mt-0.5 text-sm text-gray-400">{sub}</p>}
+        {sub && <p className="mt-0.5 text-sm text-muted">{sub}</p>}
       </div>
       {right}
     </div>

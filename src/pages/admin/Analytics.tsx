@@ -139,13 +139,13 @@ export default function Analytics() {
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-          <p className="mt-2 text-[11px] text-gray-400">
+          <p className="mt-2 text-[11px] text-muted">
             {verifiedCount} verified · {failedCount} failed · {pendingCount} pending — from the live demo store.
           </p>
         </section>
       </div>
 
-      <p className="flex items-center gap-1.5 text-[11px] text-gray-400">
+      <p className="flex items-center gap-1.5 text-[11px] text-muted">
         <BarChart3 className="h-3 w-3" aria-hidden /> All series are simulated for demonstration. No conclusions should be drawn from demo data.
       </p>
     </div>

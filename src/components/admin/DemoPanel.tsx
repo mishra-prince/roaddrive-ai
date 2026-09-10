@@ -91,8 +91,8 @@ export default function DemoPanel() {
       {open && (
         <div className="mb-2 w-80 rounded-xl border border-line bg-card p-3 shadow-raised">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Demo controls</span>
-            <button onClick={() => setOpen(false)} aria-label="Close demo controls" className="text-gray-400 hover:text-gray-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-muted">Demo controls</span>
+            <button onClick={() => setOpen(false)} aria-label="Close demo controls" className="text-muted hover:text-muted">
               <X className="h-4 w-4" />
             </button>
           </div>
@@ -105,8 +105,8 @@ export default function DemoPanel() {
                 className={cn(
                   'rounded-lg border px-3 py-2 text-left text-xs font-medium transition-colors',
                   a.disabled
-                    ? 'cursor-not-allowed border-line bg-white/5 text-gray-400'
-                    : 'border-line bg-card text-gray-300 hover:border-primary-500/40 hover:bg-primary-500/15',
+                    ? 'cursor-not-allowed border-line bg-soft text-muted'
+                    : 'border-line bg-card text-ink-soft hover:border-primary-500/40 hover:bg-primary-500/15',
                 )}
               >
                 {a.label}
@@ -116,7 +116,7 @@ export default function DemoPanel() {
           {log.length > 0 && (
             <ul className="mt-2 space-y-1 border-t border-line pt-2">
               {log.map((l, i) => (
-                <li key={i} className={cn('text-[11px]', i === 0 ? 'font-semibold text-green-300' : 'text-gray-400')}>
+                <li key={i} className={cn('text-[11px]', i === 0 ? 'font-semibold text-green-300' : 'text-muted')}>
                   ✓ {l}
                 </li>
               ))}

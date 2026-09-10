@@ -8,6 +8,7 @@ import { SEVERITY_META, HAZARD_TYPE_META, timeAgo } from '../../utils/severity';
 import type { Hazard, Severity } from '../../types';
 import { PageHeader, SeverityChip } from '../../components/common';
 import { useGeolocation } from '../../hooks/useGeolocation';
+import { useTheme } from '../../hooks/useTheme';
 import { searchPlaces, getDirections, type Place, type Directions as DirectionsResult } from '../../api/geoServices';
 
 /**
@@ -47,6 +48,7 @@ export default function UserLiveMap() {
 
   // location
   const { fix, status: geoStatus, start: startGeo } = useGeolocation(false);
+  const { theme } = useTheme();
   const [center, setCenter] = useState<[number, number]>([28.4765, 77.0765]);
 
   // search
@@ -118,7 +120,7 @@ export default function UserLiveMap() {
       {/* search + locate bar */}
       <div className="flex gap-2">
         <div className="relative flex-1">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" aria-hidden />
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden />
           <input
             className="input pl-9"
             placeholder="Search a destination…"
@@ -128,20 +130,20 @@ export default function UserLiveMap() {
             aria-label="Search destination"
           />
           {searching && (
-            <div className="absolute left-9 top-1/2 -translate-y-1/2"><Loader2 className="h-4 w-4 animate-spin text-gray-400" aria-hidden /></div>
+            <div className="absolute left-9 top-1/2 -translate-y-1/2"><Loader2 className="h-4 w-4 animate-spin text-muted" aria-hidden /></div>
           )}
           {searchOpen && results.length > 0 && (
             <div className="card absolute z-20 mt-1.5 max-h-64 w-full overflow-auto p-1 shadow-raised">
               {results.map((p, i) => (
                 <button
                   key={i}
-                  className="flex w-full items-start gap-2 rounded-lg px-3 py-2 text-left hover:bg-white/5"
+                  className="flex w-full items-start gap-2 rounded-lg px-3 py-2 text-left hover:bg-soft"
                   onClick={() => chooseDest(p)}
                 >
-                  <MapPinOff className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-400" aria-hidden />
+                  <MapPinOff className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted" aria-hidden />
                   <span>
                     <span className="block text-sm font-semibold text-ink">{p.name}</span>
-                    {p.detail && <span className="block text-xs text-gray-400">{p.detail}</span>}
+                    {p.detail && <span className="block text-xs text-muted">{p.detail}</span>}
                   </span>
                 </button>
               ))}
@@ -175,12 +177,12 @@ export default function UserLiveMap() {
           <div className="min-w-0">
             <div className="label-xs">Directions to</div>
             <div className="truncate text-sm font-bold text-ink">{dest.name}</div>
-            {routing && <div className="flex items-center gap-1.5 text-xs text-gray-400"><Loader2 className="h-3 w-3 animate-spin" aria-hidden /> Finding route…</div>}
+            {routing && <div className="flex items-center gap-1.5 text-xs text-muted"><Loader2 className="h-3 w-3 animate-spin" aria-hidden /> Finding route…</div>}
             {!routing && route && (
-              <div className="text-xs text-gray-400">
+              <div className="text-xs text-muted">
                 {route.durationMin} min · {route.distanceKm} km
                 {routeHazards.length > 0 && <span className="ml-2 font-semibold text-orange-400">{routeHazards.length} hazard{routeHazards.length > 1 ? 's' : ''} along route</span>}
-                <span className="ml-2 text-gray-400">(live OSRM route)</span>
+                <span className="ml-2 text-muted">(live OSRM route)</span>
               </div>
             )}
             {!routing && !route && routeError && <div className="text-xs text-orange-400">{routeError}</div>}
@@ -200,9 +202,15 @@ export default function UserLiveMap() {
       <div className="relative overflow-hidden rounded-xl border border-line">
         <MapContainer center={center} zoom={13} zoomControl={false} className="h-[calc(100vh-360px)] min-h-[400px] w-full sm:h-[540px]">
           <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            maxZoom={19}
-            attribution="&copy; OpenStreetMap contributors"
+            key={theme}
+            url={
+              theme === 'dark'
+                ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+                : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+            }
+            subdomains={['a', 'b', 'c', 'd']}
+            maxZoom={20}
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
           />
           <ZoomControl position="bottomright" />
           <FitBounds points={dest && routeLine.length > 1 ? routeLine.slice(0, -1).concat([[dest.lat, dest.lng]]) : []} />
@@ -283,12 +291,12 @@ export default function UserLiveMap() {
         {/* layer control */}
         <div className="absolute right-3 top-3 z-[5]">
           <button className="card grid h-9 w-9 place-items-center shadow-card" aria-label="Map layers" aria-expanded={layerOpen} onClick={() => setLayerOpen((o) => !o)}>
-            <Layers className="h-4.5 w-4.5 text-gray-400" />
+            <Layers className="h-4.5 w-4.5 text-muted" />
           </button>
           {layerOpen && (
             <div className="card card-pad absolute right-0 z-10 mt-2 w-52 space-y-1.5">
               {([['critical', 'Critical hazards'], ['high', 'High hazards'], ['moderate', 'Moderate hazards'], ['low', 'Low hazards'], ['roads', 'Road driveability']] as const).map(([key, label]) => (
-                <label key={key} className="flex cursor-pointer items-center gap-2 text-xs font-medium text-gray-300">
+                <label key={key} className="flex cursor-pointer items-center gap-2 text-xs font-medium text-ink-soft">
                   <input type="checkbox" checked={layers[key]} onChange={(e) => setLayers((l) => ({ ...l, [key]: e.target.checked }))} className="h-3.5 w-3.5 accent-primary-600" />
                   {label}
                 </label>
@@ -298,7 +306,7 @@ export default function UserLiveMap() {
         </div>
 
         {/* legend */}
-        <div className="card absolute bottom-3 left-3 z-[5] flex flex-wrap items-center gap-2.5 px-3 py-2 text-[10px] font-semibold text-gray-400 shadow-card">
+        <div className="card absolute bottom-3 left-3 z-[5] flex flex-wrap items-center gap-2.5 px-3 py-2 text-[10px] font-semibold text-muted shadow-card">
           <span className="flex items-center gap-1"><i className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: SEVERITY_META.critical.hex }} />Critical</span>
           <span className="flex items-center gap-1"><i className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: SEVERITY_META.high.hex }} />High</span>
           <span className="flex items-center gap-1"><i className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: SEVERITY_META.moderate.hex }} />Moderate</span>
@@ -315,7 +323,7 @@ export default function UserLiveMap() {
             {routeHazards.slice(0, 8).map((h) => (
               <button key={h.id} className="flex min-w-max flex-col gap-1 rounded-lg border border-line px-3 py-2 text-left hover:border-primary-500/40" onClick={() => setSelected(h)}>
                 <span className="text-xs font-bold text-ink">{HAZARD_TYPE_META[h.type].label}</span>
-                <span className="text-[10px] text-gray-400">{h.roadName} · {timeAgo(h.lastDetected)}</span>
+                <span className="text-[10px] text-muted">{h.roadName} · {timeAgo(h.lastDetected)}</span>
               </button>
             ))}
           </div>
@@ -328,16 +336,16 @@ export default function UserLiveMap() {
           <div className="w-full max-w-md rounded-t-2xl bg-card p-4 shadow-raised sm:rounded-2xl">
             <div className="mb-2 flex items-start justify-between">
               <SeverityChip severity={selected.severity} size="md" />
-              <button className="text-gray-400 hover:text-gray-400" aria-label="Close" onClick={() => setSelected(null)}>
+              <button className="text-muted hover:text-muted" aria-label="Close" onClick={() => setSelected(null)}>
                 <X className="h-5 w-5" />
               </button>
             </div>
             <h3 className="text-lg font-bold text-ink">{HAZARD_TYPE_META[selected.type].label}</h3>
-            <p className="text-sm text-gray-400">{selected.roadName}</p>
+            <p className="text-sm text-muted">{selected.roadName}</p>
             <dl className="mt-3 space-y-2 text-sm">
-              <div className="flex justify-between"><dt className="text-gray-400">Risk score</dt><dd className="font-bold">{selected.riskScore}/100</dd></div>
-              <div className="flex justify-between"><dt className="text-gray-400">Confirmed by</dt><dd className="font-semibold">{selected.confirmationCount} vehicles</dd></div>
-              <div className="flex justify-between"><dt className="text-gray-400">Last detected</dt><dd>{timeAgo(selected.lastDetected)}</dd></div>
+              <div className="flex justify-between"><dt className="text-muted">Risk score</dt><dd className="font-bold">{selected.riskScore}/100</dd></div>
+              <div className="flex justify-between"><dt className="text-muted">Confirmed by</dt><dd className="font-semibold">{selected.confirmationCount} vehicles</dd></div>
+              <div className="flex justify-between"><dt className="text-muted">Last detected</dt><dd>{timeAgo(selected.lastDetected)}</dd></div>
             </dl>
             <div className="mt-4 grid grid-cols-2 gap-2">
               <button className="btn-secondary" onClick={() => navigate(`/app/hazard/${selected.id}`)}>View Evidence</button>

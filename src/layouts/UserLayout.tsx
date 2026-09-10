@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { cn } from '../utils/severity';
 import { DemoBadge } from '../components/common';
+import { ThemeToggle } from '../components/common/ThemeToggle';
 import { useStore } from '../api/store';
 import { timeAgo } from '../utils/severity';
 
@@ -43,15 +44,16 @@ export default function UserLayout() {
             </div>
             <div>
               <div className="text-sm font-bold leading-tight text-ink">RoadDrive AI</div>
-              <div className="text-[10px] font-medium uppercase tracking-wider text-gray-400">Driver</div>
+              <div className="text-[10px] font-medium uppercase tracking-wider text-muted">Driver</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <DemoBadge />
+            <ThemeToggle />
             <NavLink
               to="/app/profile"
               aria-label={`Notifications${unread ? `, ${unread} unread` : ''}`}
-              className="relative grid h-9 w-9 place-items-center rounded-lg text-gray-400 hover:bg-white/10"
+              className="relative grid h-9 w-9 place-items-center rounded-lg text-muted hover:bg-soft-strong"
               state={{ tab: 'notifications' }}
             >
               <Bell className="h-5 w-5" />
@@ -75,7 +77,9 @@ export default function UserLayout() {
 
       {/* page */}
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 pb-24 pt-4 lg:pb-8" id="main">
-        <Outlet />
+        <div key={location.pathname} className="animate-rd-fade-up">
+          <Outlet />
+        </div>
       </main>
 
       {/* bottom nav (mobile-first) */}
@@ -92,7 +96,7 @@ export default function UserLayout() {
               className={({ isActive }) =>
                 cn(
                   'relative flex flex-col items-center gap-0.5 py-2 text-[10px] font-semibold transition-colors duration-200',
-                  isActive ? 'text-primary-300' : 'text-gray-400',
+                  isActive ? 'text-primary-300' : 'text-muted',
                 )
               }
             >
@@ -132,7 +136,7 @@ export default function UserLayout() {
             {n.label}
           </NavLink>
         ))}
-        <div className="mt-auto rounded-lg border border-line bg-white/5 p-3 text-[11px] leading-relaxed text-gray-400">
+        <div className="mt-auto rounded-lg border border-line bg-soft p-3 text-[11px] leading-relaxed text-muted">
           Privacy protected — faces and license plates are blurred before evidence is stored.
         </div>
       </nav>

@@ -30,19 +30,19 @@ export default function Repairs() {
           {repairs.map((r) => {
             const h = hazardOf(r.hazardId);
             return (
-              <Link key={r.id} to={`/admin/repairs?id=${r.id}`} className={cn('card-pad flex flex-wrap items-center justify-between gap-3 hover:bg-white/5', openId === r.id && 'bg-primary-500/15/40')}>
+              <Link key={r.id} to={`/admin/repairs?id=${r.id}`} className={cn('card-pad flex flex-wrap items-center justify-between gap-3 hover:bg-soft', openId === r.id && 'bg-primary-500/15/40')}>
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="text-sm font-bold text-ink">{r.id}</span>
-                    <span className="text-xs text-gray-400">{r.hazardId} · {h?.roadName ?? '—'}</span>
+                    <span className="text-xs text-muted">{r.hazardId} · {h?.roadName ?? '—'}</span>
                     {h && <SeverityChip severity={h.severity} />}
                   </div>
-                  <div className="mt-1 text-xs text-gray-400">
+                  <div className="mt-1 text-xs text-muted">
                     {r.assignedDepartment ?? 'Unassigned'} · expected {r.expectedCompletion ? fmtDateShort(r.expectedCompletion) : '—'}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="hidden text-[11px] text-gray-400 sm:inline">repaired {r.repairedAt ? timeAgo(r.repairedAt) : '—'}</span>
+                  <span className="hidden text-[11px] text-muted sm:inline">repaired {r.repairedAt ? timeAgo(r.repairedAt) : '—'}</span>
                   <StatusChip status={r.status} />
                 </div>
               </Link>
@@ -73,7 +73,7 @@ function RepairDetail({ id }: { id: string }) {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 className="text-lg font-bold text-ink">Repair Case {r.id}</h2>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-muted">
             {h ? `${h.id} · ${h.roadName}` : r.hazardId} · {h ? '' : ''}{r.assignedDepartment ?? 'Unassigned'}
           </p>
         </div>
@@ -96,18 +96,18 @@ function RepairDetail({ id }: { id: string }) {
                         ? 'border-red-500 bg-red-500 text-white'
                         : done
                           ? 'border-primary-600 bg-primary-600 text-white'
-                          : 'border-line bg-card text-gray-400',
+                          : 'border-line bg-card text-muted',
                     )}
                     aria-hidden
                   >
                     {failedHere ? '✕' : done ? '✓' : i + 1}
                   </span>
-                  <span className={cn('w-20 text-center text-[10px] font-semibold capitalize', done ? 'text-ink' : 'text-gray-400')}>
+                  <span className={cn('w-20 text-center text-[10px] font-semibold capitalize', done ? 'text-ink' : 'text-muted')}>
                     {step.replace(/_/g, ' ')}
                   </span>
                 </div>
                 {i < REPAIR_LIFECYCLE.length - 1 && (
-                  <span className={cn('mb-5 h-0.5 w-8 sm:w-12', i < idx ? 'bg-primary-600' : 'bg-gray-200')} aria-hidden />
+                  <span className={cn('mb-5 h-0.5 w-8 sm:w-12', i < idx ? 'bg-primary-600' : 'bg-soft-strong')} aria-hidden />
                 )}
               </li>
             );
@@ -138,7 +138,7 @@ function RepairDetail({ id }: { id: string }) {
           <h3 className="label-xs mb-2">Independent verification passes</h3>
           <ul className="space-y-1.5">
             {r.verificationPasses.map((p, i) => (
-              <li key={i} className="flex items-center gap-2 text-xs text-gray-300">
+              <li key={i} className="flex items-center gap-2 text-xs text-ink-soft">
                 <span className={cn('h-2 w-2 rounded-full', p.defectDetected ? 'bg-red-500' : 'bg-green-500')} aria-hidden />
                 <span className="font-semibold">{p.vehicleId}</span> — {p.defectDetected ? 'defect still detected' : 'no defect detected'} · {timeAgo(p.at)}
               </li>
@@ -204,7 +204,7 @@ function RepairDetail({ id }: { id: string }) {
         <h3 className="label-xs mb-2">Case notes</h3>
         <ul className="space-y-2">
           {r.notes.map((n, i) => (
-            <li key={i} className="rounded-lg bg-white/5 px-3 py-2 text-xs text-gray-300">
+            <li key={i} className="rounded-lg bg-soft px-3 py-2 text-xs text-ink-soft">
               <span className="font-semibold">{n.author}</span> · {timeAgo(n.at)} — {n.text}
             </li>
           ))}
