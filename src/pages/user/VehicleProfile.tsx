@@ -29,12 +29,12 @@ export default function VehicleProfile() {
       <PageHeader title="Vehicle" sub="Drives your risk estimates" />
 
       <section className="card card-pad flex items-center gap-4">
-        <div className="grid h-14 w-14 place-items-center rounded-xl bg-primary-50 text-primary-700" aria-hidden>
+        <div className="grid h-14 w-14 place-items-center rounded-xl bg-primary-500/15 text-primary-300" aria-hidden>
           <Truck className="h-7 w-7" />
         </div>
         <div>
           <div className="text-lg font-bold text-ink">{vehicle.name}</div>
-          <div className="text-sm text-gray-500">{VEHICLE_CLASS_META[vehicle.type]}</div>
+          <div className="text-sm text-gray-400">{VEHICLE_CLASS_META[vehicle.type]}</div>
         </div>
       </section>
 
@@ -43,7 +43,7 @@ export default function VehicleProfile() {
           <div className="label-xs">Ground clearance</div>
           <div className="mt-0.5 flex items-baseline gap-1">
             <span className="text-xl font-bold text-ink">{vehicle.groundClearanceMm}</span>
-            <span className="text-xs text-gray-500">mm</span>
+            <span className="text-xs text-gray-400">mm</span>
           </div>
         </div>
         <div>
@@ -58,7 +58,7 @@ export default function VehicleProfile() {
         <h3 className="mb-3 flex items-center gap-2 text-sm font-bold text-ink">
           <CarFront className="h-4 w-4" aria-hidden /> Switch vehicle class
         </h3>
-        <p className="mb-3 text-xs text-gray-500">
+        <p className="mb-3 text-xs text-gray-400">
           Driveability and route risk adjust for the selected class — e.g. a pothole that is high-risk for a motorcycle is lower-risk for an SUV.
         </p>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
@@ -68,8 +68,8 @@ export default function VehicleProfile() {
               className={cn(
                 'rounded-lg border px-3 py-2.5 text-xs font-semibold transition-colors',
                 vehicle.type === c.type
-                  ? 'border-primary-600 bg-primary-50 text-primary-700'
-                  : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300',
+                  ? 'border-primary-600 bg-primary-500/15 text-primary-300'
+                  : 'border-line bg-card text-gray-400 hover:border-line',
               )}
               onClick={() => setVehicle(c.type)}
               aria-pressed={vehicle.type === c.type}
@@ -79,13 +79,13 @@ export default function VehicleProfile() {
           ))}
         </div>
         {saved && (
-          <p className="mt-3 flex items-center gap-1.5 text-xs text-green-700">
+          <p className="mt-3 flex items-center gap-1.5 text-xs text-green-300">
             <Check className="h-3.5 w-3.5" aria-hidden /> Vehicle updated — scores across the app now use {VEHICLE_CLASS_META[vehicle.type]}.
           </p>
         )}
       </section>
 
-      <section className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-xs text-blue-800">
+      <section className="rounded-xl border border-blue-500/30 bg-blue-500/10 px-4 py-3 text-xs text-blue-300">
         Vehicle database is mocked. Class sensitivities are illustrative estimates, not measurements.
       </section>
     </div>

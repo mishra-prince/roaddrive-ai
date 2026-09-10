@@ -17,7 +17,7 @@ export function SeverityChip({ severity, size = 'sm' }: { severity: Severity; si
 export function StatusChip({ status }: { status: HazardStatus | RepairStatus }) {
   const m = (HAZARD_STATUS_META as Record<string, { label: string; chip: string }>)[status]
     ?? (REPAIR_STATUS_META as Record<string, { label: string; chip: string }>)[status];
-  return <span className={cn('chip', m?.chip ?? 'bg-gray-100 text-gray-700 border-gray-300')}>{m?.label ?? status}</span>;
+  return <span className={cn('chip', m?.chip ?? 'bg-white/10 text-gray-300 border-line')}>{m?.label ?? status}</span>;
 }
 
 export function ConfidenceBar({ value, label = 'AI confidence' }: { value: number; label?: string }) {
@@ -36,9 +36,9 @@ export function ConfidenceBar({ value, label = 'AI confidence' }: { value: numbe
 
 export function ScoreDial({ score, label = 'Driveability' }: { score: number; label?: string }) {
   const tone =
-    score >= 85 ? 'text-green-700' : score >= 65 ? 'text-yellow-700' : score >= 45 ? 'text-orange-700' : 'text-red-700';
+    score >= 85 ? 'text-green-300' : score >= 65 ? 'text-yellow-300' : score >= 45 ? 'text-orange-300' : 'text-red-300';
   const ring =
-    score >= 85 ? '#16A34A' : score >= 65 ? '#CA8A04' : score >= 45 ? '#EA580C' : '#DC2626';
+    score >= 85 ? '#22C55E' : score >= 65 ? '#EAB308' : score >= 45 ? '#F97316' : '#EF4444';
   return (
     <div className="flex items-center gap-3">
       <div
@@ -47,7 +47,7 @@ export function ScoreDial({ score, label = 'Driveability' }: { score: number; la
         role="img"
         aria-label={`${label} ${score} out of 100`}
       >
-        <div className="grid h-[52px] w-[52px] place-items-center rounded-full bg-white">
+        <div className="grid h-[52px] w-[52px] place-items-center rounded-full bg-card">
           <span className={cn('text-lg font-bold', tone)}>{score}</span>
         </div>
       </div>
@@ -56,7 +56,7 @@ export function ScoreDial({ score, label = 'Driveability' }: { score: number; la
         <div className={cn('text-sm font-semibold', tone)}>
           {score >= 85 ? 'Good conditions' : score >= 65 ? 'Moderate conditions' : score >= 45 ? 'Poor conditions' : 'High risk conditions'}
         </div>
-        <div className="text-xs text-gray-500">out of 100</div>
+        <div className="text-xs text-gray-400">out of 100</div>
       </div>
     </div>
   );
@@ -83,15 +83,15 @@ export function StatCard({
           <div
             className={cn(
               'mt-1 text-2xl font-bold tracking-tight',
-              tone === 'critical' && 'text-red-600',
-              tone === 'warning' && 'text-orange-600',
-              tone === 'good' && 'text-green-600',
+              tone === 'critical' && 'text-red-400',
+              tone === 'warning' && 'text-orange-400',
+              tone === 'good' && 'text-green-400',
               tone === 'default' && 'text-ink',
             )}
           >
             {value}
           </div>
-          {sub && <div className="mt-0.5 text-xs text-gray-500">{sub}</div>}
+          {sub && <div className="mt-0.5 text-xs text-gray-400">{sub}</div>}
         </div>
         {icon && <div className="text-gray-400">{icon}</div>}
       </div>
@@ -108,7 +108,7 @@ export function EmptyState({ title, body, action }: { title: string; body: strin
     <div className="card card-pad grid place-items-center py-12 text-center">
       <div>
         <h3 className="text-base font-semibold text-ink">{title}</h3>
-        <p className="mx-auto mt-1 max-w-sm text-sm text-gray-500">{body}</p>
+        <p className="mx-auto mt-1 max-w-sm text-sm text-gray-400">{body}</p>
         {action && <div className="mt-4">{action}</div>}
       </div>
     </div>
@@ -119,8 +119,8 @@ export function ErrorState({ onRetry }: { onRetry: () => void }) {
   return (
     <div className="card card-pad grid place-items-center py-12 text-center">
       <div>
-        <h3 className="text-base font-semibold text-red-700">Unable to load road data</h3>
-        <p className="mt-1 text-sm text-gray-500">Please try again.</p>
+        <h3 className="text-base font-semibold text-red-300">Unable to load road data</h3>
+        <p className="mt-1 text-sm text-gray-400">Please try again.</p>
         <button className="btn-secondary mt-4" onClick={onRetry}>
           Try again
         </button>
@@ -134,7 +134,7 @@ export function PageHeader({ title, sub, right }: { title: string; sub?: string;
     <div className="mb-4 flex items-start justify-between gap-3">
       <div>
         <h1 className="text-xl font-bold tracking-tight text-ink sm:text-2xl">{title}</h1>
-        {sub && <p className="mt-0.5 text-sm text-gray-500">{sub}</p>}
+        {sub && <p className="mt-0.5 text-sm text-gray-400">{sub}</p>}
       </div>
       {right}
     </div>
@@ -143,7 +143,7 @@ export function PageHeader({ title, sub, right }: { title: string; sub?: string;
 
 export function DemoBadge() {
   return (
-    <span className="chip border-amber-300 bg-amber-50 text-amber-700" title="All data shown is simulated for demonstration">
+    <span className="chip border-amber-500/40 bg-amber-500/10 text-amber-300" title="All data shown is simulated for demonstration">
       DEMO MODE
     </span>
   );

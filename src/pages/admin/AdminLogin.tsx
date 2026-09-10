@@ -36,7 +36,7 @@ export default function AdminLogin() {
   return (
     <div className="grid min-h-screen bg-surface lg:grid-cols-2">
       {/* brand panel */}
-      <div className="hidden flex-col justify-between bg-ink p-10 text-white lg:flex">
+      <div className="hidden flex-col justify-between bg-primary-600 p-10 text-white lg:flex">
         <div className="flex items-center gap-2.5">
           <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary-600" aria-hidden>
             <Radio className="h-5 w-5" />
@@ -56,7 +56,7 @@ export default function AdminLogin() {
             <li>• Anonymous crowdsourced evidence</li>
           </ul>
         </div>
-        <p className="flex items-center gap-1.5 text-[11px] text-gray-500">
+        <p className="flex items-center gap-1.5 text-[11px] text-gray-400">
           <ShieldCheck className="h-3.5 w-3.5" aria-hidden /> Sessions expire after 8 hours. Access is logged.
         </p>
       </div>
@@ -72,7 +72,7 @@ export default function AdminLogin() {
           </div>
 
           <h2 className="text-xl font-bold tracking-tight text-ink">Sign in to the authority console</h2>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-400">
             Access is restricted. Credentials are issued by the road authority.
           </p>
 
@@ -105,7 +105,7 @@ export default function AdminLogin() {
             </div>
 
             {error && (
-              <p className="flex items-start gap-2 rounded-lg bg-red-50 px-3 py-2.5 text-xs text-red-700" role="alert">
+              <p className="flex items-start gap-2 rounded-lg bg-red-500/10 px-3 py-2.5 text-xs text-red-300" role="alert">
                 <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden /> {error}
               </p>
             )}
@@ -116,9 +116,9 @@ export default function AdminLogin() {
             </button>
           </form>
 
-          <div className="mt-6 rounded-xl border border-gray-200 bg-white p-3.5 text-xs text-gray-600">
+          <div className="mt-6 rounded-xl border border-line bg-card p-3.5 text-xs text-gray-400">
             <div className="font-semibold text-ink">Demo access (SIH)</div>
-            <div className="mt-1 font-mono text-[11px] leading-relaxed text-gray-500">
+            <div className="mt-1 font-mono text-[11px] leading-relaxed text-gray-400">
               admin@roaddrive.gov.in / road2026
             </div>
             <div className="mt-2 flex items-center gap-1.5 text-[10px] text-gray-400">

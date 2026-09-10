@@ -23,30 +23,30 @@ export const SEVERITY_META: Record<
 > = {
   low: {
     label: 'Low',
-    hex: '#16A34A',
-    chip: 'bg-green-50 text-green-700 border-green-200',
-    text: 'text-green-700',
+    hex: '#22C55E',
+    chip: 'bg-green-500/10 text-green-300 border-green-500/30',
+    text: 'text-green-300',
     bar: 'bg-severity-low',
   },
   moderate: {
     label: 'Moderate',
-    hex: '#CA8A04',
-    chip: 'bg-yellow-50 text-yellow-700 border-yellow-300',
-    text: 'text-yellow-700',
+    hex: '#EAB308',
+    chip: 'bg-yellow-500/10 text-yellow-300 border-yellow-500/40',
+    text: 'text-yellow-300',
     bar: 'bg-severity-moderate',
   },
   high: {
     label: 'High',
-    hex: '#EA580C',
-    chip: 'bg-orange-50 text-orange-700 border-orange-200',
-    text: 'text-orange-700',
+    hex: '#F97316',
+    chip: 'bg-orange-500/10 text-orange-300 border-orange-500/30',
+    text: 'text-orange-300',
     bar: 'bg-severity-high',
   },
   critical: {
     label: 'Critical',
-    hex: '#DC2626',
-    chip: 'bg-red-50 text-red-700 border-red-200',
-    text: 'text-red-700',
+    hex: '#EF4444',
+    chip: 'bg-red-500/10 text-red-300 border-red-500/30',
+    text: 'text-red-300',
     bar: 'bg-severity-critical',
   },
 };
@@ -83,18 +83,18 @@ export const HAZARD_STATUS_META: Record<
   HazardStatus,
   { label: string; chip: string }
 > = {
-  provisional: { label: 'Provisional', chip: 'bg-gray-100 text-gray-700 border-gray-300' },
-  verified: { label: 'Verified', chip: 'bg-blue-50 text-blue-700 border-blue-200' },
-  assigned: { label: 'Assigned', chip: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
-  under_repair: { label: 'Under Repair', chip: 'bg-amber-50 text-amber-700 border-amber-200' },
-  repaired: { label: 'Repaired', chip: 'bg-teal-50 text-teal-700 border-teal-200' },
+  provisional: { label: 'Provisional', chip: 'bg-white/10 text-gray-300 border-line' },
+  verified: { label: 'Verified', chip: 'bg-blue-500/10 text-blue-300 border-blue-500/30' },
+  assigned: { label: 'Assigned', chip: 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30' },
+  under_repair: { label: 'Under Repair', chip: 'bg-amber-500/10 text-amber-300 border-amber-500/30' },
+  repaired: { label: 'Repaired', chip: 'bg-teal-500/10 text-teal-300 border-teal-500/30' },
   verification_pending: {
     label: 'Verification Pending',
-    chip: 'bg-purple-50 text-purple-700 border-purple-200',
+    chip: 'bg-purple-500/10 text-purple-300 border-purple-500/30',
   },
   verification_failed: {
     label: 'Verification Failed',
-    chip: 'bg-red-50 text-red-700 border-red-200',
+    chip: 'bg-red-500/10 text-red-300 border-red-500/30',
   },
 };
 
@@ -102,16 +102,16 @@ export const REPAIR_STATUS_META: Record<
   RepairStatus,
   { label: string; chip: string }
 > = {
-  unassigned: { label: 'Unassigned', chip: 'bg-gray-100 text-gray-700 border-gray-300' },
-  assigned: { label: 'Assigned', chip: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
-  under_repair: { label: 'Under Repair', chip: 'bg-amber-50 text-amber-700 border-amber-200' },
-  repaired: { label: 'Repaired', chip: 'bg-teal-50 text-teal-700 border-teal-200' },
+  unassigned: { label: 'Unassigned', chip: 'bg-white/10 text-gray-300 border-line' },
+  assigned: { label: 'Assigned', chip: 'bg-indigo-500/10 text-indigo-300 border-indigo-500/30' },
+  under_repair: { label: 'Under Repair', chip: 'bg-amber-500/10 text-amber-300 border-amber-500/30' },
+  repaired: { label: 'Repaired', chip: 'bg-teal-500/10 text-teal-300 border-teal-500/30' },
   verification_pending: {
     label: 'Verification Pending',
-    chip: 'bg-purple-50 text-purple-700 border-purple-200',
+    chip: 'bg-purple-500/10 text-purple-300 border-purple-500/30',
   },
-  verified: { label: 'Verified', chip: 'bg-green-50 text-green-700 border-green-200' },
-  failed: { label: 'Failed', chip: 'bg-red-50 text-red-700 border-red-200' },
+  verified: { label: 'Verified', chip: 'bg-green-500/10 text-green-300 border-green-500/30' },
+  failed: { label: 'Failed', chip: 'bg-red-500/10 text-red-300 border-red-500/30' },
 };
 
 /** Ordered lifecycle steps for the repair stepper UI. */
@@ -142,10 +142,10 @@ export const CONDITION_META: Record<
   SegmentCondition,
   { label: string; hex: string; text: string }
 > = {
-  good: { label: 'Good', hex: '#16A34A', text: 'text-green-700' },
-  moderate: { label: 'Moderate', hex: '#CA8A04', text: 'text-yellow-700' },
-  poor: { label: 'Poor', hex: '#EA580C', text: 'text-orange-700' },
-  high_risk: { label: 'High Risk', hex: '#DC2626', text: 'text-red-700' },
+  good: { label: 'Good', hex: '#22C55E', text: 'text-green-300' },
+  moderate: { label: 'Moderate', hex: '#EAB308', text: 'text-yellow-300' },
+  poor: { label: 'Poor', hex: '#F97316', text: 'text-orange-300' },
+  high_risk: { label: 'High Risk', hex: '#EF4444', text: 'text-red-300' },
 };
 
 export function conditionForScore(score: number): SegmentCondition {
@@ -205,8 +205,8 @@ export function isToday(iso: string): boolean {
 }
 
 export function scoreTone(score: number): { label: string; text: string } {
-  if (score >= 85) return { label: 'Good conditions', text: 'text-green-700' };
-  if (score >= 65) return { label: 'Moderate conditions', text: 'text-yellow-700' };
-  if (score >= 45) return { label: 'Poor conditions', text: 'text-orange-700' };
-  return { label: 'High risk conditions', text: 'text-red-700' };
+  if (score >= 85) return { label: 'Good conditions', text: 'text-green-300' };
+  if (score >= 65) return { label: 'Moderate conditions', text: 'text-yellow-300' };
+  if (score >= 45) return { label: 'Poor conditions', text: 'text-orange-300' };
+  return { label: 'High risk conditions', text: 'text-red-300' };
 }

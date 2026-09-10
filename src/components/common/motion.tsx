@@ -152,7 +152,7 @@ export function DialRing({ score, size = 64 }: { score: number; size?: number })
     const t = setTimeout(() => setProgress(score), 120);
     return () => clearTimeout(t);
   }, [score]);
-  const tone = score >= 85 ? '#16A34A' : score >= 65 ? '#CA8A04' : score >= 45 ? '#EA580C' : '#DC2626';
+  const tone = score >= 85 ? '#22C55E' : score >= 65 ? '#EAB308' : score >= 45 ? '#F97316' : '#EF4444';
   return (
     <div
       className="grid place-items-center rounded-full"
@@ -165,7 +165,7 @@ export function DialRing({ score, size = 64 }: { score: number; size?: number })
       role="img"
       aria-label={`${score} out of 100`}
     >
-      <div className="grid place-items-center rounded-full bg-white" style={{ width: size - 10, height: size - 10 }}>
+      <div className="grid place-items-center rounded-full bg-card" style={{ width: size - 10, height: size - 10 }}>
         <span className="text-lg font-bold tabular-nums" style={{ color: tone }}>
           <CountUp to={score} />
         </span>

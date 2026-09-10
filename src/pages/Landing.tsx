@@ -15,7 +15,7 @@ export default function Landing() {
       <SmoothScroll />
       <div className="min-h-full bg-surface">
         {/* nav */}
-        <header className="sticky top-0 z-40 border-b border-gray-200/70 bg-surface/80 backdrop-blur-md">
+        <header className="sticky top-0 z-40 border-b border-line/70 bg-surface/80 backdrop-blur-md">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5">
             <div className="flex items-center gap-2.5">
               <div className="grid h-9 w-9 place-items-center rounded-xl bg-primary-600 text-white shadow-[0_4px_14px_rgba(37,87,231,0.35)]" aria-hidden>
@@ -53,7 +53,7 @@ export default function Landing() {
           />
           <div className="relative mx-auto max-w-6xl px-5 pb-14 pt-16 text-center sm:pt-24">
             <Reveal>
-              <span className="chip mx-auto border-primary-200 bg-primary-50 text-primary-700">
+              <span className="chip mx-auto border-primary-500/30 bg-primary-500/15 text-primary-300">
                 <Zap className="h-3 w-3" aria-hidden /> Crowdsourced · Real-time · Vehicle-aware
               </span>
             </Reveal>
@@ -65,7 +65,7 @@ export default function Landing() {
               </h1>
             </Reveal>
             <Reveal delay={180}>
-              <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-gray-600">
+              <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-gray-400">
                 Ordinary vehicles detect road hazards. AI validates them across users. Drivers get warnings
                 and better routes — authorities get a live operational picture, from detection to verified repair.
               </p>
@@ -83,7 +83,7 @@ export default function Landing() {
 
             {/* live stats strip */}
             <Reveal delay={340}>
-              <div className="mx-auto mt-12 grid max-w-2xl grid-cols-3 divide-x divide-gray-200 rounded-2xl border border-gray-200 bg-white py-4 shadow-card">
+              <div className="mx-auto mt-12 grid max-w-2xl grid-cols-3 divide-x divide-line rounded-2xl border border-line bg-card py-4 shadow-card">
                 {[
                   { label: 'Active hazards tracked', value: 43 },
                   { label: 'Independent confirmations', value: 128 },
@@ -116,13 +116,13 @@ export default function Landing() {
               { icon: ArrowRight, title: 'ACT', body: 'Drivers receive warnings and recommended routes. Authorities receive actionable repair workflows.', n: '03' },
             ].map((p, i) => (
               <Reveal key={p.title} delay={i * 110}>
-                <div className="group relative h-full overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:border-primary-300 hover:shadow-[0_16px_40px_-12px_rgba(37,87,231,0.25)]">
+                <div className="group relative h-full overflow-hidden rounded-2xl border border-line bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:border-primary-500/40 hover:shadow-[0_16px_40px_-12px_rgba(37,87,231,0.25)]">
                   <span className="absolute -right-2 -top-4 text-6xl font-bold text-gray-100 transition-colors duration-300 group-hover:text-primary-100" aria-hidden>
                     {p.n}
                   </span>
                   <p.icon className="h-6 w-6 text-primary-600 transition-transform duration-300 group-hover:scale-110" aria-hidden />
                   <h3 className="mt-4 text-sm font-bold tracking-[0.12em] text-ink">{p.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-gray-600">{p.body}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-gray-400">{p.body}</p>
                   <div className="mt-5 h-0.5 w-8 rounded-full bg-gray-200 transition-all duration-300 group-hover:w-full group-hover:bg-primary-400" aria-hidden />
                 </div>
               </Reveal>
@@ -133,9 +133,9 @@ export default function Landing() {
         {/* authority note */}
         <Reveal>
           <section className="mx-auto max-w-6xl px-5 pb-20">
-            <div className="flex flex-col items-center gap-4 rounded-2xl border border-gray-200 bg-white px-8 py-6 text-center shadow-card sm:flex-row sm:text-left">
+            <div className="flex flex-col items-center gap-4 rounded-2xl border border-line bg-card px-8 py-6 text-center shadow-card sm:flex-row sm:text-left">
               <ShieldCheck className="h-6 w-6 shrink-0 text-gray-400" aria-hidden />
-              <p className="flex-1 text-sm text-gray-600">
+              <p className="flex-1 text-sm text-gray-400">
                 The <b className="text-ink">Authority Console</b> is a separate, access-controlled interface —
                 3D spatial intelligence, verification queues and repair workflows. Access is issued by the road authority.
               </p>
@@ -143,7 +143,7 @@ export default function Landing() {
           </section>
         </Reveal>
 
-        <footer className="border-t border-gray-200 px-5 pb-10 pt-8">
+        <footer className="border-t border-line px-5 pb-10 pt-8">
           <p className="mx-auto flex max-w-6xl items-center justify-center gap-1.5 text-center text-[11px] text-gray-400">
             <ShieldCheck className="h-3.5 w-3.5" aria-hidden />
             Frontend prototype — detection, GPS, routing and verification are simulated. No API keys. Faces &amp; plates blurred.

@@ -89,10 +89,10 @@ export default function DemoPanel() {
   return (
     <div className="fixed bottom-4 right-4 z-30 print:hidden">
       {open && (
-        <div className="mb-2 w-80 rounded-xl border border-gray-200 bg-white p-3 shadow-raised">
+        <div className="mb-2 w-80 rounded-xl border border-line bg-card p-3 shadow-raised">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-gray-600">Demo controls</span>
-            <button onClick={() => setOpen(false)} aria-label="Close demo controls" className="text-gray-400 hover:text-gray-600">
+            <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Demo controls</span>
+            <button onClick={() => setOpen(false)} aria-label="Close demo controls" className="text-gray-400 hover:text-gray-400">
               <X className="h-4 w-4" />
             </button>
           </div>
@@ -105,8 +105,8 @@ export default function DemoPanel() {
                 className={cn(
                   'rounded-lg border px-3 py-2 text-left text-xs font-medium transition-colors',
                   a.disabled
-                    ? 'cursor-not-allowed border-gray-100 bg-gray-50 text-gray-400'
-                    : 'border-gray-200 bg-white text-gray-700 hover:border-primary-300 hover:bg-primary-50',
+                    ? 'cursor-not-allowed border-line bg-white/5 text-gray-400'
+                    : 'border-line bg-card text-gray-300 hover:border-primary-500/40 hover:bg-primary-500/15',
                 )}
               >
                 {a.label}
@@ -114,9 +114,9 @@ export default function DemoPanel() {
             ))}
           </div>
           {log.length > 0 && (
-            <ul className="mt-2 space-y-1 border-t border-gray-100 pt-2">
+            <ul className="mt-2 space-y-1 border-t border-line pt-2">
               {log.map((l, i) => (
-                <li key={i} className={cn('text-[11px]', i === 0 ? 'font-semibold text-green-700' : 'text-gray-400')}>
+                <li key={i} className={cn('text-[11px]', i === 0 ? 'font-semibold text-green-300' : 'text-gray-400')}>
                   ✓ {l}
                 </li>
               ))}
@@ -126,7 +126,7 @@ export default function DemoPanel() {
       )}
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-xs font-bold text-white shadow-raised hover:bg-gray-800"
+        className="flex items-center gap-2 rounded-full bg-primary-600 px-4 py-2.5 text-xs font-bold text-white shadow-raised hover:bg-gray-800"
         aria-expanded={open}
       >
         <FlaskConical className="h-4 w-4" aria-hidden />

@@ -42,18 +42,18 @@ export default function AdminLayout() {
       {/* sidebar */}
       <aside
         className={cn(
-          'flex flex-col border-r border-gray-200 bg-white transition-all',
+          'flex flex-col border-r border-line bg-card transition-all',
           collapsed ? 'w-[64px]' : 'w-60',
         )}
       >
-        <div className="flex items-center gap-2.5 border-b border-gray-200 px-4 py-4">
+        <div className="flex items-center gap-2.5 border-b border-line px-4 py-4">
           <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-primary-700 text-white" aria-hidden>
             <Radio className="h-5 w-5" />
           </div>
           {!collapsed && (
             <div className="min-w-0">
               <div className="truncate text-sm font-bold text-ink">RoadDrive Authority</div>
-              <div className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Command Center</div>
+              <div className="text-[10px] font-medium uppercase tracking-wider text-gray-400">Command Center</div>
             </div>
           )}
         </div>
@@ -69,12 +69,12 @@ export default function AdminLayout() {
               <n.icon className="h-4.5 w-4.5 shrink-0" aria-hidden />
               {!collapsed && n.label}
               {!collapsed && n.label === 'Verification' && pending > 0 && (
-                <span className="ml-auto rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-bold text-purple-700">{pending}</span>
+                <span className="ml-auto rounded-full bg-purple-500/15 px-2 py-0.5 text-[10px] font-bold text-purple-300">{pending}</span>
               )}
             </NavLink>
           ))}
         </nav>
-        <div className="border-t border-gray-200 p-2">
+        <div className="border-t border-line p-2">
           <button
             className={cn('nav-item w-full', collapsed && 'justify-center px-2')}
             onClick={() => setCollapsed((c) => !c)}
@@ -88,17 +88,17 @@ export default function AdminLayout() {
 
       {/* main column */}
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-gray-200 bg-white/95 px-5 py-3 backdrop-blur">
+        <header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-line bg-card/95 px-5 py-3 backdrop-blur">
           <div className="flex items-center gap-3">
             <DemoBadge />
-            <span className="hidden text-sm text-gray-500 md:inline">
+            <span className="hidden text-sm text-gray-400 md:inline">
               {unread > 0 ? `${unread} unread alerts` : 'No unread alerts'}
             </span>
           </div>
           <div className="flex items-center gap-2">
             <button className="btn-secondary !py-1.5 text-xs" onClick={() => navigate('/admin/verification')}>
               Verification queue
-              {pending > 0 && <span className="rounded-full bg-purple-100 px-1.5 text-[10px] font-bold text-purple-700">{pending}</span>}
+              {pending > 0 && <span className="rounded-full bg-purple-500/15 px-1.5 text-[10px] font-bold text-purple-300">{pending}</span>}
             </button>
             <button
               className="btn-primary !py-1.5 text-xs"
@@ -107,12 +107,12 @@ export default function AdminLayout() {
             >
               Reset demo
             </button>
-            <div className="hidden items-center gap-2 rounded-lg border border-gray-200 px-2.5 py-1.5 sm:flex">
-              <div className="grid h-6 w-6 place-items-center rounded-full bg-primary-100 text-[10px] font-bold text-primary-700" aria-hidden>
+            <div className="hidden items-center gap-2 rounded-lg border border-line px-2.5 py-1.5 sm:flex">
+              <div className="grid h-6 w-6 place-items-center rounded-full bg-primary-500/20 text-[10px] font-bold text-primary-300" aria-hidden>
                 RA
               </div>
               <span className="text-xs font-semibold text-ink" title={session ? `${session.email} · ${session.department}` : undefined}>{session?.name ?? 'Authority'}</span>
-              <button className="text-gray-400 hover:text-red-600" onClick={signOut} title="Sign out" aria-label="Sign out">
+              <button className="text-gray-400 hover:text-red-400" onClick={signOut} title="Sign out" aria-label="Sign out">
                 <LogOut className="h-4 w-4" />
               </button>
             </div>
@@ -121,7 +121,7 @@ export default function AdminLayout() {
 
         {/* demo scenario banner appears when any simulation has run */}
         {state.simulated && (
-          <div className="flex items-center justify-between gap-3 border-b border-amber-200 bg-amber-50 px-5 py-1.5 text-xs text-amber-800">
+          <div className="flex items-center justify-between gap-3 border-b border-amber-500/30 bg-amber-500/10 px-5 py-1.5 text-xs text-amber-300">
             <span>Simulated state active — changes persist until you reset the demo.</span>
             <button className="font-semibold underline" onClick={() => api.resetDemo()}>
               Reset now

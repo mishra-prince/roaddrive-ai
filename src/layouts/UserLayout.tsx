@@ -35,7 +35,7 @@ export default function UserLayout() {
   return (
     <div className="flex h-full flex-col bg-surface">
       {/* top bar */}
-      <header className="sticky top-0 z-20 border-b border-gray-200 bg-white/95 backdrop-blur">
+      <header className="sticky top-0 z-20 border-b border-line bg-card/95 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
             <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary-600 text-white" aria-hidden>
@@ -43,7 +43,7 @@ export default function UserLayout() {
             </div>
             <div>
               <div className="text-sm font-bold leading-tight text-ink">RoadDrive AI</div>
-              <div className="text-[10px] font-medium uppercase tracking-wider text-gray-500">Driver</div>
+              <div className="text-[10px] font-medium uppercase tracking-wider text-gray-400">Driver</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -51,7 +51,7 @@ export default function UserLayout() {
             <NavLink
               to="/app/profile"
               aria-label={`Notifications${unread ? `, ${unread} unread` : ''}`}
-              className="relative grid h-9 w-9 place-items-center rounded-lg text-gray-600 hover:bg-gray-100"
+              className="relative grid h-9 w-9 place-items-center rounded-lg text-gray-400 hover:bg-white/10"
               state={{ tab: 'notifications' }}
             >
               <Bell className="h-5 w-5" />
@@ -65,9 +65,9 @@ export default function UserLayout() {
         </div>
         {latest && !latest.read && location.pathname === '/app' && (
           <div className="mx-auto max-w-3xl px-4 pb-2">
-            <div className="rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs text-blue-800">
+            <div className="rounded-lg border border-blue-500/30 bg-blue-500/10 px-3 py-2 text-xs text-blue-300">
               <span className="font-semibold">{latest.title}</span> — {latest.body}{' '}
-              <span className="text-blue-500">({timeAgo(latest.createdAt)})</span>
+              <span className="text-blue-400">({timeAgo(latest.createdAt)})</span>
             </div>
           </div>
         )}
@@ -81,7 +81,7 @@ export default function UserLayout() {
       {/* bottom nav (mobile-first) */}
       <nav
         aria-label="Primary"
-        className="fixed inset-x-0 bottom-0 z-20 border-t border-gray-200 bg-white/95 backdrop-blur lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-card/95 backdrop-blur lg:hidden"
       >
         <div className="mx-auto grid max-w-3xl grid-cols-5 px-1">
           {NAV.filter((n) => ['Home', 'Map', 'Drive', 'Routes', 'Reports'].includes(n.label)).map((n) => (
@@ -92,7 +92,7 @@ export default function UserLayout() {
               className={({ isActive }) =>
                 cn(
                   'relative flex flex-col items-center gap-0.5 py-2 text-[10px] font-semibold transition-colors duration-200',
-                  isActive ? 'text-primary-700' : 'text-gray-500',
+                  isActive ? 'text-primary-300' : 'text-gray-400',
                 )
               }
             >
@@ -119,7 +119,7 @@ export default function UserLayout() {
       {/* desktop side rail (≥lg) — full nav moves here */}
       <nav
         aria-label="Primary desktop"
-        className="fixed left-0 top-0 z-20 hidden h-full w-56 flex-col gap-1 border-r border-gray-200 bg-white p-3 lg:flex"
+        className="fixed left-0 top-0 z-20 hidden h-full w-56 flex-col gap-1 border-r border-line bg-card p-3 lg:flex"
       >
         {NAV.map((n) => (
           <NavLink
@@ -132,7 +132,7 @@ export default function UserLayout() {
             {n.label}
           </NavLink>
         ))}
-        <div className="mt-auto rounded-lg border border-gray-200 bg-gray-50 p-3 text-[11px] leading-relaxed text-gray-500">
+        <div className="mt-auto rounded-lg border border-line bg-white/5 p-3 text-[11px] leading-relaxed text-gray-400">
           Privacy protected — faces and license plates are blurred before evidence is stored.
         </div>
       </nav>

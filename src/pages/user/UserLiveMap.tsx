@@ -135,13 +135,13 @@ export default function UserLiveMap() {
               {results.map((p, i) => (
                 <button
                   key={i}
-                  className="flex w-full items-start gap-2 rounded-lg px-3 py-2 text-left hover:bg-gray-50"
+                  className="flex w-full items-start gap-2 rounded-lg px-3 py-2 text-left hover:bg-white/5"
                   onClick={() => chooseDest(p)}
                 >
                   <MapPinOff className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-400" aria-hidden />
                   <span>
                     <span className="block text-sm font-semibold text-ink">{p.name}</span>
-                    {p.detail && <span className="block text-xs text-gray-500">{p.detail}</span>}
+                    {p.detail && <span className="block text-xs text-gray-400">{p.detail}</span>}
                   </span>
                 </button>
               ))}
@@ -160,7 +160,7 @@ export default function UserLiveMap() {
 
       {/* location status */}
       {fix && (
-        <div className={`flex items-center gap-2 rounded-lg px-3 py-2 text-xs ${fix.source === 'device' ? 'bg-green-50 text-green-800' : 'bg-amber-50 text-amber-800'}`}>
+        <div className={`flex items-center gap-2 rounded-lg px-3 py-2 text-xs ${fix.source === 'device' ? 'bg-green-500/10 text-green-300' : 'bg-amber-500/10 text-amber-300'}`}>
           <span className={`h-2 w-2 rounded-full ${fix.source === 'device' ? 'bg-green-500' : 'bg-amber-500'}`} aria-hidden />
           {fix.source === 'device'
             ? `Your live location${fix.accuracy ? ` (±${Math.round(fix.accuracy)} m)` : ''} — GPS active`
@@ -175,15 +175,15 @@ export default function UserLiveMap() {
           <div className="min-w-0">
             <div className="label-xs">Directions to</div>
             <div className="truncate text-sm font-bold text-ink">{dest.name}</div>
-            {routing && <div className="flex items-center gap-1.5 text-xs text-gray-500"><Loader2 className="h-3 w-3 animate-spin" aria-hidden /> Finding route…</div>}
+            {routing && <div className="flex items-center gap-1.5 text-xs text-gray-400"><Loader2 className="h-3 w-3 animate-spin" aria-hidden /> Finding route…</div>}
             {!routing && route && (
-              <div className="text-xs text-gray-600">
+              <div className="text-xs text-gray-400">
                 {route.durationMin} min · {route.distanceKm} km
-                {routeHazards.length > 0 && <span className="ml-2 font-semibold text-orange-600">{routeHazards.length} hazard{routeHazards.length > 1 ? 's' : ''} along route</span>}
+                {routeHazards.length > 0 && <span className="ml-2 font-semibold text-orange-400">{routeHazards.length} hazard{routeHazards.length > 1 ? 's' : ''} along route</span>}
                 <span className="ml-2 text-gray-400">(live OSRM route)</span>
               </div>
             )}
-            {!routing && !route && routeError && <div className="text-xs text-orange-600">{routeError}</div>}
+            {!routing && !route && routeError && <div className="text-xs text-orange-400">{routeError}</div>}
           </div>
           <div className="flex gap-2">
             <button className="btn-ghost !py-1.5 !text-xs" onClick={() => runDirections(dest)} disabled={routing}>
@@ -197,7 +197,7 @@ export default function UserLiveMap() {
       )}
 
       {/* map */}
-      <div className="relative overflow-hidden rounded-xl border border-gray-200">
+      <div className="relative overflow-hidden rounded-xl border border-line">
         <MapContainer center={center} zoom={13} zoomControl={false} className="h-[calc(100vh-360px)] min-h-[400px] w-full sm:h-[540px]">
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -210,7 +210,7 @@ export default function UserLiveMap() {
 
           {/* directions route */}
           {routeLine.length > 1 && (
-            <Polyline positions={routeLine} pathOptions={{ color: '#2557E7', weight: 5, opacity: 0.9 }} />
+            <Polyline positions={routeLine} pathOptions={{ color: '#5B84FF', weight: 5, opacity: 0.9 }} />
           )}
 
           {/* road driveability */}
@@ -219,7 +219,7 @@ export default function UserLiveMap() {
               key={seg.id}
               positions={seg.polyline}
               pathOptions={{
-                color: seg.driveabilityScore >= 85 ? '#16A34A' : seg.driveabilityScore >= 65 ? '#CA8A04' : seg.driveabilityScore >= 45 ? '#EA580C' : '#DC2626',
+                color: seg.driveabilityScore >= 85 ? '#22C55E' : seg.driveabilityScore >= 65 ? '#EAB308' : seg.driveabilityScore >= 45 ? '#F97316' : '#EF4444',
                 weight: 4,
                 opacity: 0.75,
               }}
@@ -263,7 +263,7 @@ export default function UserLiveMap() {
           {dest && (
             <Marker
               position={[dest.lat, dest.lng]}
-              icon={L.divIcon({ className: '', html: `<div style="display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#2557E7;border:2px solid #fff;box-shadow:0 2px 8px rgba(16,24,40,.4)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div>`, iconSize: [28, 28], iconAnchor: [14, 14] })}
+              icon={L.divIcon({ className: '', html: `<div style="display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#5B84FF;border:2px solid #fff;box-shadow:0 2px 8px rgba(16,24,40,.4)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div>`, iconSize: [28, 28], iconAnchor: [14, 14] })}
             />
           )}
 
@@ -272,10 +272,10 @@ export default function UserLiveMap() {
             <CircleMarker
               center={[fix.lat, fix.lng]}
               radius={7}
-              pathOptions={{ color: '#fff', weight: 3, fillColor: '#2557E7', fillOpacity: 1 }}
+              pathOptions={{ color: '#fff', weight: 3, fillColor: '#5B84FF', fillOpacity: 1 }}
               aria-label="Your current location"
             >
-              <Circle center={[fix.lat, fix.lng]} radius={fix.accuracy ?? 60} pathOptions={{ color: '#2557E7', weight: 1, fillOpacity: 0.08 }} />
+              <Circle center={[fix.lat, fix.lng]} radius={fix.accuracy ?? 60} pathOptions={{ color: '#5B84FF', weight: 1, fillOpacity: 0.08 }} />
             </CircleMarker>
           )}
         </MapContainer>
@@ -283,12 +283,12 @@ export default function UserLiveMap() {
         {/* layer control */}
         <div className="absolute right-3 top-3 z-[5]">
           <button className="card grid h-9 w-9 place-items-center shadow-card" aria-label="Map layers" aria-expanded={layerOpen} onClick={() => setLayerOpen((o) => !o)}>
-            <Layers className="h-4.5 w-4.5 text-gray-600" />
+            <Layers className="h-4.5 w-4.5 text-gray-400" />
           </button>
           {layerOpen && (
             <div className="card card-pad absolute right-0 z-10 mt-2 w-52 space-y-1.5">
               {([['critical', 'Critical hazards'], ['high', 'High hazards'], ['moderate', 'Moderate hazards'], ['low', 'Low hazards'], ['roads', 'Road driveability']] as const).map(([key, label]) => (
-                <label key={key} className="flex cursor-pointer items-center gap-2 text-xs font-medium text-gray-700">
+                <label key={key} className="flex cursor-pointer items-center gap-2 text-xs font-medium text-gray-300">
                   <input type="checkbox" checked={layers[key]} onChange={(e) => setLayers((l) => ({ ...l, [key]: e.target.checked }))} className="h-3.5 w-3.5 accent-primary-600" />
                   {label}
                 </label>
@@ -298,12 +298,12 @@ export default function UserLiveMap() {
         </div>
 
         {/* legend */}
-        <div className="card absolute bottom-3 left-3 z-[5] flex flex-wrap items-center gap-2.5 px-3 py-2 text-[10px] font-semibold text-gray-600 shadow-card">
+        <div className="card absolute bottom-3 left-3 z-[5] flex flex-wrap items-center gap-2.5 px-3 py-2 text-[10px] font-semibold text-gray-400 shadow-card">
           <span className="flex items-center gap-1"><i className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: SEVERITY_META.critical.hex }} />Critical</span>
           <span className="flex items-center gap-1"><i className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: SEVERITY_META.high.hex }} />High</span>
           <span className="flex items-center gap-1"><i className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: SEVERITY_META.moderate.hex }} />Moderate</span>
           <span className="flex items-center gap-1"><i className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: SEVERITY_META.low.hex }} />Low</span>
-          {fix && <span className="flex items-center gap-1"><i className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: '#2557E7' }} />You</span>}
+          {fix && <span className="flex items-center gap-1"><i className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: '#5B84FF' }} />You</span>}
         </div>
       </div>
 
@@ -313,9 +313,9 @@ export default function UserLiveMap() {
           <div className="label-xs mb-2">Hazards along your route</div>
           <div className="rd-scroll flex gap-2 overflow-x-auto">
             {routeHazards.slice(0, 8).map((h) => (
-              <button key={h.id} className="flex min-w-max flex-col gap-1 rounded-lg border border-gray-200 px-3 py-2 text-left hover:border-primary-300" onClick={() => setSelected(h)}>
+              <button key={h.id} className="flex min-w-max flex-col gap-1 rounded-lg border border-line px-3 py-2 text-left hover:border-primary-500/40" onClick={() => setSelected(h)}>
                 <span className="text-xs font-bold text-ink">{HAZARD_TYPE_META[h.type].label}</span>
-                <span className="text-[10px] text-gray-500">{h.roadName} · {timeAgo(h.lastDetected)}</span>
+                <span className="text-[10px] text-gray-400">{h.roadName} · {timeAgo(h.lastDetected)}</span>
               </button>
             ))}
           </div>
@@ -324,20 +324,20 @@ export default function UserLiveMap() {
 
       {/* hazard bottom sheet */}
       {selected && (
-        <div className="fixed inset-0 z-30 flex items-end justify-center bg-ink/30 sm:items-center" role="dialog" aria-modal="true" aria-label="Hazard details">
-          <div className="w-full max-w-md rounded-t-2xl bg-white p-4 shadow-raised sm:rounded-2xl">
+        <div className="fixed inset-0 z-30 flex items-end justify-center bg-black/60 sm:items-center" role="dialog" aria-modal="true" aria-label="Hazard details">
+          <div className="w-full max-w-md rounded-t-2xl bg-card p-4 shadow-raised sm:rounded-2xl">
             <div className="mb-2 flex items-start justify-between">
               <SeverityChip severity={selected.severity} size="md" />
-              <button className="text-gray-400 hover:text-gray-600" aria-label="Close" onClick={() => setSelected(null)}>
+              <button className="text-gray-400 hover:text-gray-400" aria-label="Close" onClick={() => setSelected(null)}>
                 <X className="h-5 w-5" />
               </button>
             </div>
             <h3 className="text-lg font-bold text-ink">{HAZARD_TYPE_META[selected.type].label}</h3>
-            <p className="text-sm text-gray-500">{selected.roadName}</p>
+            <p className="text-sm text-gray-400">{selected.roadName}</p>
             <dl className="mt-3 space-y-2 text-sm">
-              <div className="flex justify-between"><dt className="text-gray-500">Risk score</dt><dd className="font-bold">{selected.riskScore}/100</dd></div>
-              <div className="flex justify-between"><dt className="text-gray-500">Confirmed by</dt><dd className="font-semibold">{selected.confirmationCount} vehicles</dd></div>
-              <div className="flex justify-between"><dt className="text-gray-500">Last detected</dt><dd>{timeAgo(selected.lastDetected)}</dd></div>
+              <div className="flex justify-between"><dt className="text-gray-400">Risk score</dt><dd className="font-bold">{selected.riskScore}/100</dd></div>
+              <div className="flex justify-between"><dt className="text-gray-400">Confirmed by</dt><dd className="font-semibold">{selected.confirmationCount} vehicles</dd></div>
+              <div className="flex justify-between"><dt className="text-gray-400">Last detected</dt><dd>{timeAgo(selected.lastDetected)}</dd></div>
             </dl>
             <div className="mt-4 grid grid-cols-2 gap-2">
               <button className="btn-secondary" onClick={() => navigate(`/app/hazard/${selected.id}`)}>View Evidence</button>

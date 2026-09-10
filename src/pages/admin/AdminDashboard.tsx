@@ -59,9 +59,9 @@ export default function AdminDashboard() {
       {/* 3D map + side panel */}
       <section className="grid gap-4 xl:grid-cols-[1fr_320px]">
         <div className="card overflow-hidden">
-          <div className="flex items-center justify-between border-b border-gray-200 px-4 py-2.5">
+          <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
             <h2 className="text-sm font-bold text-ink">Live 3D intelligence map</h2>
-            <Link to="/admin/map" className="text-xs font-semibold text-primary-700 hover:underline">
+            <Link to="/admin/map" className="text-xs font-semibold text-primary-300 hover:underline">
               Open full map →
             </Link>
           </div>
@@ -75,10 +75,10 @@ export default function AdminDashboard() {
               {hotspots.map(([road, count], i) => (
                 <li key={road} className="flex items-center justify-between gap-2 text-sm">
                   <span className="flex items-center gap-2">
-                    <span className="grid h-5 w-5 place-items-center rounded-full bg-gray-100 text-[10px] font-bold text-gray-600">{i + 1}</span>
+                    <span className="grid h-5 w-5 place-items-center rounded-full bg-white/10 text-[10px] font-bold text-gray-400">{i + 1}</span>
                     <span className="font-semibold text-ink">{road}</span>
                   </span>
-                  <span className="chip border-red-200 bg-red-50 text-red-700">{count} hazards</span>
+                  <span className="chip border-red-500/30 bg-red-500/10 text-red-300">{count} hazards</span>
                 </li>
               ))}
             </ol>
@@ -89,10 +89,10 @@ export default function AdminDashboard() {
             <ul className="space-y-2.5">
               {recentCritical.map((h) => (
                 <li key={h.id}>
-                  <Link to={`/admin/hazards?id=${h.id}`} className="flex items-center justify-between gap-2 rounded-lg px-2 py-1.5 hover:bg-gray-50">
+                  <Link to={`/admin/hazards?id=${h.id}`} className="flex items-center justify-between gap-2 rounded-lg px-2 py-1.5 hover:bg-white/5">
                     <div>
                       <div className="text-xs font-bold text-ink">{h.id} · {h.roadName}</div>
-                      <div className="text-[11px] text-gray-500">
+                      <div className="text-[11px] text-gray-400">
                         {timeAgo(h.lastDetected)} · {h.confirmationCount} confirmations · {h.confidence}% conf.
                       </div>
                     </div>

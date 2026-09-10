@@ -84,7 +84,7 @@ export default function StartDrive() {
             <span className={cn('h-2 w-2 rounded-full', running ? 'bg-red-500 rd-anim-pulse' : 'bg-gray-300')} />
             <h1 className="text-lg font-bold tracking-tight text-ink">{running ? 'LIVE DRIVE' : 'Start Drive'}</h1>
           </div>
-          <p className="text-xs text-gray-500">{running ? PHASE_TEXT[phase] : 'Detect road hazards while you drive'}</p>
+          <p className="text-xs text-gray-400">{running ? PHASE_TEXT[phase] : 'Detect road hazards while you drive'}</p>
         </div>
         <button
           className={cam.state === 'live' ? 'btn-secondary !px-3' : 'btn-secondary !px-3'}
@@ -182,7 +182,7 @@ export default function StartDrive() {
               >
                 POTHOLE {SPEC.confidence}%
               </span>
-              <span className="absolute -bottom-7 left-0 rounded bg-white/90 px-1.5 py-0.5 text-[10px] font-bold text-ink">
+              <span className="absolute -bottom-7 left-0 rounded bg-card/90 px-1.5 py-0.5 text-[10px] font-bold text-ink">
                 HIGH · risk {SPEC.risk}/100
               </span>
             </div>
@@ -234,17 +234,17 @@ export default function StartDrive() {
                 'grid h-5 w-5 shrink-0 place-items-center rounded-full border text-[9px] font-bold',
                 i < phaseIdx || (running && i === phaseIdx)
                   ? 'border-primary-600 bg-primary-600 text-white'
-                  : 'border-gray-300 bg-white text-gray-400',
+                  : 'border-line bg-card text-gray-400',
               )}
               aria-hidden
             >
               {i < phaseIdx ? '✓' : i + 1}
             </span>
-            <span className={cn('font-medium', i === phaseIdx && running ? 'text-primary-700' : i < phaseIdx ? 'text-gray-700' : 'text-gray-400')}>
+            <span className={cn('font-medium', i === phaseIdx && running ? 'text-primary-300' : i < phaseIdx ? 'text-gray-300' : 'text-gray-400')}>
               {PHASE_TEXT[p]}
             </span>
             {p === 'matched' && i <= phaseIdx && (
-              <span className="ml-auto rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-700">
+              <span className="ml-auto rounded-full bg-blue-500/10 px-2 py-0.5 text-[10px] font-bold text-blue-300">
                 {hazard ? `${hazard.confirmationCount} detections` : '3 → 4'}
               </span>
             )}
@@ -258,10 +258,10 @@ export default function StartDrive() {
           <div className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-white" style={{ background: SEVERITY_META.high.hex }}>
             High risk hazard
           </div>
-          <div className="card-pad space-y-1 bg-white">
+          <div className="card-pad space-y-1 bg-card">
             <p className="text-sm font-bold text-ink">Pothole detected · {SPEC.aheadM} m ahead</p>
-            <p className="text-sm text-gray-600">Estimated risk: {SPEC.risk}/100 · AI confidence {SPEC.confidence}%</p>
-            <p className="text-xs text-gray-500">High risk for motorcycle · Moderate risk for sedan · Lower risk for SUV</p>
+            <p className="text-sm text-gray-400">Estimated risk: {SPEC.risk}/100 · AI confidence {SPEC.confidence}%</p>
+            <p className="text-xs text-gray-400">High risk for motorcycle · Moderate risk for sedan · Lower risk for SUV</p>
             <button className="btn-primary mt-2 w-full" onClick={() => setSpeed(24)}>
               <AlertTriangle className="h-4 w-4" aria-hidden /> Slow Down
             </button>
@@ -273,7 +273,7 @@ export default function StartDrive() {
       )}
 
       {cam.state !== 'live' && (
-        <p className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2.5 text-[11px] text-gray-500">
+        <p className="flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2.5 text-[11px] text-gray-400">
           {cam.state === 'denied' ? <CameraOff className="h-4 w-4 shrink-0 text-gray-400" aria-hidden /> : <ShieldCheck className="h-4 w-4 shrink-0 text-gray-400" aria-hidden />}
           {cam.state === 'denied'
             ? 'Camera permission denied — using the simulated feed. Allow camera access in your browser to use the real one.'
@@ -285,8 +285,8 @@ export default function StartDrive() {
         </p>
       )}
       {cam.state === 'live' && (
-        <p className="flex items-center gap-2 rounded-lg bg-green-50 px-3 py-2.5 text-[11px] text-green-800">
-          <ShieldCheck className="h-4 w-4 shrink-0 text-green-600" aria-hidden />
+        <p className="flex items-center gap-2 rounded-lg bg-green-500/10 px-3 py-2.5 text-[11px] text-green-300">
+          <ShieldCheck className="h-4 w-4 shrink-0 text-green-400" aria-hidden />
           Live camera active — frames stay on your device; detection overlay &amp; hazard matching are simulated deterministically.
         </p>
       )}

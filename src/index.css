@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 html,
@@ -18,65 +18,65 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* ---------- shared components ---------- */
+/* ---------- shared components (dark) ---------- */
 @layer components {
   .card {
-    @apply bg-white border border-gray-200 rounded-xl shadow-card;
+    @apply bg-card border border-line rounded-xl shadow-card;
   }
   .card-pad {
     @apply p-4 sm:p-5;
   }
   .label-xs {
-    @apply text-[11px] font-semibold uppercase tracking-wider text-gray-500;
+    @apply text-[11px] font-semibold uppercase tracking-wider text-gray-400;
   }
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold
-      transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500
-      focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+      transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400
+      focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:opacity-50 disabled:pointer-events-none;
   }
   .btn-primary {
-    @apply btn bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800;
+    @apply btn bg-primary-600 text-white hover:bg-primary-500 active:bg-primary-700;
   }
   .btn-secondary {
-    @apply btn bg-white text-ink border border-gray-300 hover:bg-gray-50;
+    @apply btn bg-raised text-ink border border-line hover:bg-white/5;
   }
   .btn-ghost {
-    @apply btn text-gray-600 hover:bg-gray-100;
+    @apply btn text-gray-400 hover:bg-white/5 hover:text-ink;
   }
   .btn-danger {
-    @apply btn bg-severity-critical text-white hover:bg-red-700;
+    @apply btn bg-severity-critical text-white hover:brightness-110;
   }
   .input {
-    @apply w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-ink
-      placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
+    @apply w-full rounded-lg border border-line bg-raised px-3 py-2.5 text-sm text-ink
+      placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400;
   }
   .chip {
     @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold;
   }
   .nav-item {
-    @apply flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-600
-      hover:bg-gray-100 hover:text-ink focus-visible:outline-none focus-visible:ring-2
-      focus-visible:ring-primary-500;
+    @apply flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-400
+      hover:bg-white/5 hover:text-ink focus-visible:outline-none focus-visible:ring-2
+      focus-visible:ring-primary-400;
   }
   .nav-item-active {
-    @apply bg-primary-50 text-primary-700 hover:bg-primary-50 hover:text-primary-700;
+    @apply bg-primary-500/15 text-primary-300 hover:bg-primary-500/15 hover:text-primary-300;
   }
   .th {
-    @apply px-3 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wider text-gray-500 whitespace-nowrap;
+    @apply px-3 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wider text-gray-400 whitespace-nowrap;
   }
   .td {
-    @apply px-3 py-2.5 text-sm text-gray-700 whitespace-nowrap;
+    @apply px-3 py-2.5 text-sm text-gray-300 whitespace-nowrap;
   }
 }
 
-/* ---------- leaflet fixes ---------- */
+/* ---------- leaflet (dark-tuned chrome) ---------- */
 .leaflet-container {
   font: inherit;
-  background: #dfe6ee;
+  background: #0f1115;
   outline: none;
 }
 .leaflet-container:focus-within {
-  outline: 2px solid theme('colors.primary.500');
+  outline: 2px solid theme('colors.primary.400');
 }
 .leaflet-pane,
 .leaflet-top,
@@ -84,15 +84,30 @@ body {
   z-index: 1;
 }
 .leaflet-control-container .leaflet-top {
-  /* keep map chrome above tiles but below app overlays */
   z-index: 2;
+}
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  background: #1a1d22;
+  color: #e5e7eb;
+  border-bottom-color: #25282e;
+}
+.leaflet-bar a:hover {
+  background: #23262b;
+}
+.leaflet-control-attribution {
+  background: rgba(10, 11, 14, 0.7) !important;
+  color: #7b828c !important;
+}
+.leaflet-control-attribution a {
+  color: #9aa2ad !important;
 }
 .rd-marker {
   display: grid;
   place-items: center;
   border-radius: 9999px;
   border: 2px solid #fff;
-  box-shadow: 0 2px 6px rgba(16, 24, 40, 0.35);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
   color: #fff;
   font-size: 11px;
   font-weight: 700;
@@ -103,57 +118,41 @@ body {
   place-items: center;
   border-radius: 9999px;
   border: 2px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 2px 10px rgba(16, 24, 40, 0.4);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
   color: #fff;
   font-size: 13px;
   font-weight: 700;
 }
 
-/* ---------- cesium fixes ---------- */
+/* ---------- cesium ---------- */
 .cesium-widget,
 .cesium-widget canvas {
   width: 100%;
   height: 100%;
 }
+.cesium-viewer,
+.cesium-widget,
+.cesium-widget canvas {
+  background: #0a0b0e;
+}
 
 /* ---------- camera simulation ---------- */
 @keyframes rd-road-scroll {
-  from {
-    transform: translateY(-100%);
-  }
-  to {
-    transform: translateY(0%);
-  }
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0%); }
 }
 @keyframes rd-scan {
-  0% {
-    top: 4%;
-  }
-  50% {
-    top: 92%;
-  }
-  100% {
-    top: 4%;
-  }
+  0% { top: 4%; }
+  50% { top: 92%; }
+  100% { top: 4%; }
 }
 @keyframes rd-pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.35;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
 }
-.rd-anim-road {
-  animation: rd-road-scroll 1.6s linear infinite;
-}
-.rd-anim-scan {
-  animation: rd-scan 2.4s ease-in-out infinite;
-}
-.rd-anim-pulse {
-  animation: rd-pulse 1.2s ease-in-out infinite;
-}
+.rd-anim-road { animation: rd-road-scroll 1.6s linear infinite; }
+.rd-anim-scan { animation: rd-scan 2.4s ease-in-out infinite; }
+.rd-anim-pulse { animation: rd-pulse 1.2s ease-in-out infinite; }
 
 /* ---------- custom cursor (desktop, fine pointers only) ---------- */
 .rd-has-cursor,
@@ -166,9 +165,7 @@ body {
   z-index: 9999;
   pointer-events: none;
 }
-.rd-cursor-hidden {
-  opacity: 0;
-}
+.rd-cursor-hidden { opacity: 0; }
 .rd-cursor-dot,
 .rd-cursor-ring {
   position: absolute;
@@ -181,14 +178,14 @@ body {
   height: 6px;
   margin: -3px 0 0 -3px;
   border-radius: 50%;
-  background: #2557e7;
+  background: #5b84ff;
 }
 .rd-cursor-ring {
   width: 34px;
   height: 34px;
   margin: -17px 0 0 -17px;
   border-radius: 50%;
-  border: 1.5px solid rgba(37, 87, 231, 0.55);
+  border: 1.5px solid rgba(91, 132, 255, 0.6);
   transition: width 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
     height 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
     margin 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
@@ -198,19 +195,30 @@ body {
   width: 52px;
   height: 52px;
   margin: -26px 0 0 -26px;
-  border-color: rgba(37, 87, 231, 0.9);
-  background: rgba(37, 87, 231, 0.08);
+  border-color: rgba(91, 132, 255, 0.95);
+  background: rgba(91, 132, 255, 0.1);
 }
 
 /* ---------- hover lifts ---------- */
 .rd-lift {
   transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
-    box-shadow 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
-    border-color 0.28s;
+    box-shadow 0.28s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.28s;
 }
 .rd-lift:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 32px -8px rgba(16, 24, 40, 0.18);
+  box-shadow: 0 16px 40px -14px rgba(0, 0, 0, 0.8);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card {
+    transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
+      box-shadow 0.28s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.28s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px -16px rgba(0, 0, 0, 0.75);
+    border-color: #313640;
+  }
 }
 
 /* ---------- animated bottom-nav indicator ---------- */
@@ -224,23 +232,11 @@ body {
   width: 8px;
 }
 .rd-scroll::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #2a2e35;
   border-radius: 8px;
 }
 .rd-scroll::-webkit-scrollbar-track {
   background: transparent;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .card {
-    transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
-      box-shadow 0.28s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.28s;
-  }
-  .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 28px -10px rgba(16, 24, 40, 0.16);
-    border-color: #d4dae2;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

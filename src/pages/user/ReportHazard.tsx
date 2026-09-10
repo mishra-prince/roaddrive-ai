@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Check, Camera, MapPin, Send } from 'lucide-react';
+import { Camera, MapPin, Send, Mail, Merge, FilePlus2 } from 'lucide-react';
 import { useStore } from '../../api/store';
-import { PageHeader } from '../../components/common';
+import { PageHeader, SeverityChip } from '../../components/common';
+import { EmailPreviewModal } from '../../components/common/EmailPreviewModal';
 import { HAZARD_TYPE_META, SEVERITY_META, cn } from '../../utils/severity';
-import type { HazardType, Severity } from '../../types';
+import type { HazardType, Severity, ReportOutcome } from '../../types';
 import { HOME } from '../../data/geoBase';
 
 const TYPES: HazardType[] = ['pothole', 'waterlogging', 'open_manhole', 'debris', 'damaged_road', 'broken_speed_breaker', 'other'];
@@ -15,29 +16,91 @@ export default function ReportHazard() {
   const [severity, setSeverity] = useState<Severity | null>(null);
   const [description, setDescription] = useState('');
   const [photo, setPhoto] = useState(false);
-  const [submitted, setSubmitted] = useState<string | null>(null);
+  const [outcome, setOutcome] = useState<ReportOutcome | null>(null);
+  const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [showEmail, setShowEmail] = useState(false);
 
-  const submit = () => {
+  const submit = async () => {
     if (!type || !severity) {
       setError('Select a hazard type and severity.');
       return;
     }
-    const id = api.submitReport({ type, severity, description, lat: HOME[0] + 0.0031, lng: HOME[1] - 0.0021 });
-    setSubmitted(id);
+    setBusy(true);
+    setError('');
+    // Simulated GPS sits on MG Road — deterministic: lands on PH-1024 (dedup match).
+    const res = await api.submitReport({
+      type,
+      severity,
+      description,
+      lat: HOME[0] + 0.0031,
+      lng: HOME[1] - 0.0021,
+      to: 'alex.driver@example.com',
+    });
+    setBusy(false);
+    setOutcome(res);
   };
 
-  if (submitted) {
+  const reset = () => {
+    setOutcome(null);
+    setType(null);
+    setSeverity(null);
+    setDescription('');
+    setPhoto(false);
+    setShowEmail(false);
+  };
+
+  // ── success: dual acknowledgement ──
+  if (outcome) {
+    const email = outcome.emailId ? api.getEmails().find((e) => e.id === outcome.emailId) : undefined;
+    const matched = outcome.matched;
     return (
-      <div className="card card-pad mt-8 grid place-items-center py-12 text-center">
-        <Check className="h-10 w-10 text-green-600" aria-hidden />
-        <h2 className="mt-2 text-lg font-bold text-ink">Report submitted</h2>
-        <p className="mt-1 max-w-xs text-sm text-gray-500">
-          {submitted} — your report will be compared with nearby observations to build confidence.
-        </p>
-        <button className="btn-primary mt-4" onClick={() => { setSubmitted(null); setType(null); setSeverity(null); setDescription(''); setPhoto(false); }}>
-          Report another hazard
-        </button>
+      <div className="space-y-4">
+        <div className="card card-pad mt-6 space-y-4">
+          <div className="flex items-start gap-3">
+            <div className={cn('grid h-11 w-11 shrink-0 place-items-center rounded-full', matched ? 'bg-blue-500/15 text-blue-300' : 'bg-green-500/15 text-green-300')}>
+              {matched ? <Merge className="h-5 w-5" aria-hidden /> : <FilePlus2 className="h-5 w-5" aria-hidden />}
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-ink">{matched ? 'Matched an existing hazard' : 'New case filed'}</h2>
+              <p className="mt-0.5 text-sm text-gray-400">{outcome.message}</p>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-line bg-white/5 p-3.5">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-sm font-bold text-ink">{outcome.hazardId}</span>
+              {matched ? (
+                <span className="chip border-blue-500/30 bg-blue-500/10 text-blue-300">
+                  {outcome.confirmationCount} confirmations
+                </span>
+              ) : (
+                <SeverityChip severity={severity ?? 'moderate'} />
+              )}
+            </div>
+            <p className="mt-2 text-xs text-gray-400">
+              {matched
+                ? 'Instead of filing a duplicate, your observation was counted as an independent confirmation. One pothole = one case — your report still raises its priority.'
+                : 'Yours was the first report for this defect, so it opened a new tracking case visible to the road authority.'}
+            </p>
+          </div>
+
+          {email && (
+            <button className="btn-secondary w-full !justify-start gap-2" onClick={() => setShowEmail(true)}>
+              <Mail className="h-4 w-4 text-primary-400" aria-hidden />
+              <span className="text-left">
+                <span className="block text-xs font-semibold text-ink">Acknowledgement email sent</span>
+                <span className="block truncate text-[11px] text-gray-400">{email.subject}</span>
+              </span>
+            </button>
+          )}
+
+          <div className="flex gap-2">
+            <button className="btn-primary flex-1" onClick={reset}>Report another hazard</button>
+          </div>
+        </div>
+
+        {showEmail && email && <EmailPreviewModal email={email} onClose={() => setShowEmail(false)} />}
       </div>
     );
   }
@@ -54,7 +117,7 @@ export default function ReportHazard() {
               key={t}
               className={cn(
                 'rounded-lg border px-3 py-2.5 text-xs font-semibold transition-colors',
-                type === t ? 'border-primary-600 bg-primary-50 text-primary-700' : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300',
+                type === t ? 'border-primary-500 bg-primary-500/15 text-primary-300' : 'border-line bg-white/5 text-gray-400 hover:border-line',
               )}
               onClick={() => setType(t)}
               aria-pressed={type === t}
@@ -73,7 +136,7 @@ export default function ReportHazard() {
               key={s}
               className={cn(
                 'rounded-lg border px-2 py-2.5 text-xs font-semibold transition-colors',
-                severity === s ? 'text-white' : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300',
+                severity === s ? 'text-white' : 'border-line bg-white/5 text-gray-400 hover:border-line',
               )}
               style={severity === s ? { background: SEVERITY_META[s].hex, borderColor: SEVERITY_META[s].hex } : undefined}
               onClick={() => setSeverity(s)}
@@ -87,13 +150,13 @@ export default function ReportHazard() {
 
       <section className="card card-pad space-y-3">
         <button
-          className={cn('btn w-full', photo ? 'border-green-300 bg-green-50 text-green-700' : 'btn-secondary')}
+          className={cn('btn w-full', photo ? 'border-green-500/40 bg-green-500/10 text-green-300' : 'btn-secondary')}
           onClick={() => setPhoto(true)}
         >
           <Camera className="h-4 w-4" aria-hidden /> {photo ? 'Photo attached ✓' : 'Attach photo'}
         </button>
-        <div className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2.5 text-xs text-gray-600">
-          <MapPin className="h-4 w-4 text-gray-400" aria-hidden />
+        <div className="flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2.5 text-xs text-gray-400">
+          <MapPin className="h-4 w-4 text-gray-500" aria-hidden />
           Current location — 28.4765, 77.0765 (GPS simulated)
         </div>
         <div>
@@ -108,11 +171,14 @@ export default function ReportHazard() {
         </div>
       </section>
 
-      {error && <p className="text-xs font-semibold text-red-600">{error}</p>}
+      {error && <p className="text-xs font-semibold text-red-400">{error}</p>}
 
-      <button className="btn-primary w-full" onClick={submit}>
-        <Send className="h-4 w-4" aria-hidden /> Submit report
+      <button className="btn-primary w-full" onClick={submit} disabled={busy}>
+        <Send className="h-4 w-4" aria-hidden /> {busy ? 'Submitting…' : 'Submit report'}
       </button>
+      <p className="text-center text-[11px] text-gray-500">
+        Duplicate reports for the same defect are counted as confirmations, not new cases.
+      </p>
     </div>
   );
 }

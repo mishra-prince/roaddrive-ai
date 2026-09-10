@@ -63,7 +63,7 @@ export default function HazardManagement() {
         sub={`${filtered.length} of ${api.getHazards().length} hazards`}
         right={
           selected.length > 0 && (
-            <span className="chip border-primary-200 bg-primary-50 text-primary-700">{selected.length} selected</span>
+            <span className="chip border-primary-500/30 bg-primary-500/15 text-primary-300">{selected.length} selected</span>
           )
         }
       />
@@ -97,7 +97,7 @@ export default function HazardManagement() {
         <section className="card overflow-hidden">
           <div className="rd-scroll overflow-x-auto">
             <table className="w-full">
-              <thead className="border-b border-gray-200 bg-gray-50">
+              <thead className="border-b border-line bg-white/5">
                 <tr>
                   <th className="th w-8">
                     <input
@@ -119,9 +119,9 @@ export default function HazardManagement() {
                   <th className="th">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-line">
                 {pageRows.map((h) => (
-                  <tr key={h.id} className={cn('hover:bg-gray-50', selected.includes(h.id) && 'bg-primary-50/50')}>
+                  <tr key={h.id} className={cn('hover:bg-white/5', selected.includes(h.id) && 'bg-primary-500/15/50')}>
                     <td className="td">
                       <input type="checkbox" aria-label={`Select ${h.id}`} checked={selected.includes(h.id)} onChange={() => toggle(h.id)} />
                     </td>
@@ -140,7 +140,7 @@ export default function HazardManagement() {
                     <td className="td">{fmtDateShort(h.lastDetected)} {fmtTime(h.lastDetected)}</td>
                     <td className="td"><StatusChip status={h.status} /></td>
                     <td className="td">
-                      <Link className="font-semibold text-primary-700 hover:underline" to={`/admin/hazards?id=${h.id}`}>
+                      <Link className="font-semibold text-primary-300 hover:underline" to={`/admin/hazards?id=${h.id}`}>
                         View
                       </Link>
                     </td>
@@ -150,8 +150,8 @@ export default function HazardManagement() {
             </table>
           </div>
           {/* pagination */}
-          <div className="flex items-center justify-between border-t border-gray-200 px-4 py-2.5">
-            <span className="text-xs text-gray-500">
+          <div className="flex items-center justify-between border-t border-line px-4 py-2.5">
+            <span className="text-xs text-gray-400">
               Page {page + 1} of {pages}
             </span>
             <div className="flex gap-1.5">

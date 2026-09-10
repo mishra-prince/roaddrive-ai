@@ -54,9 +54,9 @@ export default function Analytics() {
   const failedCount = repairs.filter((r) => r.status === 'failed').length;
   const pendingCount = repairs.filter((r) => ['verification_pending', 'repaired'].includes(r.status)).length;
   const verifData = [
-    { name: 'Verified', value: verifiedCount, color: '#16A34A' },
-    { name: 'Failed', value: failedCount, color: '#DC2626' },
-    { name: 'Pending', value: pendingCount, color: '#CA8A04' },
+    { name: 'Verified', value: verifiedCount, color: '#22C55E' },
+    { name: 'Failed', value: failedCount, color: '#EF4444' },
+    { name: 'Pending', value: pendingCount, color: '#EAB308' },
   ];
 
   return (
@@ -64,7 +64,7 @@ export default function Analytics() {
       <PageHeader
         title="Analytics"
         sub="Demo data — platform-wide intelligence"
-        right={<span className="chip border-amber-300 bg-amber-50 text-amber-700">Simulated data</span>}
+        right={<span className="chip border-amber-500/40 bg-amber-500/10 text-amber-300">Simulated data</span>}
       />
 
       <div className="grid gap-5 lg:grid-cols-2">
@@ -77,8 +77,8 @@ export default function Analytics() {
               <XAxis dataKey="day" tick={{ fontSize: 11 }} />
               <YAxis tick={{ fontSize: 11 }} />
               <Tooltip />
-              <Line type="monotone" dataKey="detected" name="Detected" stroke="#2557E7" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="verified" name="Crowd-verified" stroke="#16A34A" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="detected" name="Detected" stroke="#5B84FF" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="verified" name="Crowd-verified" stroke="#22C55E" strokeWidth={2} dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </section>
@@ -106,7 +106,7 @@ export default function Analytics() {
               <XAxis dataKey="severity" tick={{ fontSize: 11 }} />
               <YAxis tick={{ fontSize: 11 }} unit=" d" />
               <Tooltip formatter={(v) => [`${v} days`, 'Avg repair time']} />
-              <Bar dataKey="days" fill="#2557E7" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="days" fill="#5B84FF" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </section>
@@ -120,7 +120,7 @@ export default function Analytics() {
               <XAxis type="number" tick={{ fontSize: 11 }} />
               <YAxis type="category" dataKey="road" width={120} tick={{ fontSize: 10 }} />
               <Tooltip />
-              <Bar dataKey="hazards" name="Hazards" fill="#EA580C" radius={[0, 4, 4, 0]} />
+              <Bar dataKey="hazards" name="Hazards" fill="#F97316" radius={[0, 4, 4, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </section>

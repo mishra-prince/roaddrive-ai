@@ -32,7 +32,7 @@ export default function VerificationQueue() {
         <button
           role="tab"
           aria-selected={tab === 'provisional'}
-          className={`chip px-4 py-2 ${tab === 'provisional' ? 'border-ink bg-ink text-white' : 'border-gray-200 bg-white text-gray-600'}`}
+          className={`chip px-4 py-2 ${tab === 'provisional' ? 'border-ink bg-primary-600 text-white' : 'border-line bg-card text-gray-400'}`}
           onClick={() => setTab('provisional')}
         >
           Hazard verification ({provisional.length})
@@ -40,7 +40,7 @@ export default function VerificationQueue() {
         <button
           role="tab"
           aria-selected={tab === 'repair'}
-          className={`chip px-4 py-2 ${tab === 'repair' ? 'border-ink bg-ink text-white' : 'border-gray-200 bg-white text-gray-600'}`}
+          className={`chip px-4 py-2 ${tab === 'repair' ? 'border-ink bg-primary-600 text-white' : 'border-line bg-card text-gray-400'}`}
           onClick={() => setTab('repair')}
         >
           Repair verification ({repairPending.length + failed.length})
@@ -51,20 +51,20 @@ export default function VerificationQueue() {
         provisional.length === 0 ? (
           <EmptyState title="No hazards awaiting verification" body="Road conditions currently look clear — every detected hazard has been crowd-confirmed." />
         ) : (
-          <section className="card divide-y divide-gray-100">
+          <section className="card divide-y divide-line">
             {provisional.map((h) => (
               <article key={h.id} className="card-pad flex flex-wrap items-center justify-between gap-3">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-bold text-ink">{h.id}</span>
                     <SeverityChip severity={h.severity} />
-                    <span className="text-xs text-gray-500">{HAZARD_TYPE_META[h.type].label} · {h.roadName}</span>
+                    <span className="text-xs text-gray-400">{HAZARD_TYPE_META[h.type].label} · {h.roadName}</span>
                   </div>
-                  <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500">
+                  <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-400">
                     <span className="flex items-center gap-1"><Clock className="h-3 w-3" aria-hidden /> detected {timeAgo(h.firstDetected)}</span>
                     <span>confidence {h.confidence}%</span>
                     <span>{h.confirmationCount} independent detection{h.confirmationCount === 1 ? '' : 's'}</span>
-                    <span className="font-semibold text-purple-700">needs {Math.max(0, 3 - h.confirmationCount)} more to confirm</span>
+                    <span className="font-semibold text-purple-300">needs {Math.max(0, 3 - h.confirmationCount)} more to confirm</span>
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -91,7 +91,7 @@ export default function VerificationQueue() {
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-bold text-ink">{r.id}</span>
                         <StatusChip status={r.status} />
-                        <span className="text-xs text-gray-500">{h ? `${h.id} · ${h.roadName}` : r.hazardId}</span>
+                        <span className="text-xs text-gray-400">{h ? `${h.id} · ${h.roadName}` : r.hazardId}</span>
                       </div>
                       <div className="flex gap-2">
                         <button className="btn-primary !py-1.5 !text-xs" onClick={() => api.simulateVerification(r.id, 'success')}>
@@ -102,7 +102,7 @@ export default function VerificationQueue() {
                         </button>
                       </div>
                     </div>
-                    <p className="mt-2 text-xs text-gray-500">
+                    <p className="mt-2 text-xs text-gray-400">
                       Authority marked repaired {r.repairedAt ? timeAgo(r.repairedAt) : 'recently'} — awaiting independent vehicle passes.
                     </p>
                   </article>
@@ -114,7 +114,7 @@ export default function VerificationQueue() {
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-bold text-ink">{r.id}</span>
                       <StatusChip status={r.status} />
-                      <span className="text-xs font-semibold text-red-700">
+                      <span className="text-xs font-semibold text-red-300">
                         Verification failed ({r.verificationConfidence}%) — defect may still be present
                       </span>
                     </div>
@@ -123,7 +123,7 @@ export default function VerificationQueue() {
                     </button>
                   </div>
                   {r.verificationPasses && (
-                    <ul className="mt-2 space-y-1 text-xs text-gray-600">
+                    <ul className="mt-2 space-y-1 text-xs text-gray-400">
                       {r.verificationPasses.map((p, i) => (
                         <li key={i} className="flex items-center gap-2">
                           <span className={`h-2 w-2 rounded-full ${p.defectDetected ? 'bg-red-500' : 'bg-green-500'}`} />

@@ -41,12 +41,12 @@ export default function HazardDetail() {
       <img
         src={h.evidenceImage ?? evidenceUrl(h.type, h.severity, h.id)}
         alt={`Evidence frame for ${HAZARD_TYPE_META[h.type].label} ${h.id} — faces and plates blurred`}
-        className="w-full rounded-xl border border-gray-200 object-cover shadow-card"
+        className="w-full rounded-xl border border-line object-cover shadow-card"
       />
 
       <div className="flex flex-wrap items-center gap-2">
         <SeverityChip severity={h.severity} size="md" />
-        <span className="chip border-gray-300 bg-gray-50 text-gray-700">{h.status.replace('_', ' ')}</span>
+        <span className="chip border-line bg-white/5 text-gray-300">{h.status.replace('_', ' ')}</span>
       </div>
 
       {/* metrics */}
@@ -62,7 +62,7 @@ export default function HazardDetail() {
           </div>
         </div>
         <ConfidenceBar value={h.confidence} />
-        <div className="grid grid-cols-2 gap-3 border-t border-gray-100 pt-3 text-xs text-gray-600">
+        <div className="grid grid-cols-2 gap-3 border-t border-line pt-3 text-xs text-gray-400">
           <span className="flex items-center gap-1.5"><Users className="h-3.5 w-3.5" aria-hidden /> Confirmed by <b className="text-ink">{h.confirmationCount}</b> vehicles</span>
           <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" aria-hidden /> Last detected {timeAgo(h.lastDetected)}</span>
           <span className="flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5" aria-hidden /> {h.latitude.toFixed(4)}, {h.longitude.toFixed(4)}</span>
@@ -78,11 +78,11 @@ export default function HazardDetail() {
         <div className="space-y-2">
           {classes.map((vt) => {
             const r = riskFor(vt);
-            const tone = r >= 75 ? 'text-red-600' : r >= 50 ? 'text-orange-600' : 'text-green-600';
-            const bar = r >= 75 ? '#DC2626' : r >= 50 ? '#EA580C' : '#16A34A';
+            const tone = r >= 75 ? 'text-red-400' : r >= 50 ? 'text-orange-400' : 'text-green-400';
+            const bar = r >= 75 ? '#EF4444' : r >= 50 ? '#F97316' : '#22C55E';
             return (
               <div key={vt} className="flex items-center gap-3">
-                <span className="w-24 text-xs font-semibold text-gray-700">{VEHICLE_CLASS_META[vt]}</span>
+                <span className="w-24 text-xs font-semibold text-gray-300">{VEHICLE_CLASS_META[vt]}</span>
                 <div className="h-2 flex-1 rounded-full bg-gray-200" role="presentation">
                   <div className="h-2 rounded-full" style={{ width: `${r}%`, background: bar }} />
                 </div>
@@ -97,16 +97,16 @@ export default function HazardDetail() {
       {/* confirmation timeline */}
       <section className="card card-pad">
         <h3 className="mb-3 text-sm font-bold text-ink">Independent confirmations</h3>
-        <ol className="relative space-y-3 border-l-2 border-gray-100 pl-4">
+        <ol className="relative space-y-3 border-l-2 border-line pl-4">
           {h.observations.slice(-6).reverse().map((o, i) => (
             <li key={i} className="text-xs">
-              <span className="absolute -left-[5px] h-2 w-2 rounded-full bg-primary-500" style={{ marginTop: 2 }} />
-              <div className="font-semibold text-gray-700">{o.vehicleId} {o.matched ? 'confirmed' : 'first detection'}</div>
+              <span className="absolute -left-[5px] h-2 w-2 rounded-full bg-primary-500/150" style={{ marginTop: 2 }} />
+              <div className="font-semibold text-gray-300">{o.vehicleId} {o.matched ? 'confirmed' : 'first detection'}</div>
               <div className="text-gray-400">{fmtTime(o.detectedAt)} · {timeAgo(o.detectedAt)}</div>
             </li>
           ))}
         </ol>
-        <div className="mt-3 rounded-lg bg-gray-50 px-3 py-2 text-[11px] text-gray-500">
+        <div className="mt-3 rounded-lg bg-white/5 px-3 py-2 text-[11px] text-gray-400">
           Observations are anonymous — vehicle IDs only, no personal information.
         </div>
       </section>
@@ -131,7 +131,7 @@ export default function HazardDetail() {
       </div>
 
       {justConfirmed && (
-        <p className="flex items-center gap-2 rounded-lg bg-green-50 px-3 py-2 text-xs text-green-800">
+        <p className="flex items-center gap-2 rounded-lg bg-green-500/10 px-3 py-2 text-xs text-green-300">
           <ShieldCheck className="h-4 w-4" aria-hidden /> Thanks — your confirmation was added. Confidence increases with each independent detection.
         </p>
       )}

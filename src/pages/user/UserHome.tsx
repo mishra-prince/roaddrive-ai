@@ -33,13 +33,13 @@ export default function UserHome() {
           <DialRing score={area} size={72} />
           <div>
             <div className="label-xs">Road driveability (area)</div>
-            <div className={`text-sm font-semibold ${area >= 85 ? 'text-green-700' : area >= 65 ? 'text-yellow-700' : area >= 45 ? 'text-orange-700' : 'text-red-700'}`}>
+            <div className={`text-sm font-semibold ${area >= 85 ? 'text-green-300' : area >= 65 ? 'text-yellow-300' : area >= 45 ? 'text-orange-300' : 'text-red-300'}`}>
               {area >= 85 ? 'Good conditions' : area >= 65 ? 'Moderate conditions' : 'High risk conditions'}
             </div>
-            <div className="text-xs text-gray-500">out of 100 · Gurugram</div>
+            <div className="text-xs text-gray-400">out of 100 · Gurugram</div>
           </div>
         </div>
-        <div className="mt-4 grid grid-cols-2 gap-2 border-t border-gray-100 pt-4 sm:grid-cols-4">
+        <div className="mt-4 grid grid-cols-2 gap-2 border-t border-line pt-4 sm:grid-cols-4">
           <div>
             <div className="label-xs">Traffic</div>
             <div className="text-sm font-semibold capitalize">{current.trafficLevel}</div>
@@ -64,7 +64,7 @@ export default function UserHome() {
       {/* Nearest hazard */}
       {near && (
         <section className="card overflow-hidden">
-          <div className="flex items-center justify-between gap-2 border-b border-gray-100 px-4 py-2.5">
+          <div className="flex items-center justify-between gap-2 border-b border-line px-4 py-2.5">
             <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: SEVERITY_META[near.hazard.severity].hex }}>
               Nearby hazard
             </span>
@@ -75,8 +75,8 @@ export default function UserHome() {
               <div className="text-base font-bold text-ink">
                 {HAZARD_TYPE_META[near.hazard.type].label} · {near.hazard.roadName}
               </div>
-              <div className="mt-0.5 text-sm text-gray-500">{formatDistance(near.distanceM)} ahead</div>
-              <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-600">
+              <div className="mt-0.5 text-sm text-gray-400">{formatDistance(near.distanceM)} ahead</div>
+              <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-400">
                 <span>Confidence <b className="text-ink">{near.hazard.confidence}%</b></span>
                 <span>Confirmed by <b className="text-ink">{near.hazard.confirmationCount}</b></span>
                 <span>Detected {timeAgo(near.hazard.lastDetected)}</span>
@@ -112,9 +112,9 @@ export default function UserHome() {
       </section>
 
       {/* Privacy */}
-      <section className="flex items-center gap-3 rounded-xl border border-green-200 bg-green-50 px-4 py-3">
-        <ShieldCheck className="h-5 w-5 shrink-0 text-green-600" aria-hidden />
-        <p className="text-xs text-green-800">
+      <section className="flex items-center gap-3 rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3">
+        <ShieldCheck className="h-5 w-5 shrink-0 text-green-400" aria-hidden />
+        <p className="text-xs text-green-300">
           <b>Privacy protected.</b> Faces and license plates are automatically blurred before evidence is stored.
         </p>
       </section>

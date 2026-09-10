@@ -26,18 +26,18 @@ export default function Repairs() {
       {repairs.length === 0 ? (
         <EmptyState title="No repair cases" body="Assign a verified hazard from the hazard table to open the first repair case." />
       ) : (
-        <section className="card divide-y divide-gray-100">
+        <section className="card divide-y divide-line">
           {repairs.map((r) => {
             const h = hazardOf(r.hazardId);
             return (
-              <Link key={r.id} to={`/admin/repairs?id=${r.id}`} className={cn('card-pad flex flex-wrap items-center justify-between gap-3 hover:bg-gray-50', openId === r.id && 'bg-primary-50/40')}>
+              <Link key={r.id} to={`/admin/repairs?id=${r.id}`} className={cn('card-pad flex flex-wrap items-center justify-between gap-3 hover:bg-white/5', openId === r.id && 'bg-primary-500/15/40')}>
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="text-sm font-bold text-ink">{r.id}</span>
-                    <span className="text-xs text-gray-500">{r.hazardId} · {h?.roadName ?? '—'}</span>
+                    <span className="text-xs text-gray-400">{r.hazardId} · {h?.roadName ?? '—'}</span>
                     {h && <SeverityChip severity={h.severity} />}
                   </div>
-                  <div className="mt-1 text-xs text-gray-500">
+                  <div className="mt-1 text-xs text-gray-400">
                     {r.assignedDepartment ?? 'Unassigned'} · expected {r.expectedCompletion ? fmtDateShort(r.expectedCompletion) : '—'}
                   </div>
                 </div>
@@ -73,7 +73,7 @@ function RepairDetail({ id }: { id: string }) {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 className="text-lg font-bold text-ink">Repair Case {r.id}</h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-400">
             {h ? `${h.id} · ${h.roadName}` : r.hazardId} · {h ? '' : ''}{r.assignedDepartment ?? 'Unassigned'}
           </p>
         </div>
@@ -96,7 +96,7 @@ function RepairDetail({ id }: { id: string }) {
                         ? 'border-red-500 bg-red-500 text-white'
                         : done
                           ? 'border-primary-600 bg-primary-600 text-white'
-                          : 'border-gray-300 bg-white text-gray-400',
+                          : 'border-line bg-card text-gray-400',
                     )}
                     aria-hidden
                   >
@@ -114,7 +114,7 @@ function RepairDetail({ id }: { id: string }) {
           })}
         </ol>
         {r.status === 'failed' && (
-          <p className="mt-2 text-xs font-semibold text-red-700">
+          <p className="mt-2 text-xs font-semibold text-red-300">
             Verification failed → case can be reopened (defect may still be present).
           </p>
         )}
@@ -138,19 +138,19 @@ function RepairDetail({ id }: { id: string }) {
           <h3 className="label-xs mb-2">Independent verification passes</h3>
           <ul className="space-y-1.5">
             {r.verificationPasses.map((p, i) => (
-              <li key={i} className="flex items-center gap-2 text-xs text-gray-700">
+              <li key={i} className="flex items-center gap-2 text-xs text-gray-300">
                 <span className={cn('h-2 w-2 rounded-full', p.defectDetected ? 'bg-red-500' : 'bg-green-500')} aria-hidden />
                 <span className="font-semibold">{p.vehicleId}</span> — {p.defectDetected ? 'defect still detected' : 'no defect detected'} · {timeAgo(p.at)}
               </li>
             ))}
           </ul>
           {r.status === 'verified' && (
-            <p className="mt-2 rounded-lg bg-green-50 px-3 py-2 text-xs font-semibold text-green-800">
+            <p className="mt-2 rounded-lg bg-green-500/10 px-3 py-2 text-xs font-semibold text-green-300">
               REPAIR VERIFIED — {r.verificationPasses.filter((p) => !p.defectDetected).length} independent clean passes · confidence {r.verificationConfidence}%
             </p>
           )}
           {r.status === 'failed' && (
-            <p className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-800">
+            <p className="mt-2 rounded-lg bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-300">
               VERIFICATION FAILED — the road defect may still be present · confidence {r.verificationConfidence}%
             </p>
           )}
@@ -204,7 +204,7 @@ function RepairDetail({ id }: { id: string }) {
         <h3 className="label-xs mb-2">Case notes</h3>
         <ul className="space-y-2">
           {r.notes.map((n, i) => (
-            <li key={i} className="rounded-lg bg-gray-50 px-3 py-2 text-xs text-gray-700">
+            <li key={i} className="rounded-lg bg-white/5 px-3 py-2 text-xs text-gray-300">
               <span className="font-semibold">{n.author}</span> · {timeAgo(n.at)} — {n.text}
             </li>
           ))}

@@ -30,7 +30,7 @@ export default function Profile() {
             state={{ tab: t.id }}
             className={({ isActive }) => cn(
               'flex items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs font-semibold',
-              (isActive && t.id === initial) || (!isActive && t.id === initial) ? 'bg-ink text-white' : 'bg-white text-gray-600 border border-gray-200',
+              (isActive && t.id === initial) || (!isActive && t.id === initial) ? 'bg-primary-600 text-white' : 'bg-card text-gray-400 border border-line',
             )}
             aria-current={t.id === initial ? 'page' : undefined}
           >
@@ -42,12 +42,12 @@ export default function Profile() {
 
       {initial === 'profile' && (
         <section className="card card-pad flex items-center gap-4">
-          <div className="grid h-14 w-14 place-items-center rounded-full bg-primary-100 text-lg font-bold text-primary-700" aria-hidden>
+          <div className="grid h-14 w-14 place-items-center rounded-full bg-primary-500/20 text-lg font-bold text-primary-300" aria-hidden>
             A
           </div>
           <div>
             <div className="text-lg font-bold text-ink">Alex</div>
-            <div className="text-sm text-gray-500">Driver · Gurugram</div>
+            <div className="text-sm text-gray-400">Driver · Gurugram</div>
             <div className="mt-1 text-xs text-gray-400">Contributing road observations since Aug 2026</div>
           </div>
         </section>
@@ -62,14 +62,14 @@ export default function Profile() {
             </button>
           </div>
           {notifications.length === 0 ? (
-            <p className="card card-pad text-sm text-gray-500">No notifications yet.</p>
+            <p className="card card-pad text-sm text-gray-400">No notifications yet.</p>
           ) : (
             notifications.map((n) => (
               <article key={n.id} className={cn('card card-pad', !n.read && 'border-l-4 border-l-primary-500')}>
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <div className="text-sm font-semibold text-ink">{n.title}</div>
-                    <div className="mt-0.5 text-xs text-gray-500">{n.body}</div>
+                    <div className="mt-0.5 text-xs text-gray-400">{n.body}</div>
                   </div>
                   <span className="whitespace-nowrap text-[10px] text-gray-400">{timeAgo(n.createdAt)}</span>
                 </div>
@@ -81,9 +81,9 @@ export default function Profile() {
       )}
 
       {initial === 'privacy' && (
-        <section className="card card-pad space-y-3 text-sm text-gray-600">
+        <section className="card card-pad space-y-3 text-sm text-gray-400">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="h-5 w-5 text-green-600" aria-hidden />
+            <ShieldCheck className="h-5 w-5 text-green-400" aria-hidden />
             <h3 className="text-sm font-bold text-ink">Privacy protected</h3>
           </div>
           <p>
@@ -99,7 +99,7 @@ export default function Profile() {
       )}
 
       {initial === 'about' && (
-        <section className="card card-pad space-y-2 text-sm text-gray-600">
+        <section className="card card-pad space-y-2 text-sm text-gray-400">
           <div className="flex items-center gap-2 text-ink">
             <Route className="h-5 w-5 text-primary-600" aria-hidden />
             <h3 className="text-sm font-bold">RoadDrive AI</h3>

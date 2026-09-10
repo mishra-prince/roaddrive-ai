@@ -46,7 +46,7 @@ export default function AdminHazardDetail() {
           <h1 className="text-xl font-bold tracking-tight text-ink sm:text-2xl">
             {h.id} · {HAZARD_TYPE_META[h.type].label}
           </h1>
-          <p className="text-sm text-gray-500">{h.roadName} · first detected {fmtDateTime(h.firstDetected)}</p>
+          <p className="text-sm text-gray-400">{h.roadName} · first detected {fmtDateTime(h.firstDetected)}</p>
         </div>
         <div className="flex items-center gap-2">
           <SeverityChip severity={h.severity} size="md" />
@@ -59,7 +59,7 @@ export default function AdminHazardDetail() {
         <div className="space-y-4">
           {/* evidence */}
           <section className="card overflow-hidden">
-            <div className="border-b border-gray-200 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-gray-500">
+            <div className="border-b border-line px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-gray-400">
               Evidence frame
             </div>
             <img
@@ -67,7 +67,7 @@ export default function AdminHazardDetail() {
               alt={`AI evidence frame for ${h.id}`}
               className="w-full object-cover"
             />
-            <div className="card-pad flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray-500">
+            <div className="card-pad flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray-400">
               <span>Estimated severity: <b className="text-ink capitalize">{h.severity}</b></span>
               <span>Risk score: <b className="text-ink">{h.riskScore}/100</b></span>
               <span>AI confidence: <b className="text-ink">{h.confidence}%</b></span>
@@ -80,25 +80,25 @@ export default function AdminHazardDetail() {
             <h3 className="mb-3 flex items-center gap-2 text-sm font-bold text-ink">
               <Users className="h-4 w-4" aria-hidden /> Independent confirmations ({h.confirmationCount})
             </h3>
-            <ol className="relative space-y-3 border-l-2 border-gray-100 pl-4">
+            <ol className="relative space-y-3 border-l-2 border-line pl-4">
               {h.observations.slice(-7).reverse().map((o, i) => (
                 <li key={i} className="text-xs">
-                  <span className="absolute -left-[5px] mt-1 h-2 w-2 rounded-full bg-primary-500" />
-                  <div className="font-semibold text-gray-700">
+                  <span className="absolute -left-[5px] mt-1 h-2 w-2 rounded-full bg-primary-500/150" />
+                  <div className="font-semibold text-gray-300">
                     {fmtTime(o.detectedAt)} — {o.vehicleId} {o.matched ? 'confirmed' : 'first detection'}
                   </div>
                   <div className="text-gray-400">{timeAgo(o.detectedAt)}</div>
                 </li>
               ))}
             </ol>
-            <div className="mt-3 rounded-lg bg-gray-50 px-3 py-2 text-[11px] text-gray-500">
+            <div className="mt-3 rounded-lg bg-white/5 px-3 py-2 text-[11px] text-gray-400">
               Observations are anonymous — vehicle IDs only, no personal information.
             </div>
           </section>
 
           {/* 3D location */}
           <section className="card overflow-hidden">
-            <div className="border-b border-gray-200 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-gray-500">
+            <div className="border-b border-line px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-gray-400">
               Spatial context
             </div>
             <CesiumMap hazards={[h]} height={320} compact focusHazardId={h.id} />
@@ -110,10 +110,10 @@ export default function AdminHazardDetail() {
           <section className="card card-pad space-y-4">
             <ConfidenceBar value={h.confidence} />
             <dl className="space-y-2.5 text-sm">
-              <div className="flex justify-between border-b border-gray-50 pb-2"><dt className="text-gray-500">Location</dt><dd className="font-semibold">{h.latitude.toFixed(4)}, {h.longitude.toFixed(4)}</dd></div>
-              <div className="flex justify-between border-b border-gray-50 pb-2"><dt className="text-gray-500">Last detected</dt><dd className="font-semibold">{timeAgo(h.lastDetected)}</dd></div>
-              <div className="flex justify-between border-b border-gray-50 pb-2"><dt className="text-gray-500">Status</dt><dd><StatusChip status={h.status} /></dd></div>
-              <div className="flex justify-between"><dt className="text-gray-500">Road</dt><dd className="flex items-center gap-1 font-semibold"><MapPin className="h-3.5 w-3.5 text-gray-400" aria-hidden /> {h.roadName}</dd></div>
+              <div className="flex justify-between border-b border-gray-50 pb-2"><dt className="text-gray-400">Location</dt><dd className="font-semibold">{h.latitude.toFixed(4)}, {h.longitude.toFixed(4)}</dd></div>
+              <div className="flex justify-between border-b border-gray-50 pb-2"><dt className="text-gray-400">Last detected</dt><dd className="font-semibold">{timeAgo(h.lastDetected)}</dd></div>
+              <div className="flex justify-between border-b border-gray-50 pb-2"><dt className="text-gray-400">Status</dt><dd><StatusChip status={h.status} /></dd></div>
+              <div className="flex justify-between"><dt className="text-gray-400">Road</dt><dd className="flex items-center gap-1 font-semibold"><MapPin className="h-3.5 w-3.5 text-gray-400" aria-hidden /> {h.roadName}</dd></div>
             </dl>
           </section>
 
@@ -123,9 +123,9 @@ export default function AdminHazardDetail() {
             <div className="space-y-2">
               {riskByClass.map((r) => (
                 <div key={r.type} className="flex items-center gap-3">
-                  <span className="w-24 text-xs font-semibold text-gray-700 capitalize">{r.type}</span>
+                  <span className="w-24 text-xs font-semibold text-gray-300 capitalize">{r.type}</span>
                   <div className="h-2 flex-1 rounded-full bg-gray-200">
-                    <div className="h-2 rounded-full" style={{ width: `${r.risk}%`, background: r.risk >= 75 ? '#DC2626' : r.risk >= 50 ? '#EA580C' : '#16A34A' }} />
+                    <div className="h-2 rounded-full" style={{ width: `${r.risk}%`, background: r.risk >= 75 ? '#EF4444' : r.risk >= 50 ? '#F97316' : '#22C55E' }} />
                   </div>
                   <span className="w-10 text-right text-xs font-bold">{r.risk}</span>
                 </div>
@@ -142,7 +142,7 @@ export default function AdminHazardDetail() {
             {repairs.length > 0 ? (
               <div className="space-y-2">
                 {repairs.map((r) => (
-                  <Link key={r.id} to={`/admin/repairs?id=${r.id}`} className="flex items-center justify-between rounded-lg border border-gray-200 px-3 py-2.5 hover:border-primary-300">
+                  <Link key={r.id} to={`/admin/repairs?id=${r.id}`} className="flex items-center justify-between rounded-lg border border-line px-3 py-2.5 hover:border-primary-500/40">
                     <span className="text-sm font-semibold text-ink">{r.id}</span>
                     <StatusChip status={r.status} />
                   </Link>
@@ -180,7 +180,7 @@ export default function AdminHazardDetail() {
             <h3 className="mb-2 flex items-center gap-2 text-sm font-bold text-ink">
               <ThumbsUp className="h-4 w-4" aria-hidden /> Validation ladder
             </h3>
-            <ol className="space-y-1.5 text-xs text-gray-600">
+            <ol className="space-y-1.5 text-xs text-gray-400">
               <li className={h.confirmationCount >= 1 ? 'text-ink' : ''}>1 detection → Provisional {h.confirmationCount >= 1 && '✓'}</li>
               <li className={h.confirmationCount >= 3 ? 'text-ink' : ''}>3 detections → Confirmed {h.confirmationCount >= 3 && '✓'}</li>
               <li className={h.confirmationCount >= 7 ? 'text-ink' : ''}>7 detections → High confidence {h.confirmationCount >= 7 && '✓'}</li>

@@ -115,7 +115,7 @@ export function CesiumMap({
           : on.some((h) => h.severity === 'moderate')
             ? 'moderate'
             : 'good';
-      const colors = { good: '#16A34A', moderate: '#CA8A04', poor: '#EA580C', high_risk: '#DC2626' };
+      const colors = { good: '#22C55E', moderate: '#EAB308', poor: '#F97316', high_risk: '#EF4444' };
       return { polyline: r.polyline, color: colors[worst as keyof typeof colors], sev: worst };
     });
     for (const road of roads) {

@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type {
   AppNotification,
+  EmailMessage,
   Hazard,
   HazardStatus,
   Journey,
   RepairCase,
   RepairStatus,
+  ReportOutcome,
   RoadSegment,
   RouteOption,
   Vehicle,
@@ -14,12 +16,21 @@ import { SEED_HAZARDS, SEED_REPAIRS, SEED_JOURNEYS, SEED_NOTIFICATIONS, seedRoad
 import { ROADS } from '../data/roads';
 import { MY_VEHICLE } from '../data/vehicles';
 import { computeSegment, hazardsOnSegment } from '../utils/driveability';
+import { haversineM } from '../utils/geo';
+import { sendEmail } from '../api/email';
 
 /**
  * Global mock "backend" — a single React context holding the whole app state.
  * UI components never import seed data directly; everything flows through
  * api/* functions so a real backend can replace this file alone.
+ *
+ * Report intake uses GEOFENCE DEDUPLICATION: a new report within
+ * DEDUP_RADIUS_M of an existing same-type hazard is counted as a confirmation
+ * (not a new case). This is how 1000 dashcams reporting the same pothole
+ * become "1 case + 1000 confirmations" instead of 1000 duplicate cases.
  */
+
+const DEDUP_RADIUS_M = 40;
 
 export interface DriveEvent {
   id: string;
@@ -35,6 +46,7 @@ export interface AppState {
   routes: RouteOption[];
   journeys: Journey[];
   notifications: AppNotification[];
+  emails: EmailMessage[];
   vehicle: Vehicle;
   driveLog: DriveEvent[];
   simulated: boolean; // any scenario mutation has run
@@ -54,6 +66,7 @@ function freshState(): AppState {
     routes: seedRoutes(hazards),
     journeys: SEED_JOURNEYS.map((j) => ({ ...j })),
     notifications: SEED_NOTIFICATIONS.map((n) => ({ ...n })),
+    emails: [],
     vehicle: { ...MY_VEHICLE },
     driveLog: [],
     simulated: false,
@@ -78,6 +91,7 @@ export function useAppStore() {
   // ── core mutators ────────────────────────────────────────────────────────
 
   const now = () => new Date().toISOString();
+  const makeEmailId = () => `em-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
   const patchHazard = useCallback((id: string, patch: Partial<Hazard>) => {
     setState((s) => ({
@@ -94,6 +108,10 @@ export function useAppStore() {
         ...s.notifications,
       ].slice(0, 40),
     }));
+  }, []);
+
+  const pushEmail = useCallback((email: EmailMessage) => {
+    setState((s) => ({ ...s, emails: [email, ...s.emails].slice(0, 60) }));
   }, []);
 
   const pushDriveLog = useCallback((title: string, detail: string) => {
@@ -116,6 +134,7 @@ export function useAppStore() {
       getRepairs: () => state.repairs,
       getVehicle: () => state.vehicle,
       getNotifications: (audience: 'user' | 'admin') => state.notifications.filter((n) => n.audience === audience),
+      getEmails: () => state.emails,
 
       // hazard lifecycle
       confirmHazard: (id: string, vehicleId = 'Vehicle #A72') => {
@@ -135,7 +154,64 @@ export function useAppStore() {
       reportIncorrect: (id: string) => {
         patchHazard(id, { status: 'provisional', confidence: Math.max(40, Math.round((state.hazards.find((h) => h.id === id)?.confidence ?? 80) * 0.9)) });
       },
-      submitReport: (input: { type: Hazard['type']; description: string; severity: Hazard['severity']; lat: number; lng: number }) => {
+
+      /**
+       * Report intake WITH geofence dedup.
+       *  - match within DEDUP_RADIUS_M of a same-type open hazard → confirmation
+       *  - no match → new case
+       * Either way the reporter gets an acknowledgement email + notification.
+       */
+      submitReport: async (input: {
+        type: Hazard['type'];
+        description: string;
+        severity: Hazard['severity'];
+        lat: number;
+        lng: number;
+        to?: string;
+      }): Promise<ReportOutcome> => {
+        const to = input.to ?? 'alex.driver@example.com';
+
+        // ── dedup match ──
+        const match = state.hazards.find(
+          (h) =>
+            h.type === input.type &&
+            !['repaired', 'verification_pending', 'verified'].includes(h.status) &&
+            haversineM([h.latitude, h.longitude], [input.lat, input.lng]) <= DEDUP_RADIUS_M,
+        );
+
+        if (match) {
+          const newCount = match.confirmationCount + 1;
+          const newStatus: HazardStatus = match.status === 'provisional' && newCount >= 3 ? 'verified' : match.status;
+          patchHazard(match.id, {
+            confirmationCount: newCount,
+            status: newStatus,
+            lastDetected: now(),
+            observations: [...match.observations, { vehicleId: 'You (this vehicle)', detectedAt: now(), matched: true }],
+            timeline: [...match.timeline, { at: now(), label: `You confirmed — ${newCount} independent detections` }],
+          });
+          pushNotification({
+            audience: 'user',
+            title: 'Matched an existing hazard',
+            body: `Your report joins ${match.id} (${match.roadName}) — counted as a confirmation, now ${newCount}.`,
+            kind: 'report',
+          });
+          const email = await sendEmail(
+            'confirmation_added',
+            { to, hazardId: match.id, hazardType: input.type.replace('_', ' '), roadName: match.roadName, severity: match.severity, confirmations: newCount },
+            makeEmailId,
+          );
+          pushEmail(email);
+          setState((s) => ({ ...s, simulated: true }));
+          return {
+            matched: true,
+            hazardId: match.id,
+            confirmationCount: newCount,
+            message: 'Your report matched an existing hazard — added as a confirmation.',
+            emailId: email.id,
+          };
+        }
+
+        // ── new case ──
         const id = `PH-${2000 + Math.floor(Math.random() * 800)}`;
         const h: Hazard = {
           id,
@@ -157,8 +233,14 @@ export function useAppStore() {
           evidenceImage: undefined,
         };
         setState((s) => ({ ...s, hazards: [h, ...s.hazards], simulated: true }));
-        pushNotification({ audience: 'user', title: 'Report submitted', body: `${id} will be compared with nearby observations.`, kind: 'report' });
-        return id;
+        pushNotification({ audience: 'user', title: 'New case filed', body: `${id} is now visible to the road authority.`, kind: 'report' });
+        const email = await sendEmail(
+          'case_created',
+          { to, hazardId: id, hazardType: input.type.replace('_', ' '), roadName: h.roadName, severity: input.severity, caseNumber: id },
+          makeEmailId,
+        );
+        pushEmail(email);
+        return { matched: false, hazardId: id, confirmationCount: 1, message: 'New case filed.', emailId: email.id };
       },
 
       // repair lifecycle
@@ -205,6 +287,9 @@ export function useAppStore() {
 
       // verification simulations (deterministic per selection)
       simulateVerification: (repairId: string, outcome: 'success' | 'failure') => {
+        const snapRep = state.repairs.find((r) => r.id === repairId);
+        const snapHazard = snapRep ? state.hazards.find((h) => h.id === snapRep.hazardId) : undefined;
+
         setState((s) => {
           const reps = s.repairs.map((r) => {
             if (r.id !== repairId) return r;
@@ -254,6 +339,22 @@ export function useAppStore() {
             simulated: true,
           };
         });
+
+        // fire the "repair verified" email to the original reporter on success
+        if (outcome === 'success' && snapHazard) {
+          void sendEmail(
+            'repair_verified',
+            {
+              to: 'alex.driver@example.com',
+              hazardId: snapHazard.id,
+              hazardType: snapHazard.type.replace('_', ' '),
+              roadName: snapHazard.roadName,
+              severity: snapHazard.severity,
+              repairVerifiedBy: 5,
+            },
+            makeEmailId,
+          ).then(pushEmail);
+        }
       },
       reopenRepair: (repairId: string) => {
         setState((s) => {
@@ -273,7 +374,7 @@ export function useAppStore() {
         setState((s) => ({ ...s, notifications: s.notifications.map((n) => (n.audience === audience ? { ...n, read: true } : n)) })),
       resetDemo: () => setState(freshState()),
     }),
-    [state, patchHazard, pushNotification],
+    [state, patchHazard, pushNotification, pushEmail],
   );
 
   return { api, pushDriveLog, pushNotification, tick, setTick, state };

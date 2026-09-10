@@ -20,14 +20,14 @@ export default function AdminUsers() {
         sub={`${CONTRIBUTORS.length} active vehicles · ${totalObs.toLocaleString()} observations this month`}
       />
 
-      <section className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-xs text-blue-800">
+      <section className="rounded-xl border border-blue-500/30 bg-blue-500/10 px-4 py-3 text-xs text-blue-300">
         <b>Privacy-first:</b> contributors are identified only by anonymous vehicle IDs. No personal information is collected or displayed.
       </section>
 
       <section className="card overflow-hidden">
         <div className="rd-scroll overflow-x-auto">
           <table className="w-full">
-            <thead className="border-b border-gray-200 bg-gray-50">
+            <thead className="border-b border-line bg-white/5">
               <tr>
                 <th className="th"><span className="flex items-center gap-1.5"><Truck className="h-3.5 w-3.5" aria-hidden /> Vehicle</span></th>
                 <th className="th">Class</th>
@@ -37,11 +37,11 @@ export default function AdminUsers() {
                 <th className="th">Last active</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-line">
               {CONTRIBUTORS.map((c) => {
                 const confirmations = hazards.filter((h) => h.observations.some((o) => o.vehicleId === c.vehicleId)).length;
                 return (
-                  <tr key={c.vehicleId} className="hover:bg-gray-50">
+                  <tr key={c.vehicleId} className="hover:bg-white/5">
                     <td className="td font-bold text-ink">{c.vehicleId}</td>
                     <td className="td capitalize">{c.vehicleClass}</td>
                     <td className="td font-semibold">{c.observations.toLocaleString()}</td>
@@ -54,7 +54,7 @@ export default function AdminUsers() {
                         {c.reliability}%
                       </span>
                     </td>
-                    <td className="td text-gray-500">{timeAgo(c.lastActive)}</td>
+                    <td className="td text-gray-400">{timeAgo(c.lastActive)}</td>
                   </tr>
                 );
               })}

@@ -174,6 +174,31 @@ export interface AppNotification {
   kind: 'hazard' | 'route' | 'repair' | 'report' | 'system';
 }
 
+// ─── Email outbox (Resend seam — see api/email.ts) ───────────────────────────
+
+export type EmailKind = 'case_created' | 'confirmation_added' | 'repair_verified';
+
+export interface EmailMessage {
+  id: string;
+  kind: EmailKind;
+  to: string;
+  subject: string;
+  html: string;
+  preview: string;
+  hazardId: string;
+  createdAt: string;
+  delivered: boolean;
+}
+
+/** Result of a report submission: either a brand-new case or a dedup match. */
+export interface ReportOutcome {
+  matched: boolean;
+  hazardId: string;
+  confirmationCount: number;
+  message: string;
+  emailId?: string;
+}
+
 // ─── Journeys / contributors ─────────────────────────────────────────────────
 
 export interface Journey {
