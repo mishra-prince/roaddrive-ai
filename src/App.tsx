@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { RouterProvider } from 'react-router-dom';
 import { StoreProvider } from './api/store';
+import { Cursor, SmoothScroll } from './components/common/motion';
 import { AdminAuthProvider } from './auth/AdminAuth';
 import RequireAdmin from './pages/admin/RequireAdmin';
 import AdminLogin from './pages/admin/AdminLogin';
@@ -71,6 +72,8 @@ export default function App() {
   return (
     <AdminAuthProvider>
       <StoreProvider>
+        <Cursor />
+        <SmoothScroll />
         <RouterProvider router={router} />
       </StoreProvider>
     </AdminAuthProvider>

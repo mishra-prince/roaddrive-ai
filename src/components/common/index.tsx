@@ -70,7 +70,7 @@ export function StatCard({
   icon,
 }: {
   label: string;
-  value: string | number;
+  value: ReactNode;
   sub?: string;
   tone?: 'default' | 'critical' | 'warning' | 'good';
   icon?: ReactNode;

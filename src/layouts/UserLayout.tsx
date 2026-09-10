@@ -91,14 +91,20 @@ export default function UserLayout() {
               end={n.end}
               className={({ isActive }) =>
                 cn(
-                  'flex flex-col items-center gap-0.5 py-2 text-[10px] font-semibold',
+                  'relative flex flex-col items-center gap-0.5 py-2 text-[10px] font-semibold transition-colors duration-200',
                   isActive ? 'text-primary-700' : 'text-gray-500',
                 )
               }
             >
               {({ isActive }) => (
                 <>
-                  <n.icon className={cn('h-5 w-5', isActive && 'scale-110')} aria-hidden />
+                  <n.icon className={cn('h-5 w-5 transition-transform duration-300', isActive && 'scale-110')} aria-hidden />
+                  {isActive && (
+                    <span
+                      className="rd-nav-indicator absolute -bottom-0.5 h-1 w-6 rounded-full bg-primary-600"
+                      aria-hidden
+                    />
+                  )}
                   {n.label}
                   {n.label === 'Drive' && (
                     <span className="absolute -mt-9 rounded-full bg-primary-600 px-2 py-0.5 text-[9px] text-white shadow-card">LIVE</span>

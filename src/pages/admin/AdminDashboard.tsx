@@ -5,6 +5,7 @@ import { StatCard, PageHeader, SeverityChip } from '../../components/common';
 import { CesiumMap } from '../../components/maps/CesiumMap';
 import { areaDriveability } from '../../utils/driveability';
 import { timeAgo } from '../../utils/severity';
+import { CountUp, Reveal } from '../../components/common/motion';
 
 export default function AdminDashboard() {
   const { api } = useStore();
@@ -37,11 +38,12 @@ export default function AdminDashboard() {
       />
 
       {/* KPIs */}
+      <Reveal>
       <section className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-        <StatCard label="Active hazards" value={active.length.toLocaleString()} sub="city-wide" icon={<AlertTriangle className="h-4 w-4" />} />
-        <StatCard label="Critical" value={critical.length} tone="critical" sub="immediate attention" />
-        <StatCard label="Pending verification" value={pendingVerification.length} tone="warning" sub="awaiting confirmations" icon={<BadgeCheck className="h-4 w-4" />} />
-        <StatCard label="Under repair" value={underRepair.length} sub="assigned teams" icon={<Wrench className="h-4 w-4" />} />
+        <StatCard label="Active hazards" value={<CountUp to={active.length} />} sub="city-wide" icon={<AlertTriangle className="h-4 w-4" />} />
+        <StatCard label="Critical" value={<CountUp to={critical.length} />} tone="critical" sub="immediate attention" />
+        <StatCard label="Pending verification" value={<CountUp to={pendingVerification.length} />} tone="warning" sub="awaiting confirmations" icon={<BadgeCheck className="h-4 w-4" />} />
+        <StatCard label="Under repair" value={<CountUp to={underRepair.length} />} sub="assigned teams" icon={<Wrench className="h-4 w-4" />} />
         <StatCard label="Repair verification" value={repairVerifPending.length} tone="warning" sub="pending AI check" />
         <StatCard label="Verified repairs" value={`${verifiedRepairs.length}/${Math.max(1, repairs.filter((r) => ['verified', 'failed'].includes(r.status)).length)}`} tone="good" sub="pass rate" />
       </section>
@@ -52,6 +54,7 @@ export default function AdminDashboard() {
         <StatCard label="Contributing vehicles" value="8" sub="active fleet" icon={<Users className="h-4 w-4" />} />
         <StatCard label="Repair pass rate" value="87%" tone="good" sub="verified first time" />
       </section>
+      </Reveal>
 
       {/* 3D map + side panel */}
       <section className="grid gap-4 xl:grid-cols-[1fr_320px]">

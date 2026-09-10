@@ -1,7 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Map as MapIcon, CarFront, AlertTriangle, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useStore } from '../../api/store';
-import { ScoreDial, SeverityChip, StatCard, PageHeader, DemoBadge } from '../../components/common';
+import { SeverityChip, StatCard, PageHeader, DemoBadge } from '../../components/common';
+import { DialRing } from '../../components/common/motion';
 import { areaDriveability, nearestHazard } from '../../utils/driveability';
 import { SEVERITY_META, timeAgo, HAZARD_TYPE_META } from '../../utils/severity';
 import { formatDistance } from '../../utils/geo';
@@ -28,7 +29,16 @@ export default function UserHome() {
 
       {/* Driveability summary */}
       <section className="card card-pad">
-        <ScoreDial score={area} label="Road driveability (area)" />
+        <div className="flex items-center gap-3">
+          <DialRing score={area} size={72} />
+          <div>
+            <div className="label-xs">Road driveability (area)</div>
+            <div className={`text-sm font-semibold ${area >= 85 ? 'text-green-700' : area >= 65 ? 'text-yellow-700' : area >= 45 ? 'text-orange-700' : 'text-red-700'}`}>
+              {area >= 85 ? 'Good conditions' : area >= 65 ? 'Moderate conditions' : 'High risk conditions'}
+            </div>
+            <div className="text-xs text-gray-500">out of 100 · Gurugram</div>
+          </div>
+        </div>
         <div className="mt-4 grid grid-cols-2 gap-2 border-t border-gray-100 pt-4 sm:grid-cols-4">
           <div>
             <div className="label-xs">Traffic</div>
