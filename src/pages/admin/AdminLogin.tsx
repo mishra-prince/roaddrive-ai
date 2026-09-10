@@ -125,6 +125,9 @@ export default function AdminLogin() {
               <DemoBadge /> Frontend prototype — real auth server comes with the backend integration.
             </div>
           </div>
+          <p className="mt-4 text-center text-[11px] text-gray-400">
+            Need access? Request credentials from the RoadDrive authority administrator.
+          </p>
         </div>
       </div>
     </div>

@@ -4,11 +4,13 @@ import { createContext, useCallback, useContext, useMemo, useState, type ReactNo
  * Admin access control — mock auth for the prototype.
  * Replace `signIn` with a real backend call later; the shape stays the same.
  *
- * The demo credential is intentionally visible in the UI (SIH demo),
- * but the gate itself is real: /admin/* is unreachable without a session.
+ * Access is granted by adding an entry to ADMIN_ACCOUNTS below (or, post-
+ * backend, by creating the account server-side). Each authority member gets
+ * their own email + password and is identified by name/department in the UI.
  */
 
 export interface AdminSession {
+  email: string;
   name: string;
   department: string;
   expiresAt: number;
@@ -24,9 +26,36 @@ const Ctx = createContext<AuthCtx | null>(null);
 const KEY = 'roaddrive.admin.session';
 const SESSION_MS = 8 * 60 * 60 * 1000; // 8 hours
 
-/** Frontend-only demo credential. A real backend must validate this. */
-const DEMO_EMAIL = 'admin@roaddrive.gov.in';
-const DEMO_PASS = 'road2026';
+/**
+ * Authorized authority accounts (frontend-only demo tier).
+ * To grant access: add a row here and redeploy — or share the person's row
+ * with them directly. To revoke: delete the row.
+ */
+export const ADMIN_ACCOUNTS: Array<{
+  email: string;
+  password: string;
+  name: string;
+  department: string;
+}> = [
+  {
+    email: 'admin@roaddrive.gov.in',
+    password: 'road2026',
+    name: 'Road Authority',
+    department: 'Gurugram Metropolitan Development Authority',
+  },
+  {
+    email: 'ravi.gmda@roaddrive.gov.in',
+    password: 'gmda-2026',
+    name: 'Ravi Sharma',
+    department: 'Road Maintenance Division',
+  },
+  {
+    email: 'priya.gmda@roaddrive.gov.in',
+    password: 'verify-2026',
+    name: 'Priya Nair',
+    department: 'Verification Cell',
+  },
+];
 
 export function AdminAuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<AdminSession | null>(() => {
@@ -41,10 +70,14 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   });
 
   const signIn = useCallback((email: string, pass: string) => {
-    if (email.trim().toLowerCase() === DEMO_EMAIL && pass === DEMO_PASS) {
+    const account = ADMIN_ACCOUNTS.find(
+      (a) => a.email.toLowerCase() === email.trim().toLowerCase() && a.password === pass,
+    );
+    if (account) {
       const s: AdminSession = {
-        name: 'Road Authority',
-        department: 'Gurugram Metropolitan Development Authority',
+        email: account.email,
+        name: account.name,
+        department: account.department,
         expiresAt: Date.now() + SESSION_MS,
       };
       localStorage.setItem(KEY, JSON.stringify(s));

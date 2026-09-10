@@ -111,7 +111,7 @@ export default function AdminLayout() {
               <div className="grid h-6 w-6 place-items-center rounded-full bg-primary-100 text-[10px] font-bold text-primary-700" aria-hidden>
                 RA
               </div>
-              <span className="text-xs font-semibold text-ink" title={session?.department}>{session?.name ?? 'Authority'}</span>
+              <span className="text-xs font-semibold text-ink" title={session ? `${session.email} · ${session.department}` : undefined}>{session?.name ?? 'Authority'}</span>
               <button className="text-gray-400 hover:text-red-600" onClick={signOut} title="Sign out" aria-label="Sign out">
                 <LogOut className="h-4 w-4" />
               </button>

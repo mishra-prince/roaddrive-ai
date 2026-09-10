@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   preview: {
-    allowedHosts: ['findlaw-moves-urban-estates.trycloudflare.com'],
+    allowedHosts: true,
   },
   build: {
     chunkSizeWarningLimit: 4096,
