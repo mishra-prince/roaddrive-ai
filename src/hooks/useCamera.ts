@@ -7,6 +7,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  *  - the user denies permission
  *  - no camera device exists
  * The UI always labels which source is active — never fakes a real feed.
+ *
+ * The stream is attached in an effect (not inside start()) so the <video>
+ * element can mount after permission resolves without losing the stream.
  */
 
 export type CameraState = 'idle' | 'requesting' | 'live' | 'denied' | 'unavailable';
@@ -16,6 +19,26 @@ export function useCamera() {
   const streamRef = useRef<MediaStream | null>(null);
   const [state, setState] = useState<CameraState>('idle');
 
+  // Attach the stream whenever a video element exists and we hold a stream —
+  // covers both orders: element mounted before/after permission resolves.
+  useEffect(() => {
+    if (state !== 'live') return;
+    if (streamRef.current && videoRef.current && videoRef.current.srcObject !== streamRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [state, videoRef, streamRef]);
+
+  // Keep playing if the browser pauses the element (e.g. after re-render)
+  useEffect(() => {
+    if (state !== 'live') return;
+    const v = videoRef.current;
+    if (!v) return;
+    const onStalled = () => v.play().catch(() => {});
+    v.addEventListener('pause', onStalled);
+    return () => v.removeEventListener('pause', onStalled);
+  }, [state]);
+
   const stop = useCallback(() => {
     streamRef.current?.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
@@ -24,7 +47,11 @@ export function useCamera() {
   }, []);
 
   const start = useCallback(async () => {
-    if (streamRef.current) return true;
+    if (streamRef.current) {
+      // already have a stream (e.g. re-mounted) — just re-attach
+      setState('live');
+      return true;
+    }
     if (!navigator.mediaDevices?.getUserMedia) {
       setState('unavailable');
       return false;
@@ -36,10 +63,6 @@ export function useCamera() {
         audio: false,
       });
       streamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play().catch(() => {});
-      }
       setState('live');
       return true;
     } catch (err: any) {

@@ -112,31 +112,46 @@ export default function StartDrive() {
         </button>
       </div>
 
-      {/* camera simulation */}
+      {/* camera: real device feed when active, simulated road otherwise */}
       <div className="relative overflow-hidden rounded-2xl border border-gray-800 bg-[#1a222b]">
         <div className="relative aspect-[4/3] w-full overflow-hidden">
-          {/* moving road */}
-          <div className="absolute inset-0 grid grid-rows-2">
-            <div className="bg-gradient-to-b from-[#93a3b3] to-[#6b7682]" />
-            <div className="bg-[#3b444d]" />
-          </div>
-          <div className="absolute inset-x-0 bottom-0 top-1/2 grid grid-cols-3" aria-hidden>
-            <div className="border-r-4 border-[#4b545d] bg-[#454e58]" />
-            <div className="relative overflow-hidden bg-[#31383f]">
-              <div className="absolute inset-x-0 -top-1/2 h-[200%]">
-                <div className="rd-anim-road absolute inset-0 grid grid-rows-8">
-                  {Array.from({ length: 8 }).map((_, i) => (
-                    <div key={i} className="grid place-items-center">
-                      <div className="h-10 w-2 rounded bg-[#e8edf2] opacity-90" />
-                    </div>
-                  ))}
-                </div>
+          {/* LIVE camera layer (real device feed) */}
+          {cam.state === 'live' && (
+            <video
+              ref={cam.videoRef}
+              className="absolute inset-0 h-full w-full bg-black object-cover"
+              muted
+              playsInline
+              autoPlay
+              aria-label="Live camera feed"
+            />
+          )}
+          {/* moving road (simulated feed — hidden when camera is live) */}
+          {cam.state !== 'live' && (
+            <>
+              <div className="absolute inset-0 grid grid-rows-2">
+                <div className="bg-gradient-to-b from-[#93a3b3] to-[#6b7682]" />
+                <div className="bg-[#3b444d]" />
               </div>
-              <div className="absolute left-[46%] top-[62%] h-20 w-16 rounded-[40%] bg-[#20262c] opacity-90" />
-              <div className="absolute left-[42%] top-[55%] h-14 w-24 rounded-[45%] bg-[#171c22] opacity-95" />
-            </div>
-            <div className="border-l-4 border-[#4b545d] bg-[#454e58]" />
-          </div>
+              <div className="absolute inset-x-0 bottom-0 top-1/2 grid grid-cols-3" aria-hidden>
+                <div className="border-r-4 border-[#4b545d] bg-[#454e58]" />
+                <div className="relative overflow-hidden bg-[#31383f]">
+                  <div className="absolute inset-x-0 -top-1/2 h-[200%]">
+                    <div className="rd-anim-road absolute inset-0 grid grid-rows-8">
+                      {Array.from({ length: 8 }).map((_, i) => (
+                        <div key={i} className="grid place-items-center">
+                          <div className="h-10 w-2 rounded bg-[#e8edf2] opacity-90" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="absolute left-[46%] top-[62%] h-20 w-16 rounded-[40%] bg-[#20262c] opacity-90" />
+                  <div className="absolute left-[42%] top-[55%] h-14 w-24 rounded-[45%] bg-[#171c22] opacity-95" />
+                </div>
+                <div className="border-l-4 border-[#4b545d] bg-[#454e58]" />
+              </div>
+            </>
+          )}
 
           {/* scan line */}
           {running && phase === 'scanning' && (
