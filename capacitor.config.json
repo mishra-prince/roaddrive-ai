@@ -1,0 +1,8 @@
+{
+  "appId": "com.roaddrive.ai",
+  "appName": "RoadDrive AI",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}

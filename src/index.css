@@ -38,6 +38,11 @@ body {
   margin: 0;
   text-rendering: optimizeLegibility;
   transition: background-color .35s ease, color .35s ease;
+  /* Android edge-to-edge webview: keep content below the status bar.
+     Capacitor's SystemBars plugin injects --safe-area-inset-top as px on
+     older WebViews; env() covers newer ones. Take whichever is larger. */
+  padding-top: max(env(safe-area-inset-top, 0px), var(--safe-area-inset-top, 0px));
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), var(--safe-area-inset-bottom, 0px));
 }
 
 /* ═══════════════════════ COMPONENTS ═══════════════════════ */

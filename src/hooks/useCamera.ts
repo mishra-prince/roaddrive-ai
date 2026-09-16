@@ -18,6 +18,7 @@ export function useCamera() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const [state, setState] = useState<CameraState>('idle');
+  const [errName, setErrName] = useState<string>('');
 
   // Attach the stream whenever a video element exists and we hold a stream —
   // covers both orders: element mounted before/after permission resolves.

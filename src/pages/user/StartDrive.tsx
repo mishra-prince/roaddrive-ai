@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Camera, Gauge, Satellite, ScanEye, Signal, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { useStore } from '../../api/store';
 import { useCamera } from '../../hooks/useCamera';
+import { usePotholeDetection } from '../../hooks/usePotholeDetection';
 import { Camera as CamIcon, CameraOff } from 'lucide-react';
 import { cn } from '../../utils/severity';
 import { SEVERITY_META } from '../../utils/severity';
@@ -44,6 +45,7 @@ export default function StartDrive() {
   const [phaseIdx, setPhaseIdx] = useState(0);
   const [running, setRunning] = useState(false);
   const cam = useCamera();
+  const det = usePotholeDetection(cam.videoRef, cam.state === 'live');
   const [speed, setSpeed] = useState(38);
   const confirmedRef = useRef(false);
   const phase = ORDER[phaseIdx];
@@ -157,17 +159,37 @@ export default function StartDrive() {
           {cam.state === 'live' && (
             <div className="absolute inset-x-0 top-0 z-10 flex justify-center pt-2">
               <span className="rounded-full bg-black/55 px-3 py-1 text-[10px] font-semibold text-white/90">
-                Live camera · detection simulation off
+                Live camera · YOLO detection {det.boxes.length > 0 ? `ON · ${det.boxes.length} box${det.boxes.length > 1 ? 'es' : ''}` : 'ON · scanning'}
               </span>
             </div>
           )}
+
+          {/* REAL YOLO boxes over the live camera feed */}
+          {cam.state === 'live' &&
+            det.boxes.map((b, i) => (
+              <div
+                key={`${b.x.toFixed(3)}-${b.y.toFixed(3)}-${i}`}
+                className="absolute z-10 rounded-md border-2 border-emerald-400"
+                style={{
+                  left: `${b.x * 100}%`,
+                  top: `${b.y * 100}%`,
+                  width: `${b.w * 100}%`,
+                  height: `${b.h * 100}%`,
+                  boxShadow: '0 0 0 1px rgba(255,255,255,0.35), 0 0 24px 2px rgba(52,211,153,0.5)',
+                }}
+              >
+                <span className="absolute -top-5 left-0 whitespace-nowrap rounded bg-emerald-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                  POTHOLE {Math.round(b.conf * 100)}%
+                </span>
+              </div>
+            ))}
 
           {/* scan line */}
           {running && phase === 'scanning' && cam.state !== 'live' && (
             <div className="rd-anim-scan absolute inset-x-6 z-10 h-0.5 rounded bg-emerald-300 shadow-[0_0_18px_4px_rgba(110,231,183,0.45)]" />
           )}
 
-          {/* detection box — simulated feed only; never overlaid on the real camera */}
+          {/* detection box — simulated feed only; real YOLO boxes render above when camera is live */}
           {(phase !== 'scanning' || !running) && cam.state !== 'live' && (
             <div
               className="absolute left-[38%] top-[52%] h-24 w-32 rounded-md border-2 z-10"
@@ -287,7 +309,7 @@ export default function StartDrive() {
       {cam.state === 'live' && (
         <p className="flex items-center gap-2 rounded-lg bg-green-500/10 px-3 py-2.5 text-[11px] text-green-300">
           <ShieldCheck className="h-4 w-4 shrink-0 text-green-400" aria-hidden />
-          Live camera active — frames stay on your device; detection overlay &amp; hazard matching are simulated deterministically.
+          Live camera + real YOLO detection active — potholes are boxed on screen as the model sees them (~1 frame/sec).
         </p>
       )}
     </div>
